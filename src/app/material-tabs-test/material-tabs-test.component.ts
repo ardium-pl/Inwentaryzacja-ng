@@ -4,6 +4,7 @@ import { TabContentComponent } from '../tab-content/tab-content.component';
 import { TransactionsComponent } from '../transactions/transactions.component';
 import { Transaction } from '../transaction';
 import { TransactionDataStorageService } from '../transaction-data-storage.service';
+import { AnalizaZwolnienComponent } from '../analiza-zwolnien/analiza-zwolnien.component';
 
 /**
  * MaterialTabsTestComponent is a component that tests the functionality of Angular Material Tabs.
@@ -15,7 +16,12 @@ import { TransactionDataStorageService } from '../transaction-data-storage.servi
 @Component({
   selector: 'app-material-tabs-test',
   standalone: true,
-  imports: [MatTabsModule, TabContentComponent, TransactionsComponent],
+  imports: [
+    MatTabsModule,
+    TabContentComponent,
+    TransactionsComponent,
+    AnalizaZwolnienComponent,
+  ],
   templateUrl: './material-tabs-test.component.html',
   styleUrl: './material-tabs-test.component.css',
 })

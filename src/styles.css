@@ -5,25 +5,31 @@
   --grid-width: 90%;
 
   /* Color palette: */
-  --white: #F1F6F9;
-  --navy: #14274E;
+  --white: #f1f6f9;
+  --navy: #14274e;
   --faded-blue: #394867;
-  --grey: #9BA4B4;
+  --grey: #9ba4b4;
 }
 
-html, body {
+html,
+body {
   height: 100%;
   margin: 0;
 
-  font-family: 'Arial', sans-serif;
+  font-family: "Arial", sans-serif;
   background-color: var(--white);
 }
 
 /* AG GRID HEADER STYLING */
 .grid-header {
-  /* margin: 10px;
-  box-sizing: border-box; */
   background-color: rgb(244, 244, 244);
+  color: var(--navy);
+  text-align: center;
+  overflow-wrap: break-word;
+}
+
+.zwolnienia-grid-header {
+  background-color: rgb(223, 215, 191);
   color: var(--navy);
   text-align: center;
   overflow-wrap: break-word;

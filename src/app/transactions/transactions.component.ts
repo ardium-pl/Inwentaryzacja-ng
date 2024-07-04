@@ -1,26 +1,16 @@
-import {
-  Component,
-  ViewChild,
-  Input,
-  Signal,
-  inject,
-  OnInit,
-  computed,
-} from '@angular/core';
-import {AgGridAngular} from 'ag-grid-angular'; // Angular Data Grid Component
+import { Component, Input, Signal, inject, computed } from '@angular/core';
+import { AgGridAngular } from 'ag-grid-angular'; // Angular Data Grid Component
 import {
   ColDef,
   CellValueChangedEvent,
   GridApi,
   GridReadyEvent,
   RowStyle,
-  RowSelectedEvent,
 } from 'ag-grid-community'; // Column Definition Type Interface
-import {Transaction} from '../transaction';
-import {TransactionDataStorageService} from '../transaction-data-storage.service';
+import { Transaction } from '../transaction';
+import { TransactionDataStorageService } from '../transaction-data-storage.service';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-quartz.css';
-import {ColorToggleComponent} from '../color-toggle/color-toggle.component';
 
 // @ts-ignore
 /**
@@ -31,7 +21,7 @@ import {ColorToggleComponent} from '../color-toggle/color-toggle.component';
 @Component({
   selector: 'app-transactions',
   standalone: true,
-  imports: [AgGridAngular, ColorToggleComponent],
+  imports: [AgGridAngular],
   templateUrl: './transactions.component.html',
   styleUrl: './transactions.component.css',
 })
@@ -44,7 +34,7 @@ export class TransactionsComponent {
   /**
    * Default column definitions for AG Grid.
    */
-  public defaultColDef: ColDef = {
+  defaultColDef: ColDef = {
     wrapHeaderText: true,
     autoHeaderHeight: true,
     headerClass: 'grid-header',
@@ -91,7 +81,7 @@ export class TransactionsComponent {
       field: 'netValue',
       editable: true,
     },
-    {headerName: 'Waluta', field: 'currency', editable: true},
+    { headerName: 'Waluta', field: 'currency', editable: true },
     {
       headerName: 'Data udzielenia pożyczki/gwarancji',
       field: 'loanDate',
@@ -133,7 +123,7 @@ export class TransactionsComponent {
       field: 'benchmarkRequirement',
       editable: true,
     },
-    {headerName: 'TPR', field: 'tpr', editable: true},
+    { headerName: 'TPR', field: 'tpr', editable: true },
   ];
 
   /**
@@ -162,7 +152,7 @@ export class TransactionsComponent {
       console.log('selectionMap:', Array.from(selectionMap.entries()));
       // Update homogeneousTransactionValue based on the selection group sums
       return transactions.map((transaction) => {
-        const updatedTransaction = {...transaction};
+        const updatedTransaction = { ...transaction };
         if (transaction.selection === 'none') {
           updatedTransaction.homogeneousTransactionValue = 0;
         } else {
@@ -317,7 +307,7 @@ export class TransactionsComponent {
 
   getRowStyle = (params: any): RowStyle | undefined => {
     if (params.data.selection !== 'none') {
-      return {backgroundColor: params.data.selection};
+      return { backgroundColor: params.data.selection };
     }
     return undefined;
   };
