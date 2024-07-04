@@ -37,6 +37,10 @@ export class AnalizaZwolnienComponent {
     this.companies = computed(() => this.companyDataStorageService.companies());
   }
 
+  booleanCellRenderer(params: any) {
+    return params.value ? 'TAK' : 'NIE';
+  }
+
   defaultColDef: ColDef = {
     wrapHeaderText: true,
     autoHeaderHeight: true,
@@ -59,7 +63,7 @@ export class AnalizaZwolnienComponent {
     },
   };
 
-  colDefs: ColDef[] = [
+  columnDefs: ColDef[] = [
     {
       field: 'entityName____________________A',
       headerName: 'Nazwa podmiotu',
@@ -69,34 +73,52 @@ export class AnalizaZwolnienComponent {
       field: 'dctExemptionAllSources________B',
       headerName:
         'Zwolnienie z obowiązku DCT (zwolnienie krajowe) - wszystkie źródła',
-      editable: false,
+      editable: true,
+      cellEditor: 'agSelectCellEditor',
+      cellEditorParams: { values: ['TAK', 'NIE'] },
+      cellRenderer: this.booleanCellRenderer,
     },
     {
       field: 'dctExemptionCapitalSource_____C',
       headerName:
         'Zwolnienie z obowiązku DCT (zwolnienie krajowe) - źródło kapitałowe',
-      editable: false,
+      editable: true,
+      cellEditor: 'agSelectCellEditor',
+      cellEditorParams: { values: ['TAK', 'NIE'] },
+      cellRenderer: this.booleanCellRenderer,
     },
     {
       field: 'dctExemptionOtherSources______D',
       headerName:
         'Zwolnienie z obowiązku DCT (zwolnienie krajowe) - pozostałe źródła',
-      editable: false,
+      editable: true,
+      cellEditor: 'agSelectCellEditor',
+      cellEditorParams: { values: ['TAK', 'NIE'] },
+      cellRenderer: this.booleanCellRenderer,
     },
     {
       field: 'benchmarkExemptionSmallMicro__E',
       headerName: 'Zwolnienie z obowiązku benchmarku - mały/mikro',
-      editable: false,
+      editable: true,
+      cellEditor: 'agSelectCellEditor',
+      cellEditorParams: { values: ['TAK', 'NIE'] },
+      cellRenderer: this.booleanCellRenderer,
     },
     {
       field: 'masterFileObligation___________F',
       headerName: 'Obowiązek master file',
-      editable: false,
+      editable: true,
+      cellEditor: 'agSelectCellEditor',
+      cellEditorParams: { values: ['TAK', 'NIE'] },
+      cellRenderer: this.booleanCellRenderer,
     },
     {
       field: 'covidExemption_________________G',
       headerName: 'Zwolnienie tzw. covidove',
-      editable: false,
+      editable: true,
+      cellEditor: 'agSelectCellEditor',
+      cellEditorParams: { values: ['TAK', 'NIE'] },
+      cellRenderer: this.booleanCellRenderer,
     },
     {
       field: 'taxProfitLossCapitalSources2023_H',
@@ -113,11 +135,17 @@ export class AnalizaZwolnienComponent {
       headerName:
         'Czy podmiot/spółka korzystał/a w 2023 ze zwolnień z PIT/CIT: 1) podmiotowych lub 2) dla SSE/Polskiej Strefy Inwestycji',
       editable: true,
+      cellEditor: 'agSelectCellEditor',
+      cellEditorParams: { values: ['TAK', 'NIE'] },
+      cellRenderer: this.booleanCellRenderer,
     },
     {
       field: 'consolidationReport____________K',
       headerName: 'Czy sprawozdanie podlega konsolidacji',
       editable: true,
+      cellEditor: 'agSelectCellEditor',
+      cellEditorParams: { values: ['TAK', 'NIE'] },
+      cellRenderer: this.booleanCellRenderer,
     },
     {
       field: 'consolidatedRevenue2022________L',
@@ -143,42 +171,66 @@ export class AnalizaZwolnienComponent {
     {
       field: 'employmentBelow10______________P',
       headerName: 'Zatrudnienie poniżej 10 osób',
-      editable: false,
+      editable: true,
+      cellEditor: 'agSelectCellEditor',
+      cellEditorParams: { values: ['TAK', 'NIE'] },
+      cellRenderer: this.booleanCellRenderer,
     },
     {
       field: 'turnoverBelow2M_EUR____________Q',
       headerName: 'Obroty poniżej 2 mln EUR',
-      editable: false,
+      editable: true,
+      cellEditor: 'agSelectCellEditor',
+      cellEditorParams: { values: ['TAK', 'NIE'] },
+      cellRenderer: this.booleanCellRenderer,
     },
     {
       field: 'totalAssetsBelow2M_EUR_________R',
       headerName: 'Suma bilansowa poniżej 2 mln EUR',
-      editable: false,
+      editable: true,
+      cellEditor: 'agSelectCellEditor',
+      cellEditorParams: { values: ['TAK', 'NIE'] },
+      cellRenderer: this.booleanCellRenderer,
     },
     {
       field: 'qualification__________________S',
       headerName: 'Kwalifikacja',
-      editable: false,
+      editable: true,
+      cellEditor: 'agSelectCellEditor',
+      cellEditorParams: { values: ['TAK', 'NIE'] },
+      cellRenderer: this.booleanCellRenderer,
     },
     {
       field: 'employmentBelow50______________T',
       headerName: 'Zatrudnienie poniżej 50 osób',
-      editable: false,
+      editable: true,
+      cellEditor: 'agSelectCellEditor',
+      cellEditorParams: { values: ['TAK', 'NIE'] },
+      cellRenderer: this.booleanCellRenderer,
     },
     {
       field: 'turnoverBelow10M_EUR___________U',
       headerName: 'Obroty poniżej 10 mln EUR',
-      editable: false,
+      editable: true,
+      cellEditor: 'agSelectCellEditor',
+      cellEditorParams: { values: ['TAK', 'NIE'] },
+      cellRenderer: this.booleanCellRenderer,
     },
     {
       field: 'totalAssetsBelow10M_EUR________V',
       headerName: 'Suma bilansowa poniżej 10 mlnEUR',
-      editable: false,
+      editable: true,
+      cellEditor: 'agSelectCellEditor',
+      cellEditorParams: { values: ['TAK', 'NIE'] },
+      cellRenderer: this.booleanCellRenderer,
     },
     {
       field: 'qualification__________________W',
       headerName: 'Kwalifikacja',
-      editable: false,
+      editable: true,
+      cellEditor: 'agSelectCellEditor',
+      cellEditorParams: { values: ['TAK', 'NIE'] },
+      cellRenderer: this.booleanCellRenderer,
     },
     {
       field: 'totalRevenue2022_______________X',
