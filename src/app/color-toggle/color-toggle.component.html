@@ -1,0 +1,21 @@
+<!--<div class="color-picker">-->
+<!--  <div *ngFor="let colorName of colorNames; let i = index"-->
+<!--       class="color-option"-->
+<!--       [style.backgroundColor]="colorMap[colorName]"-->
+<!--       [class.selected]="this.transactionDataStorageService.currentSelection === colorMap[colorName]"-->
+<!--       (click)="selectColor(colorName)">-->
+<!--  </div>-->
+<!--  <div class="color-option clear-button" (click)="clearAllColors()">X</div>-->
+<!--</div>-->
+<!--<p>Selected color: {{ getColorNameByHex(transactionDataStorageService.currentSelection) }}</p>-->
+
+<div class="color-picker">
+  <div *ngFor="let colorName of colorNames; let i = index"
+       class="color-option"
+       [style.backgroundColor]="colorMap[colorName]"
+       [class.selected]="this.transactionDataStorageService.currentSelection === colorMap[colorName]"
+       (click)="selectColor(colorName)">
+  </div>
+  <div class="color-option clear-button" (click)="clearAllColors()">X</div>
+</div>
+<p>Selected color: {{ getColorNameByHex(transactionDataStorageService.currentSelection) }}</p>

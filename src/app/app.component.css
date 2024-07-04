@@ -1,0 +1,51 @@
+/*todo delete commmented out code*/
+
+:host {
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.top {
+  height: 110px;
+
+  /* background-color: lightblue; */
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.container-home {
+  /* border: 4px solid var(--navy); */
+  /* border: 4px solid red; */
+  /* background-color: lightcoral; */
+  box-sizing: border-box;
+
+  flex: 1;
+}
+
+.footer {
+  height: 70px;
+
+  display: flex;
+  justify-content: center;
+  text-align: -webkit-center;
+  /* text-align: center; */
+  /* background-color: lightblue; */
+}
+
+.title {
+  margin-bottom: 0;
+  box-sizing: border-box;
+
+  flex: 1;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 35px;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}

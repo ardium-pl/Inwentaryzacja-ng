@@ -1,0 +1,38 @@
+/**
+ * Styles for the color picker component, including the color options and the clear button.
+ */
+
+/* Container for the color options, displayed as a flexible wrap grid. */
+.color-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+/* Style for each color option. */
+.color-option {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2px solid #ddd;
+  cursor: pointer;
+  transition: transform 0.2s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+/* Hover effect for color options, enlarging the option. */
+.color-option:hover {
+  transform: scale(1.1);
+}
+
+/* Style for the selected color option. */
+.color-option.selected {
+  border: 2px solid black; /* Highlight the selected color */
+}
+
+/* Style for the clear button. */
+.clear-button {
+  background-color: #fff;
+  color: #333;
+  font-weight: bold;
+}
