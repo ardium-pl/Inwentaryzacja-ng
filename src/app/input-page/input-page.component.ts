@@ -1,8 +1,8 @@
-import { Component, inject } from '@angular/core';
-import { Router } from '@angular/router';
-import { TransactionDataStorageService } from '../transaction-data-storage.service';
-import { Transaction } from '../transaction';
-import { parse } from 'csv-parse/browser/esm'; // Import parsera CSV
+import {Component, inject} from '@angular/core';
+import {Router} from '@angular/router';
+import {TransactionDataStorageService} from '../transaction-data-storage.service';
+import {Transaction} from '../transaction';
+import {parse} from 'csv-parse/browser/esm'; // Import parsera CSV
 
 /**
  * InputPageComponent is a component that handles the input of transaction data.
@@ -133,7 +133,7 @@ export class InputPageComponent {
         cast: (value, context) => {
           if (
             context.column ===
-              'Wartość netto świadczeń zrealizowanych w danym roku/Wartość najwyższego udostępnionego w roku podatkowym kapitału' &&
+            'Wartość netto świadczeń zrealizowanych w danym roku/Wartość najwyższego udostępnionego w roku podatkowym kapitału' &&
             typeof value === 'string'
           ) {
             return parseFloat(value.replace(/\s/g, '').replace(',', '.'));
@@ -160,7 +160,7 @@ export class InputPageComponent {
           netValue: parseFloat(
             record[
               'Wartość netto świadczeń zrealizowanych w danym roku/Wartość najwyższego udostępnionego w roku podatkowym kapitału'
-            ]
+              ]
           ),
           currency: record['Waluta'] || '',
           loanDate: record['Data udzielenia pożyczki/gwarancji'] || '',
@@ -173,7 +173,7 @@ export class InputPageComponent {
             parseFloat(
               record[
                 'Wartość transakcji kontrolowanej o charakterze jednorodnym [PLN]'
-              ]
+                ]
             ) || 0,
           taxExemption: record['Zwolnienie art. 11n CIT'] || '',
           documentationRequirement: record['Obowiązek dokumentacji'] || '',
@@ -298,5 +298,6 @@ export class InputPageComponent {
     return this.transactions.length > 0;
   }
 
-  constructor() {}
+  constructor() {
+  }
 }
