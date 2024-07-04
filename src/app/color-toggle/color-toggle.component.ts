@@ -14,7 +14,7 @@ import { TransactionDataStorageService } from '../transaction-data-storage.servi
   standalone: true,
   imports: [CommonModule, MdbDropdownModule],
   templateUrl: './color-toggle.component.html',
-  styleUrl: './color-toggle.component.css',
+  styleUrls: ['./color-toggle.component.css'],
 })
 export class ColorToggleComponent {
 
@@ -53,7 +53,7 @@ export class ColorToggleComponent {
 
   /**
    * Selects a color and updates the current selection in the `TransactionDataStorageService`.
-   * @param color The hex code of the color to be selected.
+   * @param colorName The hex code of the color to be selected.
    */
 
   selectColor(colorName: string): void {

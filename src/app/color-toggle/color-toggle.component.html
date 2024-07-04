@@ -32,21 +32,24 @@
   <div mdbDropdown class="btn-group dropup">
     <button
       type="button"
-      class="btn btn-primary dropdown-toggle"
+      class="btn btn-light dropdown-toggle color-button"
       mdbDropdownToggle
       aria-expanded="false"
     >
-      Select Color
+      <span class="color-swatch" [style.backgroundColor]="transactionDataStorageService.currentSelection || '#ffffff'"></span>
+
     </button>
     <ul mdbDropdownMenu class="dropdown-menu">
       <li *ngFor="let colorName of colorNames">
         <a class="dropdown-item" (click)="selectColor(colorName)">
           <span class="color-swatch" [style.backgroundColor]="colorMap[colorName]"></span>
-          {{ colorName }}
         </a>
       </li>
     </ul>
   </div>
-  <button class="btn btn-danger" (click)="clearAllColors()">Clear Color</button>
+  <button class="btn btn-light btn-sm trash-btn" (click)="clearAllColors()">
+    🗑️
+  </button>
 </div>
-<p>Selected color: {{ getColorNameByHex(transactionDataStorageService.currentSelection) }}</p>
+
+
