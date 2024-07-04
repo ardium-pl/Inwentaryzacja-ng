@@ -1,8 +1,8 @@
 /**
- * Styles for the color picker component, including the color options and the clear button.
+ * Styles for the color picker component, including the color options and the clear button. TEST!
  */
 
-/* Container for the color options, displayed as a flexible wrap grid. */
+/* TEST! Container for the color options, displayed as a flexible wrap grid. */
 .color-picker {
   display: flex;
   flex-wrap: wrap;
