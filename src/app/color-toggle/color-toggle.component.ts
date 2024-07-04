@@ -1,6 +1,7 @@
-import {Component, inject, Output, EventEmitter} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {TransactionDataStorageService} from '../transaction-data-storage.service';
+import { Component, inject, Output, EventEmitter } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { MdbDropdownModule } from "mdb-angular-ui-kit/dropdown";
+import { TransactionDataStorageService } from '../transaction-data-storage.service';
 
 
 /**
@@ -11,7 +12,7 @@ import {TransactionDataStorageService} from '../transaction-data-storage.service
 @Component({
   selector: 'app-color-toggle',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, MdbDropdownModule],
   templateUrl: './color-toggle.component.html',
   styleUrl: './color-toggle.component.css',
 })
@@ -68,5 +69,10 @@ export class ColorToggleComponent {
   clearAllColors(): void {
     this.transactionDataStorageService.clearAllSelections();
     this.clearColors.emit();
+  }
+
+  toggleDropdown(): void {
+    const dropdown = document.querySelector('.dropdown-menu');
+    dropdown?.classList.toggle('show');
   }
 }

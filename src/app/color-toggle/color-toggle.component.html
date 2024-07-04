@@ -1,3 +1,4 @@
+<!--Version with rounded buttons-->
 <!--<div class="color-picker">-->
 <!--  <div *ngFor="let colorName of colorNames; let i = index"-->
 <!--       class="color-option"-->
@@ -9,13 +10,43 @@
 <!--</div>-->
 <!--<p>Selected color: {{ getColorNameByHex(transactionDataStorageService.currentSelection) }}</p>-->
 
+<!--<div class="color-picker">-->
+<!--  <div class="btn-group dropup">-->
+<!--    <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">-->
+<!--      Select Color-->
+<!--    </button>-->
+<!--    <ul class="dropdown-menu">-->
+<!--      <li *ngFor="let colorName of colorNames">-->
+<!--        <a class="dropdown-item" (click)="selectColor(colorName)">-->
+<!--          <span class="color-swatch" [style.backgroundColor]="colorMap[colorName]"></span>-->
+<!--          {{ colorName }}-->
+<!--        </a>-->
+<!--      </li>-->
+<!--    </ul>-->
+<!--  </div>-->
+<!--  <button class="btn btn-danger" (click)="clearAllColors()">Clear Color</button>-->
+<!--</div>-->
+<!--<p>Selected color: {{ getColorNameByHex(transactionDataStorageService.currentSelection) }}</p>-->
+
 <div class="color-picker">
-  <div *ngFor="let colorName of colorNames; let i = index"
-       class="color-option"
-       [style.backgroundColor]="colorMap[colorName]"
-       [class.selected]="this.transactionDataStorageService.currentSelection === colorMap[colorName]"
-       (click)="selectColor(colorName)">
+  <div mdbDropdown class="btn-group dropup">
+    <button
+      type="button"
+      class="btn btn-primary dropdown-toggle"
+      mdbDropdownToggle
+      aria-expanded="false"
+    >
+      Select Color
+    </button>
+    <ul mdbDropdownMenu class="dropdown-menu">
+      <li *ngFor="let colorName of colorNames">
+        <a class="dropdown-item" (click)="selectColor(colorName)">
+          <span class="color-swatch" [style.backgroundColor]="colorMap[colorName]"></span>
+          {{ colorName }}
+        </a>
+      </li>
+    </ul>
   </div>
-  <div class="color-option clear-button" (click)="clearAllColors()">X</div>
+  <button class="btn btn-danger" (click)="clearAllColors()">Clear Color</button>
 </div>
 <p>Selected color: {{ getColorNameByHex(transactionDataStorageService.currentSelection) }}</p>
