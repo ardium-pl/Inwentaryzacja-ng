@@ -1,55 +1,32 @@
-<!--Version with rounded buttons-->
-<!--<div class="color-picker">-->
-<!--  <div *ngFor="let colorName of colorNames; let i = index"-->
-<!--       class="color-option"-->
-<!--       [style.backgroundColor]="colorMap[colorName]"-->
-<!--       [class.selected]="this.transactionDataStorageService.currentSelection === colorMap[colorName]"-->
-<!--       (click)="selectColor(colorName)">-->
-<!--  </div>-->
-<!--  <div class="color-option clear-button" (click)="clearAllColors()">X</div>-->
-<!--</div>-->
-<!--<p>Selected color: {{ getColorNameByHex(transactionDataStorageService.currentSelection) }}</p>-->
-
-<!--<div class="color-picker">-->
-<!--  <div class="btn-group dropup">-->
-<!--    <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">-->
-<!--      Select Color-->
-<!--    </button>-->
-<!--    <ul class="dropdown-menu">-->
-<!--      <li *ngFor="let colorName of colorNames">-->
-<!--        <a class="dropdown-item" (click)="selectColor(colorName)">-->
-<!--          <span class="color-swatch" [style.backgroundColor]="colorMap[colorName]"></span>-->
-<!--          {{ colorName }}-->
-<!--        </a>-->
-<!--      </li>-->
-<!--    </ul>-->
-<!--  </div>-->
-<!--  <button class="btn btn-danger" (click)="clearAllColors()">Clear Color</button>-->
-<!--</div>-->
-<!--<p>Selected color: {{ getColorNameByHex(transactionDataStorageService.currentSelection) }}</p>-->
-
+<!-- Color Picker Component -->
 <div class="color-picker">
+  <!-- Dropdown for color selection -->
   <div mdbDropdown class="btn-group dropup">
+    <!-- Button that displays the currently selected color -->
     <button
       type="button"
       class="btn btn-light dropdown-toggle color-button"
       mdbDropdownToggle
       aria-expanded="false"
     >
-      <span class="color-swatch" [style.backgroundColor]="transactionDataStorageService.currentSelection || '#ffffff'"></span>
-
+      <!-- Color swatch showing the current color -->
+      <span class="color-swatch"
+            [style.backgroundColor]="transactionDataStorageService.currentSelection || '#ffffff'"></span>
     </button>
+    <!-- Dropdown menu with color options -->
     <ul mdbDropdownMenu class="dropdown-menu">
+      <!-- List of color options generated dynamically from colorNames array -->
       <li *ngFor="let colorName of colorNames">
+        <!-- Option in the dropdown menu for selecting a color -->
         <a class="dropdown-item" (click)="selectColor(colorName)">
+          <!-- Color swatch representing the color option -->
           <span class="color-swatch" [style.backgroundColor]="colorMap[colorName]"></span>
         </a>
       </li>
     </ul>
   </div>
+  <!-- Button for clearing the selected color(s) -->
   <button class="btn btn-light btn-sm trash-btn" (click)="clearAllColors()">
     🗑️
   </button>
 </div>
-
-

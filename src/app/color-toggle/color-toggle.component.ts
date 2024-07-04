@@ -1,7 +1,7 @@
-import { Component, inject, Output, EventEmitter } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { MdbDropdownModule } from "mdb-angular-ui-kit/dropdown";
-import { TransactionDataStorageService } from '../transaction-data-storage.service';
+import {Component, inject, Output, EventEmitter} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {MdbDropdownModule} from "mdb-angular-ui-kit/dropdown";
+import {TransactionDataStorageService} from '../transaction-data-storage.service';
 
 
 /**
@@ -47,6 +47,7 @@ export class ColorToggleComponent {
     return Object.keys(this.colorMap);
   }
 
+  // If needed, convert hex code to color name
   getColorNameByHex(hexCode: string): string {
     return Object.keys(this.colorMap).find(key => this.colorMap[key] === hexCode) || 'None selected';
   }
@@ -71,6 +72,11 @@ export class ColorToggleComponent {
     this.clearColors.emit();
   }
 
+  /**
+   * Toggles the visibility of the dropdown menu.
+   * This method selects the dropdown menu element by its class name ('.dropdown-menu')
+   * and toggles the 'show' class to either show or hide the dropdown content.
+   */
   toggleDropdown(): void {
     const dropdown = document.querySelector('.dropdown-menu');
     dropdown?.classList.toggle('show');

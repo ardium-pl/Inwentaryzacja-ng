@@ -1,10 +1,8 @@
 import {
   Component,
-  ViewChild,
   Input,
   Signal,
   inject,
-  OnInit,
   computed,
 } from '@angular/core';
 import {AgGridAngular} from 'ag-grid-angular'; // Angular Data Grid Component
@@ -14,7 +12,6 @@ import {
   GridApi,
   GridReadyEvent,
   RowStyle,
-  RowSelectedEvent,
 } from 'ag-grid-community'; // Column Definition Type Interface
 import {Transaction} from '../transaction';
 import {TransactionDataStorageService} from '../transaction-data-storage.service';
@@ -215,7 +212,7 @@ export class TransactionsComponent {
         (transaction) =>
           transaction.selection !== 'none' &&
           transaction.homogeneousTransactionValue >
-            minSignificanceLimitMap.get(transaction.selection)!
+          minSignificanceLimitMap.get(transaction.selection)!
       );
     }
 
