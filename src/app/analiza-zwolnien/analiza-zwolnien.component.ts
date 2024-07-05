@@ -72,6 +72,21 @@ export class AnalizaZwolnienComponent {
       field: 'entityName____________________A',
       headerName: 'Nazwa podmiotu',
       editable: true,
+      cellStyle: (params) => {
+        const styles: any = {};
+
+        // Set text color if displayColor is not 'none'
+        if (params.data.displayColor && params.data.displayColor !== 'none') {
+          styles.color = params.data.displayColor;
+        }
+
+        // Set text to bold if displayBold is true
+        if (params.data.displayBold) {
+          styles.fontWeight = 'bold';
+        }
+
+        return styles;
+      },
     },
     // {
     //   field: 'dctExemptionAllSources________B',

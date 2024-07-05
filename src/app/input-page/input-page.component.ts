@@ -300,7 +300,7 @@ export class InputPageComponent {
 
       // Create Company objects for each unique company name
       let companyId = 1;
-      const companies: Company[] = Array.from(uniqueCompanyNames).map(
+      let companies: Company[] = Array.from(uniqueCompanyNames).map(
         (companyName) => ({
           companyId: companyId++,
           entityName____________________A: companyName,
@@ -328,9 +328,14 @@ export class InputPageComponent {
           qualification__________________W: 'NIE',
           totalRevenue2022_______________X: 0,
           totalRevenue2023_______________Y: 0,
+          displayColor: 'none',
+          displayBold: false,
         })
       );
 
+      companies = companies.map((company) =>
+        this.companyDataStorageService.applyCellFormulas(company)
+      );
       this.companyDataStorageService.setCompanies(companies);
       this.transactionDataStorageService.setTransactions(this.transactions);
       this.transactionDataStorageService.setAllTransactionLimits();

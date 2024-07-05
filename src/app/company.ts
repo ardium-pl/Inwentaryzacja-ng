@@ -25,4 +25,6 @@ export interface Company {
   qualification__________________W: 'TAK' | 'NIE'; // Kwalifikacja
   totalRevenue2022_______________X: number; // Przychody razem 2022
   totalRevenue2023_______________Y: number; // Przychody razem 2023
+  displayColor: string;
+  displayBold: boolean;
 }
