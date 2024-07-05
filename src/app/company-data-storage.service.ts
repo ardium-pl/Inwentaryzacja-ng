@@ -11,5 +11,13 @@ export class CompanyDataStorageService {
     this.companies.set(comapnies);
   }
 
-  constructor() {}
+  updateCompanies(updatedCompany: Company) {
+    this.companies.update((companies) =>
+      companies.map((company) =>
+        company.companyId === updatedCompany.companyId
+          ? updatedCompany
+          : company
+      )
+    );
+  }
 }

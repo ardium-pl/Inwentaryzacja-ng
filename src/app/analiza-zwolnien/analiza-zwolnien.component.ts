@@ -37,23 +37,19 @@ export class AnalizaZwolnienComponent {
     this.companies = computed(() => this.companyDataStorageService.companies());
   }
 
-  booleanCellRenderer(params: any) {
-    return params.value ? 'TAK' : 'NIE';
-  }
-
   defaultColDef: ColDef = {
     wrapHeaderText: true,
     autoHeaderHeight: true,
     headerClass: 'zwolnienia-grid-header',
     width: 200,
     cellStyle: (params) => {
-      if (params.value === true) {
+      if (params.value === 'TAK') {
         return {
           backgroundColor: 'lightgreen',
           color: 'darkgreen',
           textAlign: 'center',
         };
-      } else if (params.value === false) {
+      } else if (params.value === 'NIE') {
         return {
           backgroundColor: 'lightcoral',
           color: 'darkred',
@@ -62,6 +58,14 @@ export class AnalizaZwolnienComponent {
       } else return undefined;
     },
   };
+
+  onCellValueChanged(event: CellValueChangedEvent) {
+    // Get the changed row.
+    const updatedCompany = event.data;
+    // Update the comapnies data stored in a signal wthin a service.
+    console.log(updatedCompany);
+    this.companyDataStorageService.updateCompanies(updatedCompany);
+  }
 
   columnDefs: ColDef[] = [
     {
@@ -76,7 +80,6 @@ export class AnalizaZwolnienComponent {
       editable: true,
       cellEditor: 'agSelectCellEditor',
       cellEditorParams: { values: ['TAK', 'NIE'] },
-      cellRenderer: this.booleanCellRenderer,
     },
     {
       field: 'dctExemptionCapitalSource_____C',
@@ -85,7 +88,6 @@ export class AnalizaZwolnienComponent {
       editable: true,
       cellEditor: 'agSelectCellEditor',
       cellEditorParams: { values: ['TAK', 'NIE'] },
-      cellRenderer: this.booleanCellRenderer,
     },
     {
       field: 'dctExemptionOtherSources______D',
@@ -94,7 +96,6 @@ export class AnalizaZwolnienComponent {
       editable: true,
       cellEditor: 'agSelectCellEditor',
       cellEditorParams: { values: ['TAK', 'NIE'] },
-      cellRenderer: this.booleanCellRenderer,
     },
     {
       field: 'benchmarkExemptionSmallMicro__E',
@@ -102,7 +103,6 @@ export class AnalizaZwolnienComponent {
       editable: true,
       cellEditor: 'agSelectCellEditor',
       cellEditorParams: { values: ['TAK', 'NIE'] },
-      cellRenderer: this.booleanCellRenderer,
     },
     {
       field: 'masterFileObligation___________F',
@@ -110,7 +110,6 @@ export class AnalizaZwolnienComponent {
       editable: true,
       cellEditor: 'agSelectCellEditor',
       cellEditorParams: { values: ['TAK', 'NIE'] },
-      cellRenderer: this.booleanCellRenderer,
     },
     {
       field: 'covidExemption_________________G',
@@ -118,7 +117,6 @@ export class AnalizaZwolnienComponent {
       editable: true,
       cellEditor: 'agSelectCellEditor',
       cellEditorParams: { values: ['TAK', 'NIE'] },
-      cellRenderer: this.booleanCellRenderer,
     },
     {
       field: 'taxProfitLossCapitalSources2023_H',
@@ -137,7 +135,6 @@ export class AnalizaZwolnienComponent {
       editable: true,
       cellEditor: 'agSelectCellEditor',
       cellEditorParams: { values: ['TAK', 'NIE'] },
-      cellRenderer: this.booleanCellRenderer,
     },
     {
       field: 'consolidationReport____________K',
@@ -145,7 +142,6 @@ export class AnalizaZwolnienComponent {
       editable: true,
       cellEditor: 'agSelectCellEditor',
       cellEditorParams: { values: ['TAK', 'NIE'] },
-      cellRenderer: this.booleanCellRenderer,
     },
     {
       field: 'consolidatedRevenue2022________L',
@@ -174,7 +170,6 @@ export class AnalizaZwolnienComponent {
       editable: true,
       cellEditor: 'agSelectCellEditor',
       cellEditorParams: { values: ['TAK', 'NIE'] },
-      cellRenderer: this.booleanCellRenderer,
     },
     {
       field: 'turnoverBelow2M_EUR____________Q',
@@ -182,7 +177,6 @@ export class AnalizaZwolnienComponent {
       editable: true,
       cellEditor: 'agSelectCellEditor',
       cellEditorParams: { values: ['TAK', 'NIE'] },
-      cellRenderer: this.booleanCellRenderer,
     },
     {
       field: 'totalAssetsBelow2M_EUR_________R',
@@ -190,7 +184,6 @@ export class AnalizaZwolnienComponent {
       editable: true,
       cellEditor: 'agSelectCellEditor',
       cellEditorParams: { values: ['TAK', 'NIE'] },
-      cellRenderer: this.booleanCellRenderer,
     },
     {
       field: 'qualification__________________S',
@@ -198,7 +191,6 @@ export class AnalizaZwolnienComponent {
       editable: true,
       cellEditor: 'agSelectCellEditor',
       cellEditorParams: { values: ['TAK', 'NIE'] },
-      cellRenderer: this.booleanCellRenderer,
     },
     {
       field: 'employmentBelow50______________T',
@@ -206,7 +198,6 @@ export class AnalizaZwolnienComponent {
       editable: true,
       cellEditor: 'agSelectCellEditor',
       cellEditorParams: { values: ['TAK', 'NIE'] },
-      cellRenderer: this.booleanCellRenderer,
     },
     {
       field: 'turnoverBelow10M_EUR___________U',
@@ -214,7 +205,6 @@ export class AnalizaZwolnienComponent {
       editable: true,
       cellEditor: 'agSelectCellEditor',
       cellEditorParams: { values: ['TAK', 'NIE'] },
-      cellRenderer: this.booleanCellRenderer,
     },
     {
       field: 'totalAssetsBelow10M_EUR________V',
@@ -222,7 +212,6 @@ export class AnalizaZwolnienComponent {
       editable: true,
       cellEditor: 'agSelectCellEditor',
       cellEditorParams: { values: ['TAK', 'NIE'] },
-      cellRenderer: this.booleanCellRenderer,
     },
     {
       field: 'qualification__________________W',
@@ -230,7 +219,6 @@ export class AnalizaZwolnienComponent {
       editable: true,
       cellEditor: 'agSelectCellEditor',
       cellEditorParams: { values: ['TAK', 'NIE'] },
-      cellRenderer: this.booleanCellRenderer,
     },
     {
       field: 'totalRevenue2022_______________X',
