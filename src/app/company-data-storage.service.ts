@@ -1,12 +1,26 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, signal, inject, Signal, computed } from '@angular/core';
 import { Company } from './company';
+import { Transaction } from './transaction';
+import { TransactionDataStorageService } from './transaction-data-storage.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CompanyDataStorageService {
+  // Inject the data storage service
+  transactionDataStorageService: TransactionDataStorageService = inject(
+    TransactionDataStorageService
+  );
+
+  transactions: Signal<Transaction[]>;
   companies = signal<Company[]>([]);
   kursEURO = 4.6899;
+
+  constructor() {
+    this.transactions = computed(() =>
+      this.transactionDataStorageService.transactions()
+    );
+  }
 
   setCompanies(comapnies: Company[]) {
     this.companies.set(comapnies);
@@ -25,8 +39,44 @@ export class CompanyDataStorageService {
     );
   }
 
+  passChangesToTransactions(styledCompany: Company) {
+    // Update sellerName column styling
+    this.transactions()
+      .filter(
+        (txn) =>
+          txn.sellerName === styledCompany.entityName____________________A
+      )
+      .forEach((txn) => {
+        const updatedTransaction = { ...txn };
+
+        updatedTransaction.displayColor_seller = styledCompany.displayColor;
+        updatedTransaction.displayBold_seller = styledCompany.displayBold;
+
+        this.transactionDataStorageService.updateTransactions(
+          updatedTransaction
+        );
+      });
+
+    // Update buyerName column styling
+    this.transactions()
+      .filter(
+        (txn) => txn.buyerName === styledCompany.entityName____________________A
+      )
+      .forEach((txn) => {
+        const updatedTransaction = { ...txn };
+
+        updatedTransaction.displayColor_buyer = styledCompany.displayColor;
+        updatedTransaction.displayBold_buyer = styledCompany.displayBold;
+
+        this.transactionDataStorageService.updateTransactions(
+          updatedTransaction
+        );
+      });
+  }
+
   applyFontStyling(analizedCompany: Company) {
     const resultCompany = { ...analizedCompany };
+
     // Set color
     if (
       resultCompany.dctExemptionCapitalSource_____C === 'TAK' &&
@@ -34,16 +84,19 @@ export class CompanyDataStorageService {
         resultCompany.dctExemptionOtherSources______D
     ) {
       resultCompany.displayColor = '#4CAF50';
+      this.passChangesToTransactions(resultCompany);
     } else if (
       resultCompany.dctExemptionCapitalSource_____C === 'TAK' &&
       resultCompany.dctExemptionOtherSources______D === 'NIE'
     ) {
       resultCompany.displayColor = '#4682B4';
+      this.passChangesToTransactions(resultCompany);
     } else if (
       resultCompany.dctExemptionCapitalSource_____C === 'NIE' &&
       resultCompany.dctExemptionOtherSources______D === 'TAK'
     ) {
       resultCompany.displayColor = '#FF6d01';
+      this.passChangesToTransactions(resultCompany);
     } else {
       resultCompany.displayColor = 'none';
     }
@@ -51,6 +104,7 @@ export class CompanyDataStorageService {
     // Set boldness
     if (resultCompany.benchmarkExemptionSmallMicro__E === 'TAK') {
       resultCompany.displayBold = true;
+      this.passChangesToTransactions(resultCompany);
     } else {
       resultCompany.displayBold = false;
     }

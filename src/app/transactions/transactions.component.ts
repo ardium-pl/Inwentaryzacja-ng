@@ -59,11 +59,47 @@ export class TransactionsComponent {
       headerName: 'Nazwa sprzedawcy/pożyczkodawcy/emitenta',
       field: 'sellerName',
       editable: true,
+      cellStyle: (params) => {
+        const styles: any = {};
+
+        // Set text color if displayColor_seller is not 'none'
+        if (
+          params.data.displayColor_seller &&
+          params.data.displayColor_seller !== 'none'
+        ) {
+          styles.color = params.data.displayColor_seller;
+        }
+
+        // Set text to bold if displayBold_seller is true
+        if (params.data.displayBold_seller) {
+          styles.fontWeight = 'bold';
+        }
+
+        return styles;
+      },
     },
     {
       headerName: 'Nazwa odbiorcy/pożyczkobiorcy',
       field: 'buyerName',
       editable: true,
+      cellStyle: (params) => {
+        const styles: any = {};
+
+        // Set text color if displayColor_buyer is not 'none'
+        if (
+          params.data.displayColor_buyer &&
+          params.data.displayColor_buyer !== 'none'
+        ) {
+          styles.color = params.data.displayColor_buyer;
+        }
+
+        // Set text to bold if displayBold_buyer is true
+        if (params.data.displayBold_buyer) {
+          styles.fontWeight = 'bold';
+        }
+
+        return styles;
+      },
     },
     {
       headerName: 'Rodzaj transakcji',

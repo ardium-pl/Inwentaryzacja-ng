@@ -29,7 +29,14 @@ body {
 }
 
 .zwolnienia-grid-header {
-  background-color: rgb(223, 215, 191);
+  background-color: rgb(255, 248, 219);
+  color: var(--navy);
+  text-align: center;
+  overflow-wrap: break-word;
+}
+
+.zwolnienia-editable-column-header {
+  background-color: rgb(255, 199, 237);
   color: var(--navy);
   text-align: center;
   overflow-wrap: break-word;

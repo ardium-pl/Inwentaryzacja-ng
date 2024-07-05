@@ -187,6 +187,10 @@ export class InputPageComponent {
           benchmarkRequirement: record['Obowiązek benchmarku'] || '',
           tpr: record['TPR'] || '',
           selection: 'none',
+          displayColor_seller: 'none',
+          displayBold_seller: false,
+          displayColor_buyer: 'none',
+          displayBold_buyer: false,
         }));
 
         // Log the transactions for debugging
@@ -236,6 +240,11 @@ export class InputPageComponent {
         documentationRequirement: columns[14] || '',
         benchmarkRequirement: columns[15] || '',
         tpr: columns[16] || '',
+        selection: 'none',
+        displayColor_seller: 'none',
+        displayBold_seller: false,
+        displayColor_buyer: 'none',
+        displayBold_buyer: false,
       } as Transaction;
     });
 
@@ -276,6 +285,11 @@ export class InputPageComponent {
         documentationRequirement: columns[14] || '',
         benchmarkRequirement: columns[15] || '',
         tpr: columns[16] || '',
+        selection: 'none',
+        displayColor_seller: 'none',
+        displayBold_seller: false,
+        displayColor_buyer: 'none',
+        displayBold_buyer: false,
       } as Transaction;
     });
 
