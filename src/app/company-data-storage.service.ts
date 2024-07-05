@@ -39,6 +39,19 @@ export class CompanyDataStorageService {
     );
   }
 
+  renameCompany(oldName: string, newName: string) {
+    const companyToRename = this.companies().find(
+      (company) => company.entityName____________________A === oldName
+    );
+
+    const updatedCompany = {
+      ...companyToRename,
+      entityName____________________A: newName,
+    } as Company;
+
+    this.updateCompanies(updatedCompany);
+  }
+
   passChangesToTransactions(styledCompany: Company) {
     // Update sellerName column styling
     this.transactions()

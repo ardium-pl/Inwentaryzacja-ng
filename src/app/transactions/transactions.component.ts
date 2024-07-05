@@ -9,6 +9,7 @@ import {
 } from 'ag-grid-community'; // Column Definition Type Interface
 import { Transaction } from '../transaction';
 import { TransactionDataStorageService } from '../transaction-data-storage.service';
+import { CompanyDataStorageService } from '../company-data-storage.service';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-quartz.css';
 
@@ -30,6 +31,11 @@ export class TransactionsComponent {
   transactionDataStorageService: TransactionDataStorageService = inject(
     TransactionDataStorageService
   );
+  // Inject the company storage service
+  companyDataStorageService: CompanyDataStorageService = inject(
+    CompanyDataStorageService
+  );
+
   // GRID SETTINGS
   /**
    * Default column definitions for AG Grid.
@@ -260,6 +266,27 @@ export class TransactionsComponent {
   onCellValueChanged(event: CellValueChangedEvent) {
     // Get the changed row.
     const updatedTransaction: Transaction = event.data;
+
+    // Rename the company in the Analiza warunkow tab if any company
+    // involved in the transaction had its name changed
+    const oldTransaction: Transaction = this.transactionDataStorageService
+      .transactions()
+      .find(
+        (txn) => txn.transactionId === updatedTransaction.transactionId
+      ) as Transaction;
+
+    if (oldTransaction.sellerName !== updatedTransaction.sellerName) {
+      this.companyDataStorageService.renameCompany(
+        oldTransaction.sellerName,
+        updatedTransaction.sellerName
+      );
+    } else if (oldTransaction.buyerName !== updatedTransaction.buyerName) {
+      this.companyDataStorageService.renameCompany(
+        oldTransaction.buyerName,
+        updatedTransaction.buyerName
+      );
+    }
+
     // Update the rows limit
     const limit = this.transactionDataStorageService.limits.get(
       updatedTransaction.transactionType
