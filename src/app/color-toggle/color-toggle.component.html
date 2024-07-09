@@ -39,7 +39,6 @@
   <mat-menu #menu="matMenu" class="dropdown-menu">
     <button mat-menu-item *ngFor="let colorName of colorNames" (click)="selectColor(colorName)">
       <span class="color-swatch" [style.backgroundColor]="colorMap[colorName]"></span>
-      {{ colorName }}
     </button>
   </mat-menu>
 
