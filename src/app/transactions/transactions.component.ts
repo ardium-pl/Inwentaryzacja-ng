@@ -1,5 +1,11 @@
-import { Component, Input, Signal, inject, computed } from '@angular/core';
-import { AgGridAngular } from 'ag-grid-angular'; // Angular Data Grid Component
+import {
+  Component,
+  Input,
+  Signal,
+  inject,
+  computed,
+} from '@angular/core';
+import {AgGridAngular} from 'ag-grid-angular'; // Angular Data Grid Component
 import {
   ColDef,
   CellValueChangedEvent,
@@ -13,7 +19,7 @@ import { CompanyDataStorageService } from '../company-data-storage.service';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-quartz.css';
 
-// @ts-ignore
+
 /**
  * TransactionsComponent is a component that displays and manages transaction data in an AG Grid.
  * It allows for editing of transaction fields and updates the transaction data in the storage service.
@@ -247,7 +253,7 @@ export class TransactionsComponent {
         (transaction) =>
           transaction.selection !== 'none' &&
           transaction.homogeneousTransactionValue >
-            minSignificanceLimitMap.get(transaction.selection)!
+          minSignificanceLimitMap.get(transaction.selection)!
       );
     }
 
