@@ -1,3 +1,30 @@
+/**
+ * Represents the structure of a company's information.
+ *
+ * @interface Company
+ * @property {number} companyId - Unique identifier for the company.
+ * @property {string} entityName____________________A - The official name of the entity.
+ * @property {'TAK' | 'NIE'} dctExemptionAllSources________B - Indicates if the company is exempt from DCT (domestic country tax) for all sources.
+ * @property {'TAK' | 'NIE'} dctExemptionCapitalSource_____C - Indicates if the company is exempt from DCT for capital sources.
+ * @property {'TAK' | 'NIE'} dctExemptionOtherSources______D - Indicates if the company is exempt from DCT for other sources.
+ * @property {'TAK' | 'NIE'} benchmarkExemptionSmallMicro__E - Indicates if the company is exempt from benchmark obligations for being small/micro.
+ * @property {'TAK' | 'NIE'} masterFileObligation___________F - Indicates if the company has an obligation to maintain a master file.
+ * @property {'TAK' | 'NIE'} covidExemption_________________G - Indicates if the company is exempt from certain obligations due to COVID-19.
+ * @property {number} taxProfitLossCapitalSources2023_H - Tax profit or loss from capital sources in 2023.
+ * @property {number} taxProfitLossOtherSources2023__I - Tax profit or loss from other sources in 2023.
+ * @property {'TAK' | 'NIE'} pitCITExemption2023____________J - Indicates if the company had exemptions from PIT/CIT in 2023.
+ * @property {'TAK' | 'NIE'} consolidationReport____________K - Indicates if the company's report is subject to consolidation.
+ * @property {number} consolidatedRevenue2022________L - Consolidated revenue of the group in 2022.
+ * @property {number} averageEmployment2022__________M - Average employment in 2022.
+ * @property {number} netAnnualTurnover2022__________N - Net annual turnover from sales, products, services, and financial operations in 2022.
+ * @property {number} totalAssets2022________________O - Total assets in 2022.
+ * @property {'TAK' | 'NIE'} employmentBelow10______________P - Indicates if employment was below 10 people.
+ * @property {'TAK' | 'NIE'} turnoverBelow2M_EUR____________Q - Indicates if turnover was below 2 million EUR.
+ * @property {'TAK' | 'NIE'} totalAssetsBelow2M_EUR_________R - Indicates if total balance was below 2 million EUR.
+
+ **/
+
+
 export interface Company {
   companyId: number;
   entityName____________________A: string; // Nazwa podmiotu

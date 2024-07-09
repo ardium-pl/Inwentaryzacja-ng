@@ -1,6 +1,7 @@
 import {Component, inject, Output, EventEmitter} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {MdbDropdownModule} from "mdb-angular-ui-kit/dropdown";
+import {MatMenuModule} from '@angular/material/menu';
+import {MatButtonModule} from '@angular/material/button';
 import {TransactionDataStorageService} from '../transaction-data-storage.service';
 
 
@@ -12,7 +13,7 @@ import {TransactionDataStorageService} from '../transaction-data-storage.service
 @Component({
   selector: 'app-color-toggle',
   standalone: true,
-  imports: [CommonModule, MdbDropdownModule],
+  imports: [CommonModule, MatMenuModule, MatButtonModule],
   templateUrl: './color-toggle.component.html',
   styleUrls: ['./color-toggle.component.css'],
 })

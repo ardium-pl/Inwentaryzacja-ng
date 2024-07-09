@@ -1,5 +1,8 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ColorToggleComponent } from './color-toggle.component';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {ColorToggleComponent} from './color-toggle.component';
+import {MatMenuModule} from '@angular/material/menu';
+import {MatButtonModule} from '@angular/material/button';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 describe('ColorToggleComponent', () => {
   let component: ColorToggleComponent;
@@ -7,7 +10,7 @@ describe('ColorToggleComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ColorToggleComponent]
+      imports: [ColorToggleComponent, MatMenuModule, MatButtonModule, BrowserAnimationsModule]
     }).compileComponents();
 
     fixture = TestBed.createComponent(ColorToggleComponent);
@@ -26,6 +29,6 @@ describe('ColorToggleComponent', () => {
   it('should select a color when clicked', () => {
     const firstColor = component.colorNames[0];
     component.selectColor(firstColor);
-    expect(component.transactionDataStorageService.currentSelection).toBe(firstColor);
+    expect(component.transactionDataStorageService.currentSelection).toBe(component.colorMap[firstColor]);
   });
 });

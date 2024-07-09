@@ -1,11 +1,10 @@
-
-import { Component, inject } from '@angular/core';
-import { Router } from '@angular/router';
-import { TransactionDataStorageService } from '../transaction-data-storage.service';
-import { CompanyDataStorageService } from '../company-data-storage.service';
-import { Transaction } from '../transaction';
-import { Company } from '../company';
-import { parse } from 'csv-parse/browser/esm'; // Import parsera CSV
+import {Component, inject} from '@angular/core';
+import {Router} from '@angular/router';
+import {TransactionDataStorageService} from '../transaction-data-storage.service';
+import {CompanyDataStorageService} from '../company-data-storage.service';
+import {Transaction} from '../transaction';
+import {Company} from '../company';
+import {parse} from 'csv-parse/browser/esm'; // Import parsera CSV
 
 /**
  * InputPageComponent is a component that handles the input of transaction data.

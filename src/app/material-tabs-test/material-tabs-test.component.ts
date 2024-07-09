@@ -1,10 +1,10 @@
-import { Component, inject, Signal, computed } from '@angular/core';
-import { MatTabsModule } from '@angular/material/tabs';
-import { TabContentComponent } from '../tab-content/tab-content.component';
-import { TransactionsComponent } from '../transactions/transactions.component';
-import { Transaction } from '../transaction';
-import { TransactionDataStorageService } from '../transaction-data-storage.service';
-import { AnalizaZwolnienComponent } from '../analiza-zwolnien/analiza-zwolnien.component';
+import {Component, inject, Signal, computed} from '@angular/core';
+import {MatTabsModule} from '@angular/material/tabs';
+import {TabContentComponent} from '../tab-content/tab-content.component';
+import {TransactionsComponent} from '../transactions/transactions.component';
+import {Transaction} from '../transaction';
+import {TransactionDataStorageService} from '../transaction-data-storage.service';
+import {AnalizaZwolnienComponent} from '../analiza-zwolnien/analiza-zwolnien.component';
 
 /**
  * MaterialTabsTestComponent is a component that tests the functionality of Angular Material Tabs.

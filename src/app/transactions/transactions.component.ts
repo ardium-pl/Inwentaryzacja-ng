@@ -13,9 +13,9 @@ import {
   GridReadyEvent,
   RowStyle,
 } from 'ag-grid-community'; // Column Definition Type Interface
-import { Transaction } from '../transaction';
-import { TransactionDataStorageService } from '../transaction-data-storage.service';
-import { CompanyDataStorageService } from '../company-data-storage.service';
+import {Transaction} from '../transaction';
+import {TransactionDataStorageService} from '../transaction-data-storage.service';
+import {CompanyDataStorageService} from '../company-data-storage.service';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-quartz.css';
 
@@ -129,7 +129,7 @@ export class TransactionsComponent {
       field: 'netValue',
       editable: true,
     },
-    { headerName: 'Waluta', field: 'currency', editable: true },
+    {headerName: 'Waluta', field: 'currency', editable: true},
     {
       headerName: 'Data udzielenia pożyczki/gwarancji',
       field: 'loanDate',
@@ -171,7 +171,7 @@ export class TransactionsComponent {
       field: 'benchmarkRequirement',
       editable: true,
     },
-    { headerName: 'TPR', field: 'tpr', editable: true },
+    {headerName: 'TPR', field: 'tpr', editable: true},
   ];
 
   /**
@@ -200,7 +200,7 @@ export class TransactionsComponent {
       console.log('selectionMap:', Array.from(selectionMap.entries()));
       // Update homogeneousTransactionValue based on the selection group sums
       return transactions.map((transaction) => {
-        const updatedTransaction = { ...transaction };
+        const updatedTransaction = {...transaction};
         if (transaction.selection === 'none') {
           updatedTransaction.homogeneousTransactionValue = 0;
         } else {
@@ -376,7 +376,7 @@ export class TransactionsComponent {
 
   getRowStyle = (params: any): RowStyle | undefined => {
     if (params.data.selection !== 'none') {
-      return { backgroundColor: params.data.selection };
+      return {backgroundColor: params.data.selection};
     }
     return undefined;
   };
