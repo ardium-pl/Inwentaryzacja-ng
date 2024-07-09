@@ -13,13 +13,13 @@ import {
   GridReadyEvent,
   RowStyle,
 } from 'ag-grid-community'; // Column Definition Type Interface
-import {Transaction} from '../transaction';
-import {TransactionDataStorageService} from '../transaction-data-storage.service';
+import { Transaction } from '../transaction';
+import { TransactionDataStorageService } from '../transaction-data-storage.service';
+import { CompanyDataStorageService } from '../company-data-storage.service';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-quartz.css';
-import {ColorToggleComponent} from '../color-toggle/color-toggle.component';
 
-// @ts-ignore
+
 /**
  * TransactionsComponent is a component that displays and manages transaction data in an AG Grid.
  * It allows for editing of transaction fields and updates the transaction data in the storage service.
@@ -28,7 +28,7 @@ import {ColorToggleComponent} from '../color-toggle/color-toggle.component';
 @Component({
   selector: 'app-transactions',
   standalone: true,
-  imports: [AgGridAngular, ColorToggleComponent],
+  imports: [AgGridAngular],
   templateUrl: './transactions.component.html',
   styleUrl: './transactions.component.css',
 })
@@ -37,11 +37,16 @@ export class TransactionsComponent {
   transactionDataStorageService: TransactionDataStorageService = inject(
     TransactionDataStorageService
   );
+  // Inject the company storage service
+  companyDataStorageService: CompanyDataStorageService = inject(
+    CompanyDataStorageService
+  );
+
   // GRID SETTINGS
   /**
    * Default column definitions for AG Grid.
    */
-  public defaultColDef: ColDef = {
+  defaultColDef: ColDef = {
     wrapHeaderText: true,
     autoHeaderHeight: true,
     headerClass: 'grid-header',
@@ -66,11 +71,47 @@ export class TransactionsComponent {
       headerName: 'Nazwa sprzedawcy/pożyczkodawcy/emitenta',
       field: 'sellerName',
       editable: true,
+      cellStyle: (params) => {
+        const styles: any = {};
+
+        // Set text color if displayColor_seller is not 'none'
+        if (
+          params.data.displayColor_seller &&
+          params.data.displayColor_seller !== 'none'
+        ) {
+          styles.color = params.data.displayColor_seller;
+        }
+
+        // Set text to bold if displayBold_seller is true
+        if (params.data.displayBold_seller) {
+          styles.fontWeight = 'bold';
+        }
+
+        return styles;
+      },
     },
     {
       headerName: 'Nazwa odbiorcy/pożyczkobiorcy',
       field: 'buyerName',
       editable: true,
+      cellStyle: (params) => {
+        const styles: any = {};
+
+        // Set text color if displayColor_buyer is not 'none'
+        if (
+          params.data.displayColor_buyer &&
+          params.data.displayColor_buyer !== 'none'
+        ) {
+          styles.color = params.data.displayColor_buyer;
+        }
+
+        // Set text to bold if displayBold_buyer is true
+        if (params.data.displayBold_buyer) {
+          styles.fontWeight = 'bold';
+        }
+
+        return styles;
+      },
     },
     {
       headerName: 'Rodzaj transakcji',
@@ -88,7 +129,7 @@ export class TransactionsComponent {
       field: 'netValue',
       editable: true,
     },
-    {headerName: 'Waluta', field: 'currency', editable: true},
+    { headerName: 'Waluta', field: 'currency', editable: true },
     {
       headerName: 'Data udzielenia pożyczki/gwarancji',
       field: 'loanDate',
@@ -130,7 +171,7 @@ export class TransactionsComponent {
       field: 'benchmarkRequirement',
       editable: true,
     },
-    {headerName: 'TPR', field: 'tpr', editable: true},
+    { headerName: 'TPR', field: 'tpr', editable: true },
   ];
 
   /**
@@ -159,7 +200,7 @@ export class TransactionsComponent {
       console.log('selectionMap:', Array.from(selectionMap.entries()));
       // Update homogeneousTransactionValue based on the selection group sums
       return transactions.map((transaction) => {
-        const updatedTransaction = {...transaction};
+        const updatedTransaction = { ...transaction };
         if (transaction.selection === 'none') {
           updatedTransaction.homogeneousTransactionValue = 0;
         } else {
@@ -231,6 +272,27 @@ export class TransactionsComponent {
   onCellValueChanged(event: CellValueChangedEvent) {
     // Get the changed row.
     const updatedTransaction: Transaction = event.data;
+
+    // Rename the company in the Analiza warunkow tab if any company
+    // involved in the transaction had its name changed
+    const oldTransaction: Transaction = this.transactionDataStorageService
+      .transactions()
+      .find(
+        (txn) => txn.transactionId === updatedTransaction.transactionId
+      ) as Transaction;
+
+    if (oldTransaction.sellerName !== updatedTransaction.sellerName) {
+      this.companyDataStorageService.renameCompany(
+        oldTransaction.sellerName,
+        updatedTransaction.sellerName
+      );
+    } else if (oldTransaction.buyerName !== updatedTransaction.buyerName) {
+      this.companyDataStorageService.renameCompany(
+        oldTransaction.buyerName,
+        updatedTransaction.buyerName
+      );
+    }
+
     // Update the rows limit
     const limit = this.transactionDataStorageService.limits.get(
       updatedTransaction.transactionType
@@ -314,7 +376,7 @@ export class TransactionsComponent {
 
   getRowStyle = (params: any): RowStyle | undefined => {
     if (params.data.selection !== 'none') {
-      return {backgroundColor: params.data.selection};
+      return { backgroundColor: params.data.selection };
     }
     return undefined;
   };

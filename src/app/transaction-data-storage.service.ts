@@ -1,5 +1,5 @@
-import {Injectable, signal} from '@angular/core';
-import {Transaction} from './transaction';
+import { Injectable, signal } from '@angular/core';
+import { Transaction } from './transaction';
 
 /**
  * TransactionDataStorageService
@@ -52,17 +52,16 @@ export class TransactionDataStorageService {
 
   inna_limit: number = 2000000;
 
-
   clearAllSelections(): void {
-    const updatedTransactions = this.transactions().map(transaction => ({
+    const updatedTransactions = this.transactions().map((transaction) => ({
       ...transaction,
-      selection: 'none'
+      selection: 'none',
     }));
     this.updateAllTransactions(updatedTransactions);
     this.currentSelection = 'none';
   }
 
-// Dodajmy również metodę do aktualizacji wszystkich transakcji naraz
+  // Dodajmy również metodę do aktualizacji wszystkich transakcji naraz
   updateAllTransactions(transactions: Transaction[]): void {
     this.transactions.set(transactions);
   }

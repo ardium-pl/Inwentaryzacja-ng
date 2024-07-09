@@ -1,0 +1,8 @@
+<ag-grid-angular
+  class="ag-theme-quartz"
+  [rowData]="companies()"
+  [columnDefs]="columnDefs"
+  [defaultColDef]="defaultColDef"
+  (cellValueChanged)="onCellValueChanged($event)"
+>
+</ag-grid-angular>

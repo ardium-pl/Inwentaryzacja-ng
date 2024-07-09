@@ -7,6 +7,11 @@
   <mat-tab label="Obowiązki CT">
     <app-transactions [permanentTab]="permanentTabName2"></app-transactions>
   </mat-tab>
+
+  <mat-tab label="Analiza zwolnień">
+    <app-analiza-zwolnien></app-analiza-zwolnien>
+  </mat-tab>
+
   <!--
     The @for directive is used to loop over the uniqueCompanies() method.
     For each company, a new mat-tab is created.

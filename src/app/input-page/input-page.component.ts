@@ -1,8 +1,11 @@
-import {Component, inject} from '@angular/core';
-import {Router} from '@angular/router';
-import {TransactionDataStorageService} from '../transaction-data-storage.service';
-import {Transaction} from '../transaction';
-import {parse} from 'csv-parse/browser/esm'; // Import parsera CSV
+
+import { Component, inject } from '@angular/core';
+import { Router } from '@angular/router';
+import { TransactionDataStorageService } from '../transaction-data-storage.service';
+import { CompanyDataStorageService } from '../company-data-storage.service';
+import { Transaction } from '../transaction';
+import { Company } from '../company';
+import { parse } from 'csv-parse/browser/esm'; // Import parsera CSV
 
 /**
  * InputPageComponent is a component that handles the input of transaction data.
@@ -19,6 +22,11 @@ export class InputPageComponent {
   transactionDataStorageService: TransactionDataStorageService = inject(
     TransactionDataStorageService
   );
+
+  companyDataStorageService: CompanyDataStorageService = inject(
+    CompanyDataStorageService
+  );
+
   router: Router = inject(Router);
   transactions: Transaction[] = [];
   manualAnalysisRequired: boolean = false;
@@ -180,6 +188,10 @@ export class InputPageComponent {
           benchmarkRequirement: record['Obowiązek benchmarku'] || '',
           tpr: record['TPR'] || '',
           selection: 'none',
+          displayColor_seller: 'none',
+          displayBold_seller: false,
+          displayColor_buyer: 'none',
+          displayBold_buyer: false,
         }));
 
         // Log the transactions for debugging
@@ -229,6 +241,11 @@ export class InputPageComponent {
         documentationRequirement: columns[14] || '',
         benchmarkRequirement: columns[15] || '',
         tpr: columns[16] || '',
+        selection: 'none',
+        displayColor_seller: 'none',
+        displayBold_seller: false,
+        displayColor_buyer: 'none',
+        displayBold_buyer: false,
       } as Transaction;
     });
 
@@ -269,6 +286,11 @@ export class InputPageComponent {
         documentationRequirement: columns[14] || '',
         benchmarkRequirement: columns[15] || '',
         tpr: columns[16] || '',
+        selection: 'none',
+        displayColor_seller: 'none',
+        displayBold_seller: false,
+        displayColor_buyer: 'none',
+        displayBold_buyer: false,
       } as Transaction;
     });
 
@@ -278,10 +300,58 @@ export class InputPageComponent {
 
   /**
    * Analyzes the transaction data and stores it in the TransactionDataStorageService.
+   * Extracts the unique companies involved in the transactions and stores them in the CompanyDataStorageService
    */
   analyzeData(): void {
     if (this.transactions.length > 0) {
       console.log('Analyzing data...');
+
+      // Extract unique company names
+      const uniqueCompanyNames = new Set<string>();
+      this.transactions.forEach((transaction) => {
+        uniqueCompanyNames.add(transaction.sellerName);
+        uniqueCompanyNames.add(transaction.buyerName);
+      });
+
+      // Create Company objects for each unique company name
+      let companyId = 1;
+      let companies: Company[] = Array.from(uniqueCompanyNames).map(
+        (companyName) => ({
+          companyId: companyId++,
+          entityName____________________A: companyName,
+          dctExemptionAllSources________B: 'NIE',
+          dctExemptionCapitalSource_____C: 'NIE',
+          dctExemptionOtherSources______D: 'NIE',
+          benchmarkExemptionSmallMicro__E: 'NIE',
+          masterFileObligation___________F: 'NIE',
+          covidExemption_________________G: 'NIE',
+          taxProfitLossCapitalSources2023_H: 0,
+          taxProfitLossOtherSources2023__I: 0,
+          pitCITExemption2023____________J: 'NIE',
+          consolidationReport____________K: 'TAK',
+          consolidatedRevenue2022________L: 0,
+          averageEmployment2022__________M: 0,
+          netAnnualTurnover2022__________N: 0,
+          totalAssets2022________________O: 0,
+          employmentBelow10______________P: 'NIE',
+          turnoverBelow2M_EUR____________Q: 'NIE',
+          totalAssetsBelow2M_EUR_________R: 'NIE',
+          qualification__________________S: 'NIE',
+          employmentBelow50______________T: 'NIE',
+          turnoverBelow10M_EUR___________U: 'NIE',
+          totalAssetsBelow10M_EUR________V: 'NIE',
+          qualification__________________W: 'NIE',
+          totalRevenue2022_______________X: 0,
+          totalRevenue2023_______________Y: 0,
+          displayColor: 'none',
+          displayBold: false,
+        })
+      );
+
+      companies = companies.map((company) =>
+        this.companyDataStorageService.applyCellFormulas(company)
+      );
+      this.companyDataStorageService.setCompanies(companies);
       this.transactionDataStorageService.setTransactions(this.transactions);
       this.transactionDataStorageService.setAllTransactionLimits();
       this.router.navigate(['/material-tabs-test']);

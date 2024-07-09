@@ -17,6 +17,10 @@ export interface Transaction {
   benchmarkRequirement: string; // Obowiązek benchmarku
   tpr: string; // TPR
   selection: string;
+  displayColor_seller: string;
+  displayBold_seller: boolean;
+  displayColor_buyer: string;
+  displayBold_buyer: boolean;
 }
 
 /**
