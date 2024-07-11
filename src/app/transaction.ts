@@ -8,7 +8,7 @@ export interface Transaction {
   netValue: number; // Wartość netto świadczeń zrealizowanych w danym roku/Wartość najwyższego udostępnionego w roku podatkowym kapitału
   currency: string; // Waluta
   loanDate: string; // Data udzielenia pożyczki/gwarancji
-  interestRate: string; // Oprocentowanie (w przypadku transakcji finansowych)
+  interestRate: number; // Oprocentowanie (w przypadku transakcji finansowych)
   repaymentDate: string; // Data spłaty (w przypadku transakcji finansowych)
   significanceLimit: number; // Limit istotności [PLN]
   homogeneousTransactionValue: number; // Wartość transakcji kontrolowanej o charakterze jednorodnym [PLN]
@@ -21,6 +21,8 @@ export interface Transaction {
   displayBold_seller: boolean;
   displayColor_buyer: string;
   displayBold_buyer: boolean;
+
+  [property: string]: any;
 }
 
 /**

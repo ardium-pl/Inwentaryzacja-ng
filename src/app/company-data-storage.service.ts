@@ -1,7 +1,7 @@
-import { Injectable, signal, inject, Signal, computed } from '@angular/core';
-import { Company } from './company';
-import { Transaction } from './transaction';
-import { TransactionDataStorageService } from './transaction-data-storage.service';
+import {Injectable, signal, inject, Signal, computed} from '@angular/core';
+import {Company} from './company';
+import {Transaction} from './transaction';
+import {TransactionDataStorageService} from './transaction-data-storage.service';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +14,7 @@ export class CompanyDataStorageService {
 
   transactions: Signal<Transaction[]>;
   companies = signal<Company[]>([]);
-  kursEURO = 4.6899;
+  kursEURO = 4.25;
 
   constructor() {
     this.transactions = computed(() =>
@@ -28,7 +28,7 @@ export class CompanyDataStorageService {
 
   updateCompanies(updatedCompany: Company) {
     // Update the conditions based on cell formulas
-    let analizedCompany = this.applyCellFormulas(updatedCompany);
+    let analizedCompany = this.applyCellFormulas2(updatedCompany);
     // Update styling properties
     let styledCompany = this.applyFontStyling(analizedCompany);
     // Update the signal
@@ -39,19 +39,6 @@ export class CompanyDataStorageService {
     );
   }
 
-  renameCompany(oldName: string, newName: string) {
-    const companyToRename = this.companies().find(
-      (company) => company.entityName____________________A === oldName
-    );
-
-    const updatedCompany = {
-      ...companyToRename,
-      entityName____________________A: newName,
-    } as Company;
-
-    this.updateCompanies(updatedCompany);
-  }
-
   passChangesToTransactions(styledCompany: Company) {
     // Update sellerName column styling
     this.transactions()
@@ -60,7 +47,7 @@ export class CompanyDataStorageService {
           txn.sellerName === styledCompany.entityName____________________A
       )
       .forEach((txn) => {
-        const updatedTransaction = { ...txn };
+        const updatedTransaction = {...txn};
 
         updatedTransaction.displayColor_seller = styledCompany.displayColor;
         updatedTransaction.displayBold_seller = styledCompany.displayBold;
@@ -76,7 +63,7 @@ export class CompanyDataStorageService {
         (txn) => txn.buyerName === styledCompany.entityName____________________A
       )
       .forEach((txn) => {
-        const updatedTransaction = { ...txn };
+        const updatedTransaction = {...txn};
 
         updatedTransaction.displayColor_buyer = styledCompany.displayColor;
         updatedTransaction.displayBold_buyer = styledCompany.displayBold;
@@ -85,16 +72,34 @@ export class CompanyDataStorageService {
           updatedTransaction
         );
       });
+
+    // Update benchmarkRequirement
+    // TUTAJ BEDZIEMY UDPATE'OWAC POZOSTALE BOOLEAN KOLUMNY W TABELACH TRANSAKCJI
+    this.transactions()
+      .filter(
+        (txn) =>
+          txn.buyerName === styledCompany.entityName____________________A ||
+          txn.sellerName === styledCompany.entityName____________________A
+      )
+      .forEach((txn) => {
+        const updatedTransaction = {...txn};
+
+        updatedTransaction.benchmarkRequirement = styledCompany.benchmarkExemptionSmallMicro__E;
+
+        this.transactionDataStorageService.updateTransactions(
+          updatedTransaction
+        );
+      });
   }
 
   applyFontStyling(analizedCompany: Company) {
-    const resultCompany = { ...analizedCompany };
+    const resultCompany = {...analizedCompany};
 
     // Set color
     if (
       resultCompany.dctExemptionCapitalSource_____C === 'TAK' &&
       resultCompany.dctExemptionCapitalSource_____C ===
-        resultCompany.dctExemptionOtherSources______D
+      resultCompany.dctExemptionOtherSources______D
     ) {
       resultCompany.displayColor = '#4CAF50';
       this.passChangesToTransactions(resultCompany);
@@ -112,6 +117,7 @@ export class CompanyDataStorageService {
       this.passChangesToTransactions(resultCompany);
     } else {
       resultCompany.displayColor = 'none';
+      this.passChangesToTransactions(resultCompany);
     }
 
     // Set boldness
@@ -120,13 +126,39 @@ export class CompanyDataStorageService {
       this.passChangesToTransactions(resultCompany);
     } else {
       resultCompany.displayBold = false;
+      this.passChangesToTransactions(resultCompany);
+    }
+
+    return resultCompany;
+  }
+
+  // For testing purposes
+  applyCellFormulas2(inputCompany: Company): Company {
+    const resultCompany = {...inputCompany};
+
+    if (resultCompany.consolidationReport____________K === 'TAK') {
+      resultCompany.dctExemptionCapitalSource_____C = 'TAK';
+    } else {
+      resultCompany.dctExemptionCapitalSource_____C = 'NIE';
+    }
+
+    if (resultCompany.taxProfitLossOtherSources2023__I > 0) {
+      resultCompany.dctExemptionOtherSources______D = 'TAK';
+    } else {
+      resultCompany.dctExemptionOtherSources______D = 'NIE';
+    }
+
+    if (resultCompany.taxProfitLossCapitalSources2023_H > 0) {
+      resultCompany.benchmarkExemptionSmallMicro__E = 'TAK';
+    } else {
+      resultCompany.benchmarkExemptionSmallMicro__E = 'NIE';
     }
 
     return resultCompany;
   }
 
   applyCellFormulas(inputCompany: Company): Company {
-    const resultCompany = { ...inputCompany };
+    const resultCompany = {...inputCompany};
 
     // Apply formulas in the correct order
     resultCompany.taxProfitLossCapitalSources2023_H =
@@ -255,8 +287,8 @@ export class CompanyDataStorageService {
       !this.isEmpty(company.totalRevenue2022_______________X) &&
       !this.isEmpty(company.totalRevenue2023_______________Y) &&
       company.totalRevenue2022_______________X -
-        company.totalRevenue2023_______________Y >=
-        company.totalRevenue2022_______________X * 0.5
+      company.totalRevenue2023_______________Y >=
+      company.totalRevenue2022_______________X * 0.5
     ) {
       return 'TAK';
     } else if (

@@ -1,3 +1,6 @@
+.ag-theme-quartz {
+}
+
 /**
  * The :host pseudo-class selects the host element that the shadow DOM is attached to.
  * Here, it is used to set the height and width to 100% and to center its children both vertically and horizontally.

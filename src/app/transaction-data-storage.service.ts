@@ -1,5 +1,6 @@
-import { Injectable, signal } from '@angular/core';
-import { Transaction } from './transaction';
+import {Injectable, signal, inject} from '@angular/core';
+import {Transaction} from './transaction';
+import { DefaultValuesService } from './default-values.service';
 
 /**
  * TransactionDataStorageService
@@ -38,6 +39,8 @@ import { Transaction } from './transaction';
   providedIn: 'root',
 })
 export class TransactionDataStorageService {
+  defaultValues: DefaultValuesService = inject(DefaultValuesService);
+
   transactions = signal<Transaction[]>([]);
 
   currentSelection: string = 'none';
@@ -48,6 +51,7 @@ export class TransactionDataStorageService {
     ['Transakcja usługowa', 2000000.0],
     ['Transakcje "rajowe" finansowe', 2500000.0],
     ['Transakcje "rajowe" inne niż finansowe', 500000.0],
+    [this.defaultValues.noTransactionData, NaN],
   ]);
 
   inna_limit: number = 2000000;

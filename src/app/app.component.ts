@@ -1,8 +1,8 @@
-import {Component} from '@angular/core';
-import {RouterOutlet, RouterLink} from '@angular/router';
-import {NavbarComponent} from './navbar/navbar.component';
-import {HomeComponent} from './home/home.component';
-import {ColorToggleComponent} from './color-toggle/color-toggle.component';
+import { Component } from '@angular/core';
+import { RouterOutlet, RouterLink } from '@angular/router';
+import { NavbarComponent } from './navbar/navbar.component';
+import { HomeComponent } from './home/home.component';
+import { ColorToggleComponent } from './color-toggle/color-toggle.component';
 
 /**
  * @Component decorator to define AppComponent.

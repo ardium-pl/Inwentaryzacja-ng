@@ -24,7 +24,6 @@
 
  **/
 
-
 export interface Company {
   companyId: number;
   entityName____________________A: string; // Nazwa podmiotu
@@ -54,4 +53,6 @@ export interface Company {
   totalRevenue2023_______________Y: number; // Przychody razem 2023
   displayColor: string;
   displayBold: boolean;
+
+  [property: string]: any;
 }

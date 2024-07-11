@@ -1,10 +1,11 @@
-import {Component, inject, Signal, computed} from '@angular/core';
-import {MatTabsModule} from '@angular/material/tabs';
-import {TabContentComponent} from '../tab-content/tab-content.component';
-import {TransactionsComponent} from '../transactions/transactions.component';
-import {Transaction} from '../transaction';
-import {TransactionDataStorageService} from '../transaction-data-storage.service';
-import {AnalizaZwolnienComponent} from '../analiza-zwolnien/analiza-zwolnien.component';
+import { Component, inject, Signal, computed } from '@angular/core';
+import { MatTabsModule } from '@angular/material/tabs';
+import { TabContentComponent } from '../tab-content/tab-content.component';
+import { TransactionsComponent } from '../transactions/transactions.component';
+import { Transaction } from '../transaction';
+import { TransactionDataStorageService } from '../transaction-data-storage.service';
+import { DefaultValuesService } from '../default-values.service';
+import { AnalizaZwolnienComponent } from '../analiza-zwolnien/analiza-zwolnien.component';
 
 /**
  * MaterialTabsTestComponent is a component that tests the functionality of Angular Material Tabs.
@@ -35,6 +36,8 @@ export class MaterialTabsTestComponent {
     TransactionDataStorageService
   );
 
+  defaultValues: DefaultValuesService = inject(DefaultValuesService);
+
   // Initialize transactions
   /**
    * transactions is a Signal that tracks the transactions from the TransactionDataStorageService.
@@ -61,10 +64,10 @@ export class MaterialTabsTestComponent {
     const companies = new Set<string>();
 
     this.transactions().forEach((transaction) => {
-      if (transaction.sellerName) {
+      if (transaction.sellerName !== this.defaultValues.noData) {
         companies.add(transaction.sellerName);
       }
-      if (transaction.buyerName) {
+      if (transaction.buyerName !== this.defaultValues.noData) {
         companies.add(transaction.buyerName);
       }
     });

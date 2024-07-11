@@ -1,8 +1,8 @@
-import {Component, inject, Output, EventEmitter} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {MatMenuModule} from '@angular/material/menu';
-import {MatButtonModule} from '@angular/material/button';
-import {TransactionDataStorageService} from '../transaction-data-storage.service';
+import { Component, inject, Output, EventEmitter, HostListener } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatButtonModule } from '@angular/material/button';
+import { TransactionDataStorageService } from '../transaction-data-storage.service';
 
 
 /**
@@ -13,7 +13,7 @@ import {TransactionDataStorageService} from '../transaction-data-storage.service
 @Component({
   selector: 'app-color-toggle',
   standalone: true,
-  imports: [CommonModule, MatMenuModule, MatButtonModule],
+  imports: [CommonModule],
   templateUrl: './color-toggle.component.html',
   styleUrls: ['./color-toggle.component.css'],
 })
@@ -25,7 +25,8 @@ export class ColorToggleComponent {
     TransactionDataStorageService
   );
 
-  // Map of color names to hex codes
+  isColorMenuVisible = false;
+
   colorMap: { [colorName: string]: string } = {
     "Pink": "#F8BBD0",
     "Light Blue": "#B3E5FC",
@@ -48,15 +49,13 @@ export class ColorToggleComponent {
     return Object.keys(this.colorMap);
   }
 
-  // If needed, convert hex code to color name
-  getColorNameByHex(hexCode: string): string {
-    return Object.keys(this.colorMap).find(key => this.colorMap[key] === hexCode) || 'None selected';
+  toggleColorMenu(): void {
+    this.isColorMenuVisible = !this.isColorMenuVisible;
   }
 
-  /**
-   * Selects a color and updates the current selection in the `TransactionDataStorageService`.
-   * @param colorName The hex code of the color to be selected.
-   */
+  closeColorMenu(): void {
+    this.isColorMenuVisible = false;
+  }
 
   selectColor(colorName: string): void {
     const hexCode = this.colorMap[colorName];
@@ -73,13 +72,11 @@ export class ColorToggleComponent {
     this.clearColors.emit();
   }
 
-  /**
-   * Toggles the visibility of the dropdown menu.
-   * This method selects the dropdown menu element by its class name ('.dropdown-menu')
-   * and toggles the 'show' class to either show or hide the dropdown content.
-   */
-  toggleDropdown(): void {
-    const dropdown = document.querySelector('.dropdown-menu');
-    dropdown?.classList.toggle('show');
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    const colorPicker = (event.target as HTMLElement).closest('.color-picker');
+    if (!colorPicker) {
+      this.closeColorMenu();
+    }
   }
 }

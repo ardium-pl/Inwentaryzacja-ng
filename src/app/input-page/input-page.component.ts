@@ -2,6 +2,7 @@ import {Component, inject} from '@angular/core';
 import {Router} from '@angular/router';
 import {TransactionDataStorageService} from '../transaction-data-storage.service';
 import {CompanyDataStorageService} from '../company-data-storage.service';
+import {DefaultValuesService} from '../default-values.service';
 import {Transaction} from '../transaction';
 import {Company} from '../company';
 import {parse} from 'csv-parse/browser/esm'; // Import parsera CSV
@@ -26,6 +27,8 @@ export class InputPageComponent {
     CompanyDataStorageService
   );
 
+  defaultValues: DefaultValuesService = inject(DefaultValuesService);
+
   router: Router = inject(Router);
   transactions: Transaction[] = [];
   manualAnalysisRequired: boolean = false;
@@ -35,7 +38,7 @@ export class InputPageComponent {
    * @param {ClipboardEvent} event - The paste event.
    */
   onPaste(event: ClipboardEvent): void {
-    const clipboardData = event.clipboardData;
+    const {clipboardData} = event;
     const pastedText = clipboardData?.getData('text') || '';
     this.processDataPasted(pastedText);
     this.manualAnalysisRequired = true;
@@ -140,8 +143,7 @@ export class InputPageComponent {
         cast: (value, context) => {
           if (
             context.column ===
-            'Wartość netto świadczeń zrealizowanych w danym roku/Wartość najwyższego udostępnionego w roku podatkowym kapitału' &&
-            typeof value === 'string'
+            'Wartość netto świadczeń zrealizowanych w danym roku/Wartość najwyższego udostępnionego w roku podatkowym kapitału'
           ) {
             return parseFloat(value.replace(/\s/g, '').replace(',', '.'));
           }
@@ -159,33 +161,47 @@ export class InputPageComponent {
 
         this.transactions = filteredRecords.map((record, index) => ({
           transactionId: `${index + 1}`, // Adjust index to start from 1 after filtering
-          year: record['Rok którego ma dotyczyć dokumentacja'] || '',
-          sellerName: record['Nazwa sprzedawcy/pożyczkodawcy/emitenta'] || '',
-          buyerName: record['Nazwa odbiorcy/pożyczkobiorcy'] || '',
-          transactionType: record['Rodzaj transakcji'] || '',
-          transactionSubject: record['Nazwa/przedmiot transakcji'] || '',
-          netValue: parseFloat(
-            record[
-              'Wartość netto świadczeń zrealizowanych w danym roku/Wartość najwyższego udostępnionego w roku podatkowym kapitału'
-              ]
-          ),
-          currency: record['Waluta'] || '',
-          loanDate: record['Data udzielenia pożyczki/gwarancji'] || '',
-          interestRate:
-            record['Oprocentowanie (w przypadku transakcji finansowych)'] || '',
-          repaymentDate:
-            record['Data spłaty (w przypadku transakcji finansowych)'] || '',
-          significanceLimit: parseFloat(record['Limit istotności [PLN]']) || 0,
-          homogeneousTransactionValue:
+          year:
+            record['Rok którego ma dotyczyć dokumentacja'] ||
+            this.defaultValues.noData,
+          sellerName:
+            record['Nazwa sprzedawcy/pożyczkodawcy/emitenta'] ||
+            this.defaultValues.noData,
+          buyerName:
+            record['Nazwa odbiorcy/pożyczkobiorcy'] ||
+            this.defaultValues.noData,
+          transactionType:
+            record['Rodzaj transakcji'] || this.defaultValues.noTransactionData,
+          transactionSubject:
+            record['Nazwa/przedmiot transakcji'] || this.defaultValues.noData,
+          netValue:
             parseFloat(
               record[
-                'Wartość transakcji kontrolowanej o charakterze jednorodnym [PLN]'
+                'Wartość netto świadczeń zrealizowanych w danym roku/Wartość najwyższego udostępnionego w roku podatkowym kapitału'
                 ]
-            ) || 0,
-          taxExemption: record['Zwolnienie art. 11n CIT'] || '',
-          documentationRequirement: record['Obowiązek dokumentacji'] || '',
-          benchmarkRequirement: record['Obowiązek benchmarku'] || '',
-          tpr: record['TPR'] || '',
+            ) || this.defaultValues.noDataNumeric,
+          currency: record['Waluta'] || this.defaultValues.noData,
+          loanDate:
+            record['Data udzielenia pożyczki/gwarancji'] ||
+            this.defaultValues.noData,
+          interestRate:
+            Number(record['Oprocentowanie (w przypadku transakcji finansowych)']) ||
+            this.defaultValues.noDataNumeric,
+          repaymentDate:
+            record['Data spłaty (w przypadku transakcji finansowych)'] ||
+            this.defaultValues.noData,
+          significanceLimit: 0,
+          homogeneousTransactionValue:
+          // Defaultowo to samo co w kolumnie "netValue"
+            parseFloat(
+              record[
+                'Wartość netto świadczeń zrealizowanych w danym roku/Wartość najwyższego udostępnionego w roku podatkowym kapitału'
+                ]
+            ) || this.defaultValues.noDataNumeric,
+          taxExemption: record['Zwolnienie art. 11n CIT'] || 'NIE',
+          documentationRequirement: record['Obowiązek dokumentacji'] || 'NIE',
+          benchmarkRequirement: record['Obowiązek benchmarku'] || 'NIE',
+          tpr: record['TPR'] || 'NIE',
           selection: 'none',
           displayColor_seller: 'none',
           displayBold_seller: false,
@@ -194,7 +210,7 @@ export class InputPageComponent {
         }));
 
         // Log the transactions for debugging
-        console.log(this.transactions);
+        // console.log(this.transactions);
 
         if (autoAnalyze) {
           this.analyzeData();
@@ -232,7 +248,7 @@ export class InputPageComponent {
         netValue: parseValue(columns[6]),
         currency: columns[7] || '',
         loanDate: columns[8] || '',
-        interestRate: columns[9] || '',
+        interestRate: columns[9] || 0,
         repaymentDate: columns[10] || '',
         significanceLimit: parseValue(columns[11]),
         homogeneousTransactionValue: parseValue(columns[12]),
@@ -248,7 +264,7 @@ export class InputPageComponent {
       } as Transaction;
     });
 
-    console.log('Processed Transactions:', this.transactions);
+    // console.log('Processed Transactions:', this.transactions);
   }
 
   /**
@@ -277,7 +293,7 @@ export class InputPageComponent {
         netValue: Number(columns[6]),
         currency: columns[7] || '',
         loanDate: columns[8] || '',
-        interestRate: columns[9] || '',
+        interestRate: columns[9] || 0,
         repaymentDate: columns[10] || '',
         significanceLimit: Number(columns[11]) || 0,
         homogeneousTransactionValue: Number(columns[12]) || 0,
@@ -294,7 +310,7 @@ export class InputPageComponent {
     });
 
     // Log the transactions for debugging
-    console.log(this.transactions);
+    // console.log(this.transactions);
   }
 
   /**
@@ -303,13 +319,17 @@ export class InputPageComponent {
    */
   analyzeData(): void {
     if (this.transactions.length > 0) {
-      console.log('Analyzing data...');
+      // console.log('Analyzing data...');
 
-      // Extract unique company names
+      // Extract unique company names (if provided)
       const uniqueCompanyNames = new Set<string>();
       this.transactions.forEach((transaction) => {
-        uniqueCompanyNames.add(transaction.sellerName);
-        uniqueCompanyNames.add(transaction.buyerName);
+        if (transaction.sellerName !== this.defaultValues.noData) {
+          uniqueCompanyNames.add(transaction.sellerName);
+        }
+        if (transaction.buyerName !== this.defaultValues.noData) {
+          uniqueCompanyNames.add(transaction.buyerName);
+        }
       });
 
       // Create Company objects for each unique company name
@@ -327,7 +347,7 @@ export class InputPageComponent {
           taxProfitLossCapitalSources2023_H: 0,
           taxProfitLossOtherSources2023__I: 0,
           pitCITExemption2023____________J: 'NIE',
-          consolidationReport____________K: 'TAK',
+          consolidationReport____________K: 'NIE',
           consolidatedRevenue2022________L: 0,
           averageEmployment2022__________M: 0,
           netAnnualTurnover2022__________N: 0,
@@ -355,7 +375,7 @@ export class InputPageComponent {
       this.transactionDataStorageService.setAllTransactionLimits();
       this.router.navigate(['/material-tabs-test']);
     } else {
-      console.log('No data to analyze');
+      // console.log('No data to analyze');
     }
   }
 

@@ -2,155 +2,61 @@
  * Styles for the color picker component, including the color options and the clear button.
  */
 
-/*!* Container for color options, ensuring they are displayed in a row, centered, with spacing *!*/
-/*.color-picker {*/
-/*  display: flex;*/
-/*  gap: 10px;*/
-/*  align-items: center;*/
-/*  justify-content: center;*/
-/*}*/
-
-/*!* Base button styling, including padding, border, font size, cursor, and transition effects *!*/
-/*.btn {*/
-/*  padding: 6px 12px;*/
-/*  border: 1px solid #ced4da;*/
-/*  border-radius: 4px;*/
-/*  font-size: 14px;*/
-/*  cursor: pointer;*/
-/*  transition: background-color 0.3s, transform 0.2s;*/
-/*}*/
-
-/*!* Light variant of the button, with specific background and text color *!*/
-/*.btn-light {*/
-/*  background-color: #f8f9fa;*/
-/*  color: #212529;*/
-/*}*/
-
-/*!* Hover state for the light button, changing background color and applying a blur effect *!*/
-/*.btn-light:hover {*/
-/*  background-color: #e2e6ea;*/
-/*  backdrop-filter: blur(5px);*/
-/*}*/
-
-/*!* Small button variant, adjusting padding and font size *!*/
-/*.btn-sm {*/
-/*  padding: 4px 8px;*/
-/*  font-size: 12px;*/
-/*}*/
-
-/*!* Style for color swatches, displayed inline with rounded borders *!*/
-/*.color-swatch {*/
-/*  display: inline-block;*/
-/*  width: 20px;*/
-/*  height: 20px;*/
-/*  margin-right: 1px;*/
-/*  border-radius: 50%;*/
-/*  border: 1px solid #ddd;*/
-/*  vertical-align: middle;*/
-/*}*/
-
-/*!* Container for a color button, ensuring content is centered *!*/
-/*.color-button {*/
-/*  display: flex;*/
-/*  align-items: center;*/
-/*}*/
-
-/*!* Dropdown item styling, including display, alignment, cursor, and padding *!*/
-/*.dropdown-item {*/
-/*  display: flex;*/
-/*  align-items: center;*/
-/*  cursor: pointer;*/
-/*  padding: 5px 10px;*/
-/*}*/
-
-/*!* Hover state for dropdown items, changing the background color *!*/
-/*.dropdown-item:hover {*/
-/*  background-color: #f8f9fa;*/
-/*}*/
-
-/*!* Dropdown menu styling, applying flex display, wrapping, centering, and list styling *!*/
-/*.dropdown-menu {*/
-/*  display: flex;*/
-/*  flex-wrap: wrap;*/
-/*  min-width: auto;*/
-/*  justify-content: center;*/
-/*  padding: 4px;*/
-/*  list-style-type: none; !* Remove default list styling *!*/
-/*}*/
-
-/*!* Adjusts padding for dropdown items within the dropdown menu *!*/
-/*.dropdown-menu .dropdown-item {*/
-/*  padding: 5px;*/
-/*}*/
-
-/*!* Styles for the trash button, including size, border radius, font size, and alignment *!*/
-/*.trash-btn {*/
-/*  display: flex;*/
-/*  align-items: center;*/
-/*  justify-content: center;*/
-/*  width: 40px;*/
-/*  height: 40px;*/
-/*  border-radius: 50%;*/
-/*  font-size: 16px;*/
-/*  line-height: 1;*/
-/*}*/
 
 .color-picker {
+  position: relative;
   display: flex;
   gap: 10px;
   align-items: center;
-  justify-content: center;
-}
-
-.btn {
-  padding: 6px 12px;
-  border: 1px solid #ced4da;
-  border-radius: 4px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: background-color 0.3s, transform 0.2s;
-}
-
-.btn-light {
-  background-color: #f8f9fa;
-  color: #212529;
-}
-
-.btn-light:hover {
-  background-color: #e2e6ea;
-  backdrop-filter: blur(5px);
-}
-
-.btn-sm {
-  padding: 4px 8px;
-  font-size: 12px;
-}
-
-.color-swatch {
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  margin-right: 1px;
-  border-radius: 50%;
-  border: 1px solid #ddd;
-  vertical-align: middle;
 }
 
 .color-button {
   display: flex;
   align-items: center;
+  padding: 6px 12px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  background-color: #f8f9fa;
+  cursor: pointer;
 }
 
-.mat-menu-content {
-  display: flex;
-  flex-wrap: wrap;
-  max-width: 200px;
+.color-menu {
+  position: absolute;
+  bottom: 100%; /* Zmienione z top na bottom dla efektu drop-up */
+  left: 0;
+  z-index: 1000;
+  display: none;
+  background-color: #fff;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* Cień zmieniony dla efektu drop-up */
 }
 
-.mat-menu-item {
-  width: 50%;
+.color-menu.show {
+  display: block;
+}
+
+.color-options-container {
   display: flex;
-  align-items: center;
+  flex-wrap: nowrap;
+  padding: 10px;
+  overflow-x: auto;
+}
+
+.color-option {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0 5px;
+  cursor: pointer;
+}
+
+.color-swatch {
+  display: block;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  border: 1px solid #ddd;
 }
 
 .trash-btn {
@@ -162,4 +68,7 @@
   border-radius: 50%;
   font-size: 16px;
   line-height: 1;
+  background-color: #f8f9fa;
+  border: 1px solid #ced4da;
+  cursor: pointer;
 }

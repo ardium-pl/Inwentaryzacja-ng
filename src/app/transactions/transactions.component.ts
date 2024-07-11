@@ -1,11 +1,5 @@
-import {
-  Component,
-  Input,
-  Signal,
-  inject,
-  computed,
-} from '@angular/core';
-import {AgGridAngular} from 'ag-grid-angular'; // Angular Data Grid Component
+import { Component, Input, Signal, inject, computed } from '@angular/core';
+import { AgGridAngular } from 'ag-grid-angular'; // Angular Data Grid Component
 import {
   ColDef,
   CellValueChangedEvent,
@@ -13,11 +7,13 @@ import {
   GridReadyEvent,
   RowStyle,
 } from 'ag-grid-community'; // Column Definition Type Interface
-import {Transaction} from '../transaction';
-import {TransactionDataStorageService} from '../transaction-data-storage.service';
-import {CompanyDataStorageService} from '../company-data-storage.service';
+import { Transaction } from '../transaction';
+import { TransactionDataStorageService } from '../transaction-data-storage.service';
+import { DefaultValuesService } from '../default-values.service';
+import { CompanyDataStorageService } from '../company-data-storage.service';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-quartz.css';
+import { ColorToggleComponent } from '../color-toggle/color-toggle.component';
 
 
 /**
@@ -28,29 +24,65 @@ import 'ag-grid-community/styles/ag-theme-quartz.css';
 @Component({
   selector: 'app-transactions',
   standalone: true,
-  imports: [AgGridAngular],
+  imports: [AgGridAngular, ColorToggleComponent],
   templateUrl: './transactions.component.html',
   styleUrl: './transactions.component.css',
 })
 export class TransactionsComponent {
-  // Inject the data storage service
   transactionDataStorageService: TransactionDataStorageService = inject(
     TransactionDataStorageService
   );
-  // Inject the company storage service
+
   companyDataStorageService: CompanyDataStorageService = inject(
     CompanyDataStorageService
   );
 
+  defaultValues: DefaultValuesService = inject(DefaultValuesService);
+
   // GRID SETTINGS
-  /**
-   * Default column definitions for AG Grid.
-   */
+
+  // Default column definitions - global
   defaultColDef: ColDef = {
     wrapHeaderText: true,
     autoHeaderHeight: true,
     headerClass: 'grid-header',
     width: 250,
+  };
+
+  // Default column definitions for text columns
+  defaultTextColDef: ColDef = {
+    cellStyle: (params: any) => {
+      const styles: any = {};
+
+      if (params.value === this.defaultValues.noData) {
+        styles.color = 'red';
+      }
+
+      if (params.value === 'TAK') {
+        styles.backgroundColor = 'lightgreen';
+        styles.color = 'darkgreen';
+        styles.textAlign = 'center';
+      } else if (params.value === 'NIE') {
+        styles.backgroundColor = 'lightcoral';
+        styles.color = 'darkred';
+        styles.textAlign = 'center';
+      }
+
+      return styles;
+    },
+  };
+
+  // Default column definitions for numeric columns
+  defaultNumericColDef: ColDef = {
+    cellStyle: (params: any) => {
+      if (isNaN(params.value)) {
+        return { color: 'red' };
+      } else {
+        return undefined;
+      }
+    },
+    cellRenderer: (params: any) =>
+      isNaN(params.value) ? this.defaultValues.noData : params.value,
   };
 
   /**
@@ -60,25 +92,27 @@ export class TransactionsComponent {
     {
       headerName: 'ID Transakcji',
       field: 'transactionId',
-      editable: true,
+      editable: false,
+      cellDataType: 'number',
+      ...this.defaultNumericColDef,
     },
     {
       headerName: 'Rok którego ma dotyczyć dokumentacja',
       field: 'year',
-      editable: true,
+      editable: false,
+      cellDataType: 'text',
+      ...this.defaultTextColDef,
     },
     {
       headerName: 'Nazwa sprzedawcy/pożyczkodawcy/emitenta',
       field: 'sellerName',
-      editable: true,
+      editable: false,
+      cellDataType: 'text',
       cellStyle: (params) => {
         const styles: any = {};
 
         // Set text color if displayColor_seller is not 'none'
-        if (
-          params.data.displayColor_seller &&
-          params.data.displayColor_seller !== 'none'
-        ) {
+        if (params.data.displayColor_seller !== 'none') {
           styles.color = params.data.displayColor_seller;
         }
 
@@ -87,27 +121,33 @@ export class TransactionsComponent {
           styles.fontWeight = 'bold';
         }
 
+        if (params.value === this.defaultValues.noData) {
+          return { color: 'red' };
+        }
+
         return styles;
       },
     },
     {
       headerName: 'Nazwa odbiorcy/pożyczkobiorcy',
       field: 'buyerName',
-      editable: true,
+      editable: false,
+      cellDataType: 'text',
       cellStyle: (params) => {
         const styles: any = {};
 
         // Set text color if displayColor_buyer is not 'none'
-        if (
-          params.data.displayColor_buyer &&
-          params.data.displayColor_buyer !== 'none'
-        ) {
+        if (params.data.displayColor_buyer !== 'none') {
           styles.color = params.data.displayColor_buyer;
         }
 
         // Set text to bold if displayBold_buyer is true
         if (params.data.displayBold_buyer) {
           styles.fontWeight = 'bold';
+        }
+
+        if (params.value === this.defaultValues.noData) {
+          return { color: 'red' };
         }
 
         return styles;
@@ -117,61 +157,122 @@ export class TransactionsComponent {
       headerName: 'Rodzaj transakcji',
       field: 'transactionType',
       editable: true,
+      cellDataType: 'text',
+      cellEditor: 'agSelectCellEditor',
+      cellEditorParams: {
+        values: [
+          'Transakcja towarowa',
+          'Transakcja finansowa',
+          'Transakcja usługowa',
+          'Transakcje "rajowe" finansowe',
+          'Transakcje "rajowe" inne niż finansowe',
+        ],
+      },
+      cellStyle: (params: any) => {
+        if (params.value === this.defaultValues.noTransactionData) {
+          return { color: 'red', fontWeight: 'bold' };
+        } else {
+          return undefined;
+        }
+      },
     },
     {
       headerName: 'Nazwa/przedmiot transakcji',
       field: 'transactionSubject',
-      editable: true,
+      editable: false,
+      cellDataType: 'text',
+      ...this.defaultTextColDef,
     },
     {
       headerName:
         'Wartość netto świadczeń zrealizowanych w danym roku/Wartość najwyższego udostępnionego w roku podatkowym kapitału',
       field: 'netValue',
       editable: true,
+      cellDataType: 'number',
+      ...this.defaultNumericColDef,
     },
-    {headerName: 'Waluta', field: 'currency', editable: true},
+    {
+      headerName: 'Waluta',
+      field: 'currency',
+      editable: false,
+      cellDataType: 'text',
+      ...this.defaultTextColDef,
+    },
     {
       headerName: 'Data udzielenia pożyczki/gwarancji',
       field: 'loanDate',
-      editable: true,
+      editable: false,
+      cellDataType: 'text',
+      ...this.defaultTextColDef,
     },
     {
       headerName: 'Oprocentowanie (w przypadku transakcji finansowych)',
       field: 'interestRate',
       editable: true,
+      cellDataType: 'number',
+      ...this.defaultNumericColDef,
     },
     {
       headerName: 'Data spłaty (w przypadku transakcji finansowych)',
       field: 'repaymentDate',
-      editable: true,
+      editable: false,
+      cellDataType: 'text',
+      ...this.defaultTextColDef,
     },
     {
       headerName: 'Limit istotności [PLN]',
       field: 'significanceLimit',
-      editable: true,
+      editable: false,
+      cellDataType: 'number',
+      // ...this.defaultNumericColDef,
+      cellStyle: (params: any) => {
+        if (isNaN(params.value)) {
+          return { color: 'red', fontWeight: 'bold' };
+        } else {
+          return undefined;
+        }
+      },
+      cellRenderer: (params: any) =>
+        isNaN(params.value)
+          ? this.defaultValues.noTransactionData
+          : params.value,
     },
     {
       headerName:
         'Wartość transakcji kontrolowanej o charakterze jednorodnym [PLN]',
       field: 'homogeneousTransactionValue',
-      editable: true,
+      editable: false,
+      cellDataType: 'number',
+      ...this.defaultNumericColDef,
     },
     {
       headerName: 'Zwolnienie art. 11n CIT',
       field: 'taxExemption',
-      editable: true,
+      editable: false, // DOPYTAĆ - Dodać inf na podstawie Analizy Zwolnień
+      cellDataType: 'text',
+      ...this.defaultTextColDef,
     },
     {
       headerName: 'Obowiązek dokumentacji',
       field: 'documentationRequirement',
-      editable: true,
+      editable: false, // DOPYTAĆ - Dodać inf na podstawie Analizy Zwolnień
+      cellDataType: 'text',
+      ...this.defaultTextColDef,
     },
     {
       headerName: 'Obowiązek benchmarku',
       field: 'benchmarkRequirement',
-      editable: true,
+      editable: false, // Dodać inf na podstawie Analizy Zwolnień
+      cellDataType: 'text',
+      ...this.defaultTextColDef,
     },
-    {headerName: 'TPR', field: 'tpr', editable: true},
+    {
+      headerName: 'TPR',
+      field: 'tpr',
+      editable: false, // DOPYTAĆ - Dodać inf na podstawie Analizy Zwolnień
+      cellDataType: 'text',
+      ...this.defaultTextColDef,
+    },
   ];
 
   /**
@@ -197,16 +298,25 @@ export class TransactionsComponent {
         }
       });
 
-      console.log('selectionMap:', Array.from(selectionMap.entries()));
       // Update homogeneousTransactionValue based on the selection group sums
       return transactions.map((transaction) => {
-        const updatedTransaction = {...transaction};
-        if (transaction.selection === 'none') {
-          updatedTransaction.homogeneousTransactionValue = 0;
-        } else {
-          updatedTransaction.homogeneousTransactionValue =
-            selectionMap.get(transaction.selection) || 0;
+        const updatedTransaction = { ...transaction };
+
+        // If transaction.selection !== 'none' (if transaction is marked with color)
+        // set transaction.homogeneousTransactionValue to be the sum
+        if (transaction.selection !== 'none') {
+          updatedTransaction.homogeneousTransactionValue = selectionMap.get(
+            transaction.selection
+          ) as number;
         }
+
+        // If transaction.selection === 'none' set transaction.homogeneousTransactionValue
+        // to transaction.netValue
+        else {
+          updatedTransaction.homogeneousTransactionValue =
+            updatedTransaction.netValue;
+        }
+
         return updatedTransaction;
       });
     });
@@ -253,7 +363,7 @@ export class TransactionsComponent {
         (transaction) =>
           transaction.selection !== 'none' &&
           transaction.homogeneousTransactionValue >
-          minSignificanceLimitMap.get(transaction.selection)!
+            minSignificanceLimitMap.get(transaction.selection)!
       );
     }
 
@@ -273,24 +383,13 @@ export class TransactionsComponent {
     // Get the changed row.
     const updatedTransaction: Transaction = event.data;
 
-    // Rename the company in the Analiza warunkow tab if any company
-    // involved in the transaction had its name changed
-    const oldTransaction: Transaction = this.transactionDataStorageService
-      .transactions()
-      .find(
-        (txn) => txn.transactionId === updatedTransaction.transactionId
-      ) as Transaction;
-
-    if (oldTransaction.sellerName !== updatedTransaction.sellerName) {
-      this.companyDataStorageService.renameCompany(
-        oldTransaction.sellerName,
-        updatedTransaction.sellerName
-      );
-    } else if (oldTransaction.buyerName !== updatedTransaction.buyerName) {
-      this.companyDataStorageService.renameCompany(
-        oldTransaction.buyerName,
-        updatedTransaction.buyerName
-      );
+    // In case user deleted all cell content - assign a default value
+    // Currently only the numeric columns can be set to 'null' by clearing the cell content
+    const transactionProperties: string[] = Object.keys(updatedTransaction);
+    for (let property of transactionProperties) {
+      if (updatedTransaction[property] === null) {
+        updatedTransaction[property] = this.defaultValues.noContentAfterEdit;
+      }
     }
 
     // Update the rows limit
@@ -301,10 +400,7 @@ export class TransactionsComponent {
       limit !== undefined
         ? limit
         : this.transactionDataStorageService.inna_limit;
-    // Reset homogeneousTransactionValue
-    updatedTransaction.homogeneousTransactionValue = 0;
 
-    console.log(updatedTransaction);
     // Update the transactions data stored in a signal wthin a service.
     this.transactionDataStorageService.updateTransactions(updatedTransaction);
   }
@@ -323,42 +419,10 @@ export class TransactionsComponent {
     this.gridApi = event.api;
   }
 
-  // onSelectionChanged() {
-  //   console.log('Selection changed!');
-  //   const selectedRow: Transaction = this.gridApi.getSelectedRows()[0];
-
-  //   // Display only
-  //   // this.selectedRowDisplay = selectedRow;
-  //   // Display only
-
-  //   // Update row background color
-  //   if (this.shouldRun) {
-  //     if (
-  //       selectedRow.selection ===
-  //       this.transactionDataStorageService.currentSelection
-  //     ) {
-  //       selectedRow.selection = 'none';
-  //     } else {
-  //       selectedRow.selection =
-  //         this.transactionDataStorageService.currentSelection;
-  //     }
-  //     this.shouldRun = false;
-  //     this.transactionDataStorageService.updateTransactions(selectedRow);
-  //   }
-  //   // Change flag
-  //   else {
-  //     this.shouldRun = true;
-  //   }
-  // }
-
   onCellClicked(event: any) {
-    // Apply selection only when Ctrl key is pressed
+    // Apply selection only when Shift key is pressed
     if (event.event.shiftKey) {
       const selectedRow: Transaction = event.data;
-
-      // Display only
-      this.selectedRowDisplay = selectedRow;
-      // Display only
 
       // Toggle selection
       if (
@@ -376,7 +440,7 @@ export class TransactionsComponent {
 
   getRowStyle = (params: any): RowStyle | undefined => {
     if (params.data.selection !== 'none') {
-      return {backgroundColor: params.data.selection};
+      return { backgroundColor: params.data.selection };
     }
     return undefined;
   };
