@@ -7,11 +7,7 @@ import {Transaction} from '../transaction';
 import {Company} from '../company';
 import {parse} from 'csv-parse/browser/esm'; // Import parsera CSV
 
-/**
- * InputPageComponent is a component that handles the input of transaction data.
- * It provides functionality for pasting data, dragging and dropping files, and selecting files from the file system.
- * It also parses the input data and stores it in the TransactionDataStorageService.
- */
+
 @Component({
   selector: 'app-input-page',
   standalone: true,
@@ -37,10 +33,7 @@ export class InputPageComponent {
   transactions: Transaction[] = [];
   manualAnalysisRequired: boolean = false;
 
-  /**
-   * Handles the paste event and processes the pasted text.
-   * @param {ClipboardEvent} event - The paste event.
-   */
+
   onPaste(event: ClipboardEvent): void {
     const {clipboardData} = event;
     const pastedText = clipboardData?.getData('text') || '';
@@ -48,30 +41,21 @@ export class InputPageComponent {
     this.manualAnalysisRequired = true;
   }
 
-  /**
-   * Handles the drag over event and adds a class to the target element.
-   * @param {DragEvent} event - The drag event.
-   */
+
   onDragOver(event: DragEvent): void {
     event.preventDefault();
     const element = event.target as HTMLElement;
     element.classList.add('drag-over');
   }
 
-  /**
-   * Handles the drag leave event and removes a class from the target element.
-   * @param {DragEvent} event - The drag event.
-   */
+
   onDragLeave(event: DragEvent): void {
     event.preventDefault();
     const element = event.target as HTMLElement;
     element.classList.remove('drag-over');
   }
 
-  /**
-   * Handles the drop event and processes the dropped file.
-   * @param {DragEvent} event - The drop event.
-   */
+
   onDrop(event: DragEvent): void {
     event.preventDefault();
     const files = event.dataTransfer?.files;
@@ -80,10 +64,7 @@ export class InputPageComponent {
     }
   }
 
-  /**
-   * Handles the file selected event and processes the selected file.
-   * @param {Event} event - The file selected event.
-   */
+
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
@@ -91,11 +72,7 @@ export class InputPageComponent {
     }
   }
 
-  /**
-   * Reads the file and processes it if it's a valid CSV file.
-   * @param {File} file - The file to be read.
-   * @param {boolean} autoAnalyze - Whether to automatically analyze the data after reading.
-   */
+
   readFile(file: File, autoAnalyze: boolean): void {
     if (file.type === 'text/csv' || file.name.endsWith('.csv')) {
       const reader = new FileReader();
@@ -109,11 +86,7 @@ export class InputPageComponent {
     }
   }
 
-  /**
-   * Parses the CSV data and stores the transactions.
-   * @param {string} data - The CSV data to be parsed.
-   * @param {boolean} autoAnalyze - Whether to automatically analyze the data after parsing.
-   */
+
   parseCSV(data: string, autoAnalyze: boolean): void {
     type TransactionRecord = {
       'Rok którego ma dotyczyć dokumentacja': string;
@@ -223,10 +196,7 @@ export class InputPageComponent {
     );
   }
 
-  /**
-   * Processes the pasted data and stores the transactions.
-   * @param {string} data - The pasted data.
-   */
+
   processDataPasted(data: string): void {
     const rows = data.trim().split('\n');
     const startIndex = rows.findIndex((row) => row.includes('Transakcja'));
@@ -271,10 +241,7 @@ export class InputPageComponent {
     // console.log('Processed Transactions:', this.transactions);
   }
 
-  /**
-   * Processes the given data and stores the transactions.
-   * @param {string} data - The data to be processed.
-   */
+
   processData(data: string): void {
     const rows = data.trim().split('\n');
     const startIndex = rows.findIndex((row) => row.includes('Transakcja'));
@@ -317,10 +284,7 @@ export class InputPageComponent {
     // console.log(this.transactions);
   }
 
-  /**
-   * Analyzes the transaction data and stores it in the TransactionDataStorageService.
-   * Extracts the unique companies involved in the transactions and stores them in the CompanyDataStorageService
-   */
+
   analyzeData(): void {
     if (this.transactions.length > 0) {
       // console.log('Analyzing data...');
@@ -383,10 +347,7 @@ export class InputPageComponent {
     }
   }
 
-  /**
-   * Checks if there is any transaction data available.
-   * @returns {boolean} - True if there is transaction data, false otherwise.
-   */
+
   get hasData(): boolean {
     return this.transactions.length > 0;
   }

@@ -15,12 +15,6 @@ import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-quartz.css';
 import { ColorToggleComponent } from '../color-toggle/color-toggle.component';
 
-
-/**
- * TransactionsComponent is a component that displays and manages transaction data in an AG Grid.
- * It allows for editing of transaction fields and updates the transaction data in the storage service.
- */
-
 @Component({
   selector: 'app-transactions',
   standalone: true,
@@ -275,9 +269,7 @@ export class TransactionsComponent {
     },
   ];
 
-  /**
-   * Signal containing the list of transactions.
-   */
+
   transactions: Signal<Transaction[]>;
 
   constructor() {
@@ -323,9 +315,7 @@ export class TransactionsComponent {
   }
 
   // Receive companyName
-  /**
-   * Input property for the company name to filter transactions.
-   */
+
   @Input() companyName!: string;
   @Input() permanentTab!: string;
 
@@ -338,10 +328,7 @@ export class TransactionsComponent {
 
 
   // Define row data
-  /**
-   * Computed property to get transactions for the specified company.
-   * If no company name is provided, it returns all transactions.
-   */
+
   companyTransactions = computed(() => {
     if (this.permanentTab === 'Transactions MAIN') {
       return this.transactions();
@@ -383,10 +370,7 @@ export class TransactionsComponent {
     );
   });
 
-  /**
-   * Event handler for when a cell value changes in the grid.
-   * @param {CellValueChangedEvent} event - The event containing the updated cell value.
-   */
+
   onCellValueChanged(event: CellValueChangedEvent) {
     // Get the changed row.
     const updatedTransaction: Transaction = event.data;

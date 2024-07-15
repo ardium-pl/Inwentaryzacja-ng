@@ -3,11 +3,6 @@ import { CommonModule } from '@angular/common';
 import { TransactionDataStorageService } from '../transaction-data-storage.service';
 
 
-/**
- * The `ColorToggleComponent` provides functionality to select a color from a predefined list
- * and communicate this selection to other components. It also allows for clearing the selection.
- * This component is standalone and uses the `CommonModule`.
- */
 @Component({
   selector: 'app-color-toggle',
   standalone: true,

@@ -19,15 +19,15 @@ import 'ag-grid-community/styles/ag-theme-quartz.css';
   styleUrl: './analiza-zwolnien.component.scss',
 })
 export class AnalizaZwolnienComponent {
-  transactionDataStorageService: TransactionDataStorageService = inject(
+  transactionDataStorageService  = inject(
     TransactionDataStorageService
   );
 
-  companyDataStorageService: CompanyDataStorageService = inject(
+  companyDataStorageService = inject(
     CompanyDataStorageService
   );
 
-  defaultValues: DefaultValuesService = inject(DefaultValuesService);
+  defaultValues = inject(DefaultValuesService);
 
   companies: Signal<Company[]>;
 
