@@ -11,6 +11,5 @@
 ag-grid-angular {
   height: var(--grid-height);
   width: var(--grid-width);
-
   margin-top: var(--grid-ofset);
 }

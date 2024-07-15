@@ -1,4 +1,4 @@
-import { Component, Input, Signal, inject, computed } from '@angular/core';
+import { Component, Input, input, Signal, inject, computed } from '@angular/core';
 import { AgGridAngular } from 'ag-grid-angular'; // Angular Data Grid Component
 import {
   ColDef,
@@ -26,18 +26,18 @@ import { ColorToggleComponent } from '../color-toggle/color-toggle.component';
   standalone: true,
   imports: [AgGridAngular, ColorToggleComponent],
   templateUrl: './transactions.component.html',
-  styleUrl: './transactions.component.css',
+  styleUrl: './transactions.component.scss',
 })
 export class TransactionsComponent {
-  transactionDataStorageService: TransactionDataStorageService = inject(
+  readonly transactionDataStorageService = inject(
     TransactionDataStorageService
   );
 
-  companyDataStorageService: CompanyDataStorageService = inject(
+  readonly companyDataStorageService = inject(
     CompanyDataStorageService
   );
 
-  defaultValues: DefaultValuesService = inject(DefaultValuesService);
+  readonly defaultValues = inject(DefaultValuesService);
 
   // GRID SETTINGS
 
@@ -329,6 +329,14 @@ export class TransactionsComponent {
   @Input() companyName!: string;
   @Input() permanentTab!: string;
 
+  //   // If companyName is optional or can have a default value, use input with a default value
+  // readonly companyName = input.required<string>();
+  //
+  // // If permanentTab is required to be provided by the parent component, use input.required
+  // readonly permanentTab = input.required<string>();
+
+
+
   // Define row data
   /**
    * Computed property to get transactions for the specified company.
@@ -393,13 +401,13 @@ export class TransactionsComponent {
     }
 
     // Update the rows limit
-    const limit = this.transactionDataStorageService.limits.get(
+    const limit = this.transactionDataStorageService.LIMITS.get(
       updatedTransaction.transactionType
     );
     updatedTransaction.significanceLimit =
       limit !== undefined
         ? limit
-        : this.transactionDataStorageService.inna_limit;
+        : this.transactionDataStorageService.INNA_LIMIT;
 
     // Update the transactions data stored in a signal wthin a service.
     this.transactionDataStorageService.updateTransactions(updatedTransaction);

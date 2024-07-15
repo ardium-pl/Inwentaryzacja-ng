@@ -8,7 +8,7 @@ import {TransactionDataStorageService} from './transaction-data-storage.service'
 })
 export class CompanyDataStorageService {
   // Inject the data storage service
-  transactionDataStorageService: TransactionDataStorageService = inject(
+  transactionDataStorageService  = inject(
     TransactionDataStorageService
   );
 
@@ -22,8 +22,8 @@ export class CompanyDataStorageService {
     );
   }
 
-  setCompanies(comapnies: Company[]) {
-    this.companies.set(comapnies);
+  setCompanies(companies: Company[]) {
+    this.companies.set(companies);
   }
 
   updateCompanies(updatedCompany: Company) {

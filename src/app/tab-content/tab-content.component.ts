@@ -11,7 +11,7 @@ import {Component, NgModule} from '@angular/core';
   standalone: true,
   imports: [],
   templateUrl: './tab-content.component.html',
-  styleUrl: './tab-content.component.css'
+  styleUrl: './tab-content.component.scss'
 })
 export class TabContentComponent {
 

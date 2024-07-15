@@ -16,9 +16,10 @@ import { AnalizaZwolnienComponent } from '../analiza-zwolnien/analiza-zwolnien.c
     TabContentComponent,
     TransactionsComponent,
     AnalizaZwolnienComponent,
+    TransactionsComponent,
   ],
   templateUrl: './material-tabs-test.component.html',
-  styleUrl: './material-tabs-test.component.css',
+  styleUrl: './material-tabs-test.component.scss',
 })
 export class MaterialTabsTestComponent {
   // Inject the data storage service

@@ -1,8 +1,8 @@
 <!-- Input Container Component -->
 <div class="input-container">
-  <!-- Heading for the input section -->
+
   <h2>Input CSV Data</h2>
-  <!-- Input area for CSV data, supporting drag-and-drop and paste actions -->
+
   <div class="input-area"
        (dragover)="onDragOver($event)"
        (dragleave)="onDragLeave($event)"
@@ -12,15 +12,15 @@
       rows="10"
       (paste)="onPaste($event)"
       placeholder="Paste CSV data here or drop a CSV file"></textarea>
-    <!-- Hidden file input for selecting CSV files from the file system -->
+
     <input type="file"
            #fileInput
            (change)="onFileSelected($event)"
            accept=".csv"
            style="display: none;">
   </div>
-  <!-- Button to trigger the hidden file input click event for file selection -->
+
   <button (click)="fileInput.click()">Select CSV File</button>
-  <!-- Button to manually trigger data analysis, enabled based on certain conditions -->
+
   <button (click)="analyzeData()" [disabled]="!manualAnalysisRequired">Analyze Data</button>
 </div>

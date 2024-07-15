@@ -1,7 +1,5 @@
-import { Component, inject, Output, EventEmitter, HostListener } from '@angular/core';
+import {Component, inject, Output, EventEmitter, HostListener, output} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatButtonModule } from '@angular/material/button';
 import { TransactionDataStorageService } from '../transaction-data-storage.service';
 
 
@@ -15,11 +13,12 @@ import { TransactionDataStorageService } from '../transaction-data-storage.servi
   standalone: true,
   imports: [CommonModule],
   templateUrl: './color-toggle.component.html',
-  styleUrls: ['./color-toggle.component.css'],
+  styleUrls: ['./color-toggle.component.scss'],
 })
 export class ColorToggleComponent {
 
-  @Output() clearColors = new EventEmitter<void>();
+  //@Output() clearColors = new EventEmitter<void>();#
+  readonly clearColors = output<void>();
   // Inject the data storage service
   transactionDataStorageService: TransactionDataStorageService = inject(
     TransactionDataStorageService

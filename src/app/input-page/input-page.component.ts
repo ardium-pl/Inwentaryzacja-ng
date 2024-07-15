@@ -16,20 +16,24 @@ import {parse} from 'csv-parse/browser/esm'; // Import parsera CSV
   selector: 'app-input-page',
   standalone: true,
   templateUrl: './input-page.component.html',
-  styleUrls: ['./input-page.component.css'],
+  styleUrls: ['./input-page.component.scss'],
 })
 export class InputPageComponent {
-  transactionDataStorageService: TransactionDataStorageService = inject(
+  transactionDataStorageService = inject(
     TransactionDataStorageService
   );
 
-  companyDataStorageService: CompanyDataStorageService = inject(
+  companyDataStorageService = inject(
     CompanyDataStorageService
   );
 
-  defaultValues: DefaultValuesService = inject(DefaultValuesService);
+  defaultValues = inject(
+    DefaultValuesService
+  );
 
-  router: Router = inject(Router);
+  router = inject(
+    Router
+  );
   transactions: Transaction[] = [];
   manualAnalysisRequired: boolean = false;
 

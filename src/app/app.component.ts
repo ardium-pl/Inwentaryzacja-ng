@@ -23,7 +23,7 @@ import { ColorToggleComponent } from './color-toggle/color-toggle.component';
     ColorToggleComponent,
   ],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css',
+  styleUrl: './app.component.scss',
 })
 export class AppComponent {
   title: string = 'Ag-Grid-Testing';

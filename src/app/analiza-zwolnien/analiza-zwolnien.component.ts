@@ -16,7 +16,7 @@ import 'ag-grid-community/styles/ag-theme-quartz.css';
   standalone: true,
   imports: [AgGridAngular],
   templateUrl: './analiza-zwolnien.component.html',
-  styleUrl: './analiza-zwolnien.component.css',
+  styleUrl: './analiza-zwolnien.component.scss',
 })
 export class AnalizaZwolnienComponent {
   transactionDataStorageService: TransactionDataStorageService = inject(

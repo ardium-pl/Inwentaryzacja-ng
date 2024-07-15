@@ -13,8 +13,8 @@ import { DefaultValuesService } from './default-values.service';
  *
  * @property {signal<Transaction[]>} transactions - The reactive state for the transactions.
  * @property {string} currentSelection - Tracks the current selection filter applied to transactions.
- * @property {Map<string, number>} limits - A map defining the significance limits for different types of transactions.
- * @property {number} inna_limit - Default limit for transactions not explicitly defined in the `limits` map.
+ * @property {Map<string, number>} LIMITS - A map defining the significance limits for different types of transactions.
+ * @property {number} INNA_LIMIT - Default limit for transactions not explicitly defined in the `limits` map.
  *
  * @method updateTransactions(updatedTransaction: Transaction): void
  * Updates a specific transaction within the transactions state.
@@ -39,13 +39,13 @@ import { DefaultValuesService } from './default-values.service';
   providedIn: 'root',
 })
 export class TransactionDataStorageService {
-  defaultValues: DefaultValuesService = inject(DefaultValuesService);
+  readonly defaultValues = inject(DefaultValuesService);
 
-  transactions = signal<Transaction[]>([]);
+  readonly transactions = signal<Transaction[]>([]);
 
   currentSelection: string = 'none';
 
-  limits = new Map<string, number>([
+  readonly LIMITS= new Map<string, number>([
     ['Transakcja towarowa', 10000000.0],
     ['Transakcja finansowa', 10000000.0],
     ['Transakcja usługowa', 2000000.0],
@@ -54,23 +54,18 @@ export class TransactionDataStorageService {
     [this.defaultValues.noTransactionData, NaN],
   ]);
 
-  inna_limit: number = 2000000;
+  readonly INNA_LIMIT: number = 2000000;
 
   clearAllSelections(): void {
     const updatedTransactions = this.transactions().map((transaction) => ({
       ...transaction,
       selection: 'none',
     }));
-    this.updateAllTransactions(updatedTransactions);
+    this.setTransactions(updatedTransactions);
     this.currentSelection = 'none';
   }
 
-  // Dodajmy również metodę do aktualizacji wszystkich transakcji naraz
-  updateAllTransactions(transactions: Transaction[]): void {
-    this.transactions.set(transactions);
-  }
-
-  setTransactions(inputTransactions: Transaction[]) {
+  setTransactions(inputTransactions: Transaction[]): void {
     this.transactions.set(inputTransactions);
   }
 
@@ -89,10 +84,10 @@ export class TransactionDataStorageService {
     this.transactions.update((transactions) =>
       transactions.map((txn) => {
         if (txn.transactionId === inputTransaction.transactionId) {
-          const limit = this.limits.get(inputTransaction.transactionType);
+          const limit = this.LIMITS.get(inputTransaction.transactionType);
           return {
             ...txn,
-            significanceLimit: limit !== undefined ? limit : this.inna_limit,
+            significanceLimit: limit !== undefined ? limit : this.INNA_LIMIT,
           };
         } else {
           return txn;
@@ -104,10 +99,10 @@ export class TransactionDataStorageService {
   setAllTransactionLimits() {
     this.transactions.update((transactions) =>
       transactions.map((txn) => {
-        const limit = this.limits.get(txn.transactionType);
+        const limit = this.LIMITS.get(txn.transactionType);
         return {
           ...txn,
-          significanceLimit: limit !== undefined ? limit : this.inna_limit,
+          significanceLimit: limit !== undefined ? limit : this.INNA_LIMIT,
         };
       })
     );

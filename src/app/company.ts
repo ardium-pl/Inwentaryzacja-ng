@@ -33,8 +33,8 @@ export interface Company {
   benchmarkExemptionSmallMicro__E: 'TAK' | 'NIE'; // Zwolnienie z obowiązku benchmarku - mały/mikro
   masterFileObligation___________F: 'TAK' | 'NIE'; // Obowiązek master file
   covidExemption_________________G: 'TAK' | 'NIE'; // Zwolnienie tzw. covidove
-  taxProfitLossCapitalSources2023_H: number; // Zysk/Strata PODATKOWA w 2023 r. ZE ŹRÓDEŁ KAPITAŁOWYCH
-  taxProfitLossOtherSources2023__I: number; // Zysk/Strata PODATKOWA w 2023 r. Z INNYCH ŹRÓDEŁ
+  taxProfitLossCapitalSources2023_H: number; // Zysk / Strata PODATKOWA w 2023 r. ZE ŹRÓDEŁ KAPITAŁOWYCH
+  taxProfitLossOtherSources2023__I: number; // Zysk / Strata PODATKOWA w 2023 r. Z INNYCH ŹRÓDEŁ
   pitCITExemption2023____________J: 'TAK' | 'NIE'; // Czy podmiot/spółka korzystał/a w 2023 ze zwolnień z PIT/CIT: 1) podmiotowych lub 2) dla SSE/Polskiej Strefy Inwestycji
   consolidationReport____________K: 'TAK' | 'NIE'; // Czy sprawozdanie podlega konsolidacji
   consolidatedRevenue2022________L: number; // Skonsolidowane przychody grupy w 2022
@@ -56,3 +56,4 @@ export interface Company {
 
   [property: string]: any;
 }
+
