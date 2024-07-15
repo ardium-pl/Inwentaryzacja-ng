@@ -7,12 +7,6 @@ import { TransactionDataStorageService } from '../transaction-data-storage.servi
 import { DefaultValuesService } from '../default-values.service';
 import { AnalizaZwolnienComponent } from '../analiza-zwolnien/analiza-zwolnien.component';
 
-/**
- * MaterialTabsTestComponent is a component that tests the functionality of Angular Material Tabs.
- * It uses the MatTabsModule for the tabs functionality.
- * It also uses the TabContentComponent and TransactionsComponent as part of its template.
- * The component uses the TransactionDataStorageService to fetch and manage transaction data.
- */
 
 @Component({
   selector: 'app-material-tabs-test',
