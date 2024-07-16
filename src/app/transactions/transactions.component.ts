@@ -1,7 +1,6 @@
 import {
   Component,
   input,
-  Signal,
   inject,
   computed,
 } from '@angular/core';
@@ -54,10 +53,7 @@ export class TransactionsComponent {
   // Column definitions for AG Grid
   colDefs: ColDef[] = this.columnDefService.colDefs;
 
-  transactions: Signal<Transaction[]>;
-
-  constructor() {
-    this.transactions = computed(() => {
+  readonly transactions = computed(() => {
       const transactions = this.transactionDataStorageService.transactions();
       const selectionMap = new Map<string, number>();
 
@@ -96,7 +92,6 @@ export class TransactionsComponent {
         return updatedTransaction;
       });
     });
-  }
 
   // Receive companyName
 
@@ -105,7 +100,7 @@ export class TransactionsComponent {
 
   // Define row data
 
-  companyTransactions = computed(() => {
+  readonly companyTransactions = computed(() => {
     if (this.permanentTab() === 'Transactions MAIN') {
       return this.transactions();
     } else if (this.permanentTab() === 'Obowiązki CT') {

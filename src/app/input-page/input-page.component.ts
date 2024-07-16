@@ -15,21 +15,22 @@ import {parse} from 'csv-parse/browser/esm'; // Import parsera CSV
   styleUrls: ['./input-page.component.scss'],
 })
 export class InputPageComponent {
-  transactionDataStorageService = inject(
+  readonly transactionDataStorageService = inject(
     TransactionDataStorageService
   );
 
-  companyDataStorageService = inject(
+  readonly companyDataStorageService = inject(
     CompanyDataStorageService
   );
 
-  defaultValues = inject(
+  readonly defaultValues = inject(
     DefaultValuesService
   );
 
-  router = inject(
+  readonly router = inject(
     Router
   );
+  
   transactions: Transaction[] = [];
   manualAnalysisRequired: boolean = false;
 

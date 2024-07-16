@@ -1,8 +1,6 @@
-import {Component, inject, Signal, computed} from '@angular/core';
+import {Component, inject, computed} from '@angular/core';
 import {MatTabsModule} from '@angular/material/tabs';
-import {TabContentComponent} from '../tab-content/tab-content.component';
 import {TransactionsComponent} from '../transactions/transactions.component';
-import {Transaction} from '../transaction';
 import {TransactionDataStorageService} from '../transaction-data-storage.service';
 import {DefaultValuesService} from '../default-values.service';
 import {AnalizaZwolnienComponent} from '../analiza-zwolnien/analiza-zwolnien.component';
@@ -13,7 +11,6 @@ import {AnalizaZwolnienComponent} from '../analiza-zwolnien/analiza-zwolnien.com
   standalone: true,
   imports: [
     MatTabsModule,
-    TabContentComponent,
     TransactionsComponent,
     AnalizaZwolnienComponent,
     TransactionsComponent,
@@ -22,26 +19,13 @@ import {AnalizaZwolnienComponent} from '../analiza-zwolnien/analiza-zwolnien.com
   styleUrl: './material-tabs-test.component.scss',
 })
 export class MaterialTabsTestComponent {
-  // Inject the data storage service
-  transactionDataStorageService = inject(
-    TransactionDataStorageService
+  readonly transactionDataStorageService = inject(TransactionDataStorageService);
+
+  readonly defaultValues = inject(DefaultValuesService);
+
+  readonly transactions = computed(() =>
+    this.transactionDataStorageService.transactions()
   );
-
-  defaultValues = inject(DefaultValuesService);
-
-  // Initialize transactions
-  /**
-   * transactions is a Signal that tracks the transactions from the TransactionDataStorageService.
-   */
-  transactions: Signal<Transaction[]>;
-
-  constructor() {
-    // Set the transactions to track the signal from a service
-
-    this.transactions = computed(() =>
-      this.transactionDataStorageService.transactions()
-    );
-  }
 
   // Get unique companies
   readonly uniqueCompanies = computed(() => {
@@ -59,6 +43,6 @@ export class MaterialTabsTestComponent {
     return Array.from(companies);
   });
 
-  PERMANENT_TAB_NAME1: string = 'Transactions MAIN';
-  PERMANENT_TAB_NAME2: string = 'Obowiązki CT';
+  readonly PERMANENT_TAB_NAME1: string = 'Transactions MAIN';
+  readonly PERMANENT_TAB_NAME2: string = 'Obowiązki CT';
 }

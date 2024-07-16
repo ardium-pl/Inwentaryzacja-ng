@@ -1,26 +1,23 @@
-import {Injectable, signal, inject, Signal, computed} from '@angular/core';
+import {Injectable, signal, inject, computed} from '@angular/core';
 import {Company} from './company';
-import {Transaction} from './transaction';
 import {TransactionDataStorageService} from './transaction-data-storage.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CompanyDataStorageService {
-  // Inject the data storage service
-  transactionDataStorageService  = inject(
+  readonly transactionDataStorageService = inject(
     TransactionDataStorageService
   );
 
-  transactions: Signal<Transaction[]>;
-  companies = signal<Company[]>([]);
-  kursEURO = 4.25;
+  readonly transactions = computed(() =>
+    this.transactionDataStorageService.transactions()
+  );
 
-  constructor() {
-    this.transactions = computed(() =>
-      this.transactionDataStorageService.transactions()
-    );
-  }
+  readonly companies = signal<Company[]>([]);
+
+  // Kurs bedzie wykorzystany jak zrobimy prawdilowa funkcje do formul
+  kursEURO = 4.25;
 
   setCompanies(companies: Company[]) {
     this.companies.set(companies);
@@ -47,7 +44,7 @@ export class CompanyDataStorageService {
           txn.sellerName === styledCompany.entityName____________________A
       )
       .forEach((txn) => {
-        const updatedTransaction = {...txn};
+        const updatedTransaction = { ...txn };
 
         updatedTransaction.displayColor_seller = styledCompany.displayColor;
         updatedTransaction.displayBold_seller = styledCompany.displayBold;
@@ -63,7 +60,7 @@ export class CompanyDataStorageService {
         (txn) => txn.buyerName === styledCompany.entityName____________________A
       )
       .forEach((txn) => {
-        const updatedTransaction = {...txn};
+        const updatedTransaction = { ...txn };
 
         updatedTransaction.displayColor_buyer = styledCompany.displayColor;
         updatedTransaction.displayBold_buyer = styledCompany.displayBold;
@@ -82,9 +79,10 @@ export class CompanyDataStorageService {
           txn.sellerName === styledCompany.entityName____________________A
       )
       .forEach((txn) => {
-        const updatedTransaction = {...txn};
+        const updatedTransaction = { ...txn };
 
-        updatedTransaction.benchmarkRequirement = styledCompany.benchmarkExemptionSmallMicro__E;
+        updatedTransaction.benchmarkRequirement =
+          styledCompany.benchmarkExemptionSmallMicro__E;
 
         this.transactionDataStorageService.updateTransactions(
           updatedTransaction
@@ -93,13 +91,13 @@ export class CompanyDataStorageService {
   }
 
   applyFontStyling(analizedCompany: Company) {
-    const resultCompany = {...analizedCompany};
+    const resultCompany = { ...analizedCompany };
 
     // Set color
     if (
       resultCompany.dctExemptionCapitalSource_____C === 'TAK' &&
       resultCompany.dctExemptionCapitalSource_____C ===
-      resultCompany.dctExemptionOtherSources______D
+        resultCompany.dctExemptionOtherSources______D
     ) {
       resultCompany.displayColor = '#4CAF50';
       this.passChangesToTransactions(resultCompany);
@@ -134,7 +132,7 @@ export class CompanyDataStorageService {
 
   // For testing purposes
   applyCellFormulas2(inputCompany: Company): Company {
-    const resultCompany = {...inputCompany};
+    const resultCompany = { ...inputCompany };
 
     if (resultCompany.consolidationReport____________K === 'TAK') {
       resultCompany.dctExemptionCapitalSource_____C = 'TAK';
@@ -158,7 +156,7 @@ export class CompanyDataStorageService {
   }
 
   applyCellFormulas(inputCompany: Company): Company {
-    const resultCompany = {...inputCompany};
+    const resultCompany = { ...inputCompany };
 
     // Apply formulas in the correct order
     resultCompany.taxProfitLossCapitalSources2023_H =
@@ -287,8 +285,8 @@ export class CompanyDataStorageService {
       !this.isEmpty(company.totalRevenue2022_______________X) &&
       !this.isEmpty(company.totalRevenue2023_______________Y) &&
       company.totalRevenue2022_______________X -
-      company.totalRevenue2023_______________Y >=
-      company.totalRevenue2022_______________X * 0.5
+        company.totalRevenue2023_______________Y >=
+        company.totalRevenue2022_______________X * 0.5
     ) {
       return 'TAK';
     } else if (

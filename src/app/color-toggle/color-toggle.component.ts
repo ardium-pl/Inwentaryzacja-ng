@@ -1,7 +1,6 @@
-import {Component, inject, Output, EventEmitter, HostListener, output} from '@angular/core';
+import { Component, inject, HostListener, output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TransactionDataStorageService } from '../transaction-data-storage.service';
-
 
 @Component({
   selector: 'app-color-toggle',
@@ -11,48 +10,47 @@ import { TransactionDataStorageService } from '../transaction-data-storage.servi
   styleUrls: ['./color-toggle.component.scss'],
 })
 export class ColorToggleComponent {
-
-  //@Output() clearColors = new EventEmitter<void>();#
-  readonly clearColors = output<void>();
-  // Inject the data storage service
-  transactionDataStorageService: TransactionDataStorageService = inject(
+  readonly transactionDataStorageService = inject(
     TransactionDataStorageService
   );
 
-  isColorMenuVisible = false;
+  //@Output() clearColors = new EventEmitter<void>();#
+  readonly clearColors = output<void>();
 
-  colorMap: { [colorName: string]: string } = {
-    "Pink": "#F8BBD0",
-    "Light Blue": "#B3E5FC",
-    "Light Green": "#C8E6C9",
-    "Lemon": "#FFF9C4",
-    "Lavender": "#D1C4E9",
-    "Peach": "#FFCCBC",
-    "Tea Green": "#F0F4C3",
-    "Thistle": "#E1BEE7",
-    "Misty Rose": "#FFCDD2",
-    "Periwinkle": "#C5CAE9",
-    "Light Cyan": "#B2EBF2",
-    "Pale Green": "#DCEDC8",
-    "Beige": "#FFECB3",
-    "Light Grey": "#CFD8DC"
+  readonly isColorMenuVisible = signal<boolean>(false);
+
+  readonly COLOR_MAP: { [colorName: string]: string } = {
+    'Pink': '#F8BBD0',
+    'Light Blue': '#B3E5FC',
+    'Light Green': '#C8E6C9',
+    'Lemon': '#FFF9C4',
+    'Lavender': '#D1C4E9',
+    'Peach': '#FFCCBC',
+    'Tea Green': '#F0F4C3',
+    'Thistle': '#E1BEE7',
+    'Misty Rose': '#FFCDD2',
+    'Periwinkle': '#C5CAE9',
+    'Light Cyan': '#B2EBF2',
+    'Pale Green': '#DCEDC8',
+    'Beige': '#FFECB3',
+    'Light Grey': '#CFD8DC',
   };
 
   // Convert hex names to their corresponding color names
   get colorNames(): string[] {
-    return Object.keys(this.colorMap);
+    return Object.keys(this.COLOR_MAP);
   }
 
   toggleColorMenu(): void {
-    this.isColorMenuVisible = !this.isColorMenuVisible;
+    this.isColorMenuVisible.set(!this.isColorMenuVisible());
   }
 
   closeColorMenu(): void {
-    this.isColorMenuVisible = false;
+    this.isColorMenuVisible.set(false);
   }
 
   selectColor(colorName: string): void {
-    const hexCode = this.colorMap[colorName];
+    const hexCode = this.COLOR_MAP[colorName];
     if (hexCode) {
       this.transactionDataStorageService.currentSelection.set(hexCode);
     }

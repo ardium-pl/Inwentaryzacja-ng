@@ -9,10 +9,10 @@ The selected color is then used to highlight the selected transaction in the tra
           [style.backgroundColor]="transactionDataStorageService.currentSelection() || '#ffffff'"></span>
   </button>
 
-  <div class="color-menu" [class.show]="isColorMenuVisible">
+  <div class="color-menu" [class.show]="this.isColorMenuVisible()">
     <div class="color-options-container">
-      <button *ngFor="let colorName of colorNames" (click)="selectColor(colorName)" class="color-option">
-        <span class="color-swatch" [style.backgroundColor]="colorMap[colorName]"></span>
+      <button *ngFor="let colorName of colorNames" (click)="selectColor(colorName); toggleColorMenu()" class="color-option">
+        <span class="color-swatch" [style.backgroundColor]="COLOR_MAP[colorName]"></span>
       </button>
     </div>
   </div>

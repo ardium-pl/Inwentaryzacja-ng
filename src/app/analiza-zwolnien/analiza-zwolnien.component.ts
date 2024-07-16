@@ -1,4 +1,4 @@
-import {Component, Signal, inject, computed} from '@angular/core';
+import {Component, inject, computed} from '@angular/core';
 import {AgGridAngular} from 'ag-grid-angular'; // Angular Data Grid Component
 import {
   ColDef,
@@ -7,7 +7,6 @@ import {
 import {CompanyDataStorageService} from '../company-data-storage.service';
 import {TransactionDataStorageService} from '../transaction-data-storage.service';
 import {DefaultValuesService} from '../default-values.service';
-import {Company} from '../company';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-quartz.css';
 import { ColumnDefService } from './col-defs';
@@ -30,13 +29,8 @@ export class AnalizaZwolnienComponent {
 
   readonly columnDefService = inject(ColumnDefService);
 
-  companies: Signal<Company[]>;
+  readonly companies = computed(() => this.companyDataStorageService.companies());
 
-  constructor() {
-    this.companies = computed(() => this.companyDataStorageService.companies());
-  }
-
-  rowHeight: number = 56; // 42px is default
 
   // AG GRID SET UP
   // Default column definitions - global
@@ -59,7 +53,6 @@ export class AnalizaZwolnienComponent {
     }
 
     // Update the comapnies data stored in a signal wthin a service.
-    // console.log(updatedCompany);
     this.companyDataStorageService.updateCompanies(updatedCompany);
   }
 }
