@@ -1,12 +1,11 @@
-import {Component, inject} from '@angular/core';
-import {Router} from '@angular/router';
-import {TransactionDataStorageService} from '../transaction-data-storage.service';
-import {CompanyDataStorageService} from '../company-data-storage.service';
-import {DefaultValuesService} from '../default-values.service';
-import {Transaction} from '../transaction';
-import {Company} from '../company';
-import {parse} from 'csv-parse/browser/esm'; // Import parsera CSV
-
+import { Component, inject } from '@angular/core';
+import { Router } from '@angular/router';
+import { TransactionDataStorageService } from '../transaction-data-storage.service';
+import { CompanyDataStorageService } from '../company-data-storage.service';
+import { DefaultValuesService } from '../default-values.service';
+import { Transaction } from '../transaction';
+import { Company } from '../company';
+import { parse } from 'csv-parse/browser/esm'; // Import parsera CSV
 
 @Component({
   selector: 'app-input-page',
@@ -19,29 +18,21 @@ export class InputPageComponent {
     TransactionDataStorageService
   );
 
-  readonly companyDataStorageService = inject(
-    CompanyDataStorageService
-  );
+  readonly companyDataStorageService = inject(CompanyDataStorageService);
 
-  readonly defaultValues = inject(
-    DefaultValuesService
-  );
+  readonly defaultValues = inject(DefaultValuesService);
 
-  readonly router = inject(
-    Router
-  );
-  
+  readonly router = inject(Router);
+
   transactions: Transaction[] = [];
   manualAnalysisRequired: boolean = false;
 
-
   onPaste(event: ClipboardEvent): void {
-    const {clipboardData} = event;
+    const { clipboardData } = event;
     const pastedText = clipboardData?.getData('text') || '';
     this.processDataPasted(pastedText);
     this.manualAnalysisRequired = true;
   }
-
 
   onDragOver(event: DragEvent): void {
     event.preventDefault();
@@ -49,13 +40,11 @@ export class InputPageComponent {
     element.classList.add('drag-over');
   }
 
-
   onDragLeave(event: DragEvent): void {
     event.preventDefault();
     const element = event.target as HTMLElement;
     element.classList.remove('drag-over');
   }
-
 
   onDrop(event: DragEvent): void {
     event.preventDefault();
@@ -65,14 +54,12 @@ export class InputPageComponent {
     }
   }
 
-
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       this.readFile(input.files[0], true);
     }
   }
-
 
   readFile(file: File, autoAnalyze: boolean): void {
     if (file.type === 'text/csv' || file.name.endsWith('.csv')) {
@@ -86,7 +73,6 @@ export class InputPageComponent {
       alert('Please select a valid CSV file.');
     }
   }
-
 
   parseCSV(data: string, autoAnalyze: boolean): void {
     type TransactionRecord = {
@@ -141,41 +127,43 @@ export class InputPageComponent {
           transactionId: `${index + 1}`, // Adjust index to start from 1 after filtering
           year:
             record['Rok którego ma dotyczyć dokumentacja'] ||
-            this.defaultValues.noData,
+            this.defaultValues.NO_DATA,
           sellerName:
             record['Nazwa sprzedawcy/pożyczkodawcy/emitenta'] ||
-            this.defaultValues.noData,
+            this.defaultValues.NO_DATA,
           buyerName:
             record['Nazwa odbiorcy/pożyczkobiorcy'] ||
-            this.defaultValues.noData,
+            this.defaultValues.NO_DATA,
           transactionType:
-            record['Rodzaj transakcji'] || this.defaultValues.noTransactionData,
+            record['Rodzaj transakcji'] ||
+            this.defaultValues.NO_TRANSACTION_DATA,
           transactionSubject:
-            record['Nazwa/przedmiot transakcji'] || this.defaultValues.noData,
+            record['Nazwa/przedmiot transakcji'] || this.defaultValues.NO_DATA,
           netValue:
             parseFloat(
               record[
                 'Wartość netto świadczeń zrealizowanych w danym roku/Wartość najwyższego udostępnionego w roku podatkowym kapitału'
-                ]
-            ) || this.defaultValues.noDataNumeric,
-          currency: record['Waluta'] || this.defaultValues.noData,
+              ]
+            ) || this.defaultValues.NO_DATA_NUMERIC,
+          currency: record['Waluta'] || this.defaultValues.NO_DATA,
           loanDate:
             record['Data udzielenia pożyczki/gwarancji'] ||
-            this.defaultValues.noData,
+            this.defaultValues.NO_DATA,
           interestRate:
-            Number(record['Oprocentowanie (w przypadku transakcji finansowych)']) ||
-            this.defaultValues.noDataNumeric,
+            Number(
+              record['Oprocentowanie (w przypadku transakcji finansowych)']
+            ) || this.defaultValues.NO_DATA_NUMERIC,
           repaymentDate:
             record['Data spłaty (w przypadku transakcji finansowych)'] ||
-            this.defaultValues.noData,
+            this.defaultValues.NO_DATA,
           significanceLimit: 0,
           homogeneousTransactionValue:
-          // Defaultowo to samo co w kolumnie "netValue"
+            // Defaultowo to samo co w kolumnie "netValue"
             parseFloat(
               record[
                 'Wartość netto świadczeń zrealizowanych w danym roku/Wartość najwyższego udostępnionego w roku podatkowym kapitału'
-                ]
-            ) || this.defaultValues.noDataNumeric,
+              ]
+            ) || this.defaultValues.NO_DATA_NUMERIC,
           taxExemption: record['Zwolnienie art. 11n CIT'] || 'NIE',
           documentationRequirement: record['Obowiązek dokumentacji'] || 'NIE',
           benchmarkRequirement: record['Obowiązek benchmarku'] || 'NIE',
@@ -196,7 +184,6 @@ export class InputPageComponent {
       }
     );
   }
-
 
   processDataPasted(data: string): void {
     const rows = data.trim().split('\n');
@@ -242,7 +229,6 @@ export class InputPageComponent {
     // console.log('Processed Transactions:', this.transactions);
   }
 
-
   processData(data: string): void {
     const rows = data.trim().split('\n');
     const startIndex = rows.findIndex((row) => row.includes('Transakcja'));
@@ -285,7 +271,6 @@ export class InputPageComponent {
     // console.log(this.transactions);
   }
 
-
   analyzeData(): void {
     if (this.transactions.length > 0) {
       // console.log('Analyzing data...');
@@ -293,10 +278,10 @@ export class InputPageComponent {
       // Extract unique company names (if provided)
       const uniqueCompanyNames = new Set<string>();
       this.transactions.forEach((transaction) => {
-        if (transaction.sellerName !== this.defaultValues.noData) {
+        if (transaction.sellerName !== this.defaultValues.NO_DATA) {
           uniqueCompanyNames.add(transaction.sellerName);
         }
-        if (transaction.buyerName !== this.defaultValues.noData) {
+        if (transaction.buyerName !== this.defaultValues.NO_DATA) {
           uniqueCompanyNames.add(transaction.buyerName);
         }
       });
@@ -348,11 +333,9 @@ export class InputPageComponent {
     }
   }
 
-
   get hasData(): boolean {
     return this.transactions.length > 0;
   }
 
-  constructor() {
-  }
+  constructor() {}
 }

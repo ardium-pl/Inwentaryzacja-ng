@@ -1,7 +1,6 @@
-import {Injectable, signal, inject} from '@angular/core';
-import {Transaction} from './transaction';
+import { Injectable, signal, inject } from '@angular/core';
+import { Transaction } from './transaction';
 import { DefaultValuesService } from './default-values.service';
-
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +10,7 @@ export class TransactionDataStorageService {
 
   readonly transactions = signal<Transaction[]>([]);
 
-  readonly currentSelection = signal<string>('none')
+  readonly currentSelection = signal<string>('none');
 
   readonly LIMITS = new Map<string, number>([
     ['Transakcja towarowa', 10000000.0],
@@ -19,7 +18,7 @@ export class TransactionDataStorageService {
     ['Transakcja usługowa', 2000000.0],
     ['Transakcje "rajowe" finansowe', 2500000.0],
     ['Transakcje "rajowe" inne niż finansowe', 500000.0],
-    [this.defaultValues.noTransactionData, NaN],
+    [this.defaultValues.NO_TRANSACTION_DATA, NaN],
   ]);
 
   readonly INNA_LIMIT: number = 2000000;

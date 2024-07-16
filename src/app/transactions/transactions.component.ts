@@ -1,10 +1,5 @@
-import {
-  Component,
-  input,
-  inject,
-  computed,
-} from '@angular/core';
-import {AgGridAngular} from 'ag-grid-angular'; // Angular Data Grid Component
+import { Component, input, inject, computed } from '@angular/core';
+import { AgGridAngular } from 'ag-grid-angular'; // Angular Data Grid Component
 import {
   ColDef,
   CellValueChangedEvent,
@@ -12,14 +7,14 @@ import {
   GridReadyEvent,
   RowStyle,
 } from 'ag-grid-community';
-import {Transaction} from '../transaction';
-import {TransactionDataStorageService} from '../transaction-data-storage.service';
-import {DefaultValuesService} from '../default-values.service';
-import {CompanyDataStorageService} from '../company-data-storage.service';
+import { Transaction } from '../transaction';
+import { TransactionDataStorageService } from '../transaction-data-storage.service';
+import { DefaultValuesService } from '../default-values.service';
+import { CompanyDataStorageService } from '../company-data-storage.service';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-quartz.css';
-import {ColorToggleComponent} from '../color-toggle/color-toggle.component';
-import {ColumnDefService} from './col-defs';
+import { ColorToggleComponent } from '../color-toggle/color-toggle.component';
+import { ColumnDefService } from './col-defs';
 
 @Component({
   selector: 'app-transactions',
@@ -54,44 +49,42 @@ export class TransactionsComponent {
   colDefs: ColDef[] = this.columnDefService.colDefs;
 
   readonly transactions = computed(() => {
-      const transactions = this.transactionDataStorageService.transactions();
-      const selectionMap = new Map<string, number>();
+    const transactions = this.transactionDataStorageService.transactions();
+    const selectionMap = new Map<string, number>();
 
-      // Calculate the sum of netValue for each selection group
-      transactions.forEach((transaction) => {
-        if (transaction.selection !== 'none') {
-          if (!selectionMap.has(transaction.selection)) {
-            selectionMap.set(transaction.selection, 0);
-          }
-          selectionMap.set(
-            transaction.selection,
-            selectionMap.get(transaction.selection)! + transaction.netValue
-          );
+    // Calculate the sum of netValue for each selection group
+    transactions.forEach((transaction) => {
+      if (transaction.selection !== 'none') {
+        if (!selectionMap.has(transaction.selection)) {
+          selectionMap.set(transaction.selection, 0);
         }
-      });
-
-      // Update homogeneousTransactionValue based on the selection group sums
-      return transactions.map((transaction) => {
-        const updatedTransaction = {...transaction};
-
-        // If transaction.selection !== 'none' (if transaction is marked with color)
-        // set transaction.homogeneousTransactionValue to be the sum
-        if (transaction.selection !== 'none') {
-          updatedTransaction.homogeneousTransactionValue = selectionMap.get(
-            transaction.selection
-          ) as number;
-        }
-
-          // If transaction.selection === 'none' set transaction.homogeneousTransactionValue
-        // to transaction.netValue
-        else {
-          updatedTransaction.homogeneousTransactionValue =
-            updatedTransaction.netValue;
-        }
-
-        return updatedTransaction;
-      });
+        selectionMap.set(
+          transaction.selection,
+          selectionMap.get(transaction.selection)! + transaction.netValue
+        );
+      }
     });
+
+    // Update homogeneousTransactionValue based on the selection group sums
+    return transactions.map((transaction) => {
+      const updatedTransaction = { ...transaction };
+
+      // If transaction.selection !== 'none' (if transaction is marked with color) set transaction.homogeneousTransactionValue to be the sum
+      if (transaction.selection !== 'none') {
+        updatedTransaction.homogeneousTransactionValue = selectionMap.get(
+          transaction.selection
+        ) as number;
+      }
+
+      // If transaction.selection === 'none' set transaction.homogeneousTransactionValueto transaction.netValue
+      else {
+        updatedTransaction.homogeneousTransactionValue =
+          updatedTransaction.netValue;
+      }
+
+      return updatedTransaction;
+    });
+  });
 
   // Receive companyName
 
@@ -129,7 +122,7 @@ export class TransactionsComponent {
         (transaction) =>
           transaction.selection !== 'none' &&
           transaction.homogeneousTransactionValue >
-          minSignificanceLimitMap.get(transaction.selection)!
+            minSignificanceLimitMap.get(transaction.selection)!
       );
     }
 
@@ -145,12 +138,51 @@ export class TransactionsComponent {
     // Get the changed row.
     const updatedTransaction: Transaction = event.data;
 
+    // console.log(`New value: ${event.newValue}.`);
+    // console.log(`Old value: ${event.oldValue}.`);
+    // console.log(`New value type: ${typeof event.newValue}.`);
+    // console.log(`Column type: ${event.colDef.cellDataType}.`);
+    // console.log(`Changed field: ${event.colDef.field}.`);
+    // console.log(updatedTransaction);
+
     // In case user deleted all cell content - assign a default value
-    // Currently only the numeric columns can be set to 'null' by clearing the cell content
-    const transactionProperties: string[] = Object.keys(updatedTransaction);
-    for (let property of transactionProperties) {
-      if (updatedTransaction[property] === null) {
-        updatedTransaction[property] = this.defaultValues.noContentAfterEdit;
+    if (event.newValue === null) {
+      if (event.colDef.cellDataType === 'number') {
+        updatedTransaction[event.colDef.field!] =
+          this.defaultValues.NO_CONTENT_AFTER_EDIT_NUMERIC;
+      } else if (event.colDef.cellDataType === 'text') {
+        updatedTransaction[event.colDef.field!] =
+          this.defaultValues.NO_CONTENT_AFTER_EDIT_TEXT;
+      }
+    }
+
+    // Update taxExemption (Zwolnienie art. 11n CIT) column value if transactionType was changed
+    if (
+      event.colDef.field === 'transactionType' &&
+      event.oldValue !== event.newValue
+    ) {
+      if (event.newValue !== 'Transakcja finansowa') {
+        if (
+          updatedTransaction.displayColor_buyer === '#FF6d01' ||
+          updatedTransaction.displayColor_seller === '#FF6d01' ||
+          updatedTransaction.displayColor_buyer === '#4CAF50' ||
+          updatedTransaction.displayColor_seller === '#4CAF50'
+        ) {
+          updatedTransaction.taxExemption = 'TAK';
+        } else {
+          updatedTransaction.taxExemption = 'NIE';
+        }
+      } else if (event.newValue === 'Transakcja finansowa') {
+        if (
+          updatedTransaction.displayColor_buyer === '#4682B4' ||
+          updatedTransaction.displayColor_seller === '#4682B4' ||
+          updatedTransaction.displayColor_buyer === '#4CAF50' ||
+          updatedTransaction.displayColor_seller === '#4CAF50'
+        ) {
+          updatedTransaction.taxExemption = 'TAK';
+        } else {
+          updatedTransaction.taxExemption = 'NIE';
+        }
       }
     }
 
@@ -197,7 +229,7 @@ export class TransactionsComponent {
   // Apply background color for the selected row
   getRowStyle = (params: any): RowStyle | undefined => {
     if (params.data.selection !== 'none') {
-      return {backgroundColor: params.data.selection};
+      return { backgroundColor: params.data.selection };
     }
     return undefined;
   };

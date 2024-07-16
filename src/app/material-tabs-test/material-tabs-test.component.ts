@@ -1,10 +1,9 @@
-import {Component, inject, computed} from '@angular/core';
-import {MatTabsModule} from '@angular/material/tabs';
-import {TransactionsComponent} from '../transactions/transactions.component';
-import {TransactionDataStorageService} from '../transaction-data-storage.service';
-import {DefaultValuesService} from '../default-values.service';
-import {AnalizaZwolnienComponent} from '../analiza-zwolnien/analiza-zwolnien.component';
-
+import { Component, inject, computed } from '@angular/core';
+import { MatTabsModule } from '@angular/material/tabs';
+import { TransactionsComponent } from '../transactions/transactions.component';
+import { TransactionDataStorageService } from '../transaction-data-storage.service';
+import { DefaultValuesService } from '../default-values.service';
+import { AnalizaZwolnienComponent } from '../analiza-zwolnien/analiza-zwolnien.component';
 
 @Component({
   selector: 'app-material-tabs-test',
@@ -19,7 +18,9 @@ import {AnalizaZwolnienComponent} from '../analiza-zwolnien/analiza-zwolnien.com
   styleUrl: './material-tabs-test.component.scss',
 })
 export class MaterialTabsTestComponent {
-  readonly transactionDataStorageService = inject(TransactionDataStorageService);
+  readonly transactionDataStorageService = inject(
+    TransactionDataStorageService
+  );
 
   readonly defaultValues = inject(DefaultValuesService);
 
@@ -32,10 +33,10 @@ export class MaterialTabsTestComponent {
     const companies = new Set<string>();
 
     this.transactions().forEach((transaction) => {
-      if (transaction.sellerName !== this.defaultValues.noData) {
+      if (transaction.sellerName !== this.defaultValues.NO_DATA) {
         companies.add(transaction.sellerName);
       }
-      if (transaction.buyerName !== this.defaultValues.noData) {
+      if (transaction.buyerName !== this.defaultValues.NO_DATA) {
         companies.add(transaction.buyerName);
       }
     });

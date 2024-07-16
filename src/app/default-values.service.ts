@@ -1,11 +1,10 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DefaultValuesService {
-
   // // version 2
   // private _noData = new BehaviorSubject<string>('Brak wartości wejściowej');
   // private _noTransactionData = new BehaviorSubject<string>('Brak nazwy transakcji');
@@ -13,12 +12,11 @@ export class DefaultValuesService {
   // private _noContentAfterEdit = new BehaviorSubject<number>(0); // Replaces null
 
   // version 1
-  noData: string = 'Brak wartości wejściowej';
-  noTransactionData: string = 'Brak nazwy transakcji';
-  noDataNumeric: number = NaN;
-  noContentAfterEdit: number = 0; // Replaces null
-  constructor() {
-  }
+  NO_DATA: string = 'Brak wartości wejściowej';
+  NO_TRANSACTION_DATA: string = 'Brak nazwy transakcji';
+  NO_DATA_NUMERIC: number = NaN;
+  NO_CONTENT_AFTER_EDIT_NUMERIC: number = 0; // Replaces null
+  NO_CONTENT_AFTER_EDIT_TEXT: string = 'Brak wartości wejściowej'; // Replaces null
   //
   // // Setters
   // setNoData(value: string) {

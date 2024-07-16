@@ -1,12 +1,9 @@
-import {Component, inject, computed} from '@angular/core';
-import {AgGridAngular} from 'ag-grid-angular'; // Angular Data Grid Component
-import {
-  ColDef,
-  CellValueChangedEvent,
-} from 'ag-grid-community'; // Column Definition Type Interface
-import {CompanyDataStorageService} from '../company-data-storage.service';
-import {TransactionDataStorageService} from '../transaction-data-storage.service';
-import {DefaultValuesService} from '../default-values.service';
+import { Component, inject, computed } from '@angular/core';
+import { AgGridAngular } from 'ag-grid-angular'; // Angular Data Grid Component
+import { ColDef, CellValueChangedEvent } from 'ag-grid-community'; // Column Definition Type Interface
+import { CompanyDataStorageService } from '../company-data-storage.service';
+import { TransactionDataStorageService } from '../transaction-data-storage.service';
+import { DefaultValuesService } from '../default-values.service';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-quartz.css';
 import { ColumnDefService } from './col-defs';
@@ -29,7 +26,9 @@ export class AnalizaZwolnienComponent {
 
   readonly columnDefService = inject(ColumnDefService);
 
-  readonly companies = computed(() => this.companyDataStorageService.companies());
+  readonly companies = computed(() =>
+    this.companyDataStorageService.companies()
+  );
 
   rowHeight: number = 56; // Define the variable for row height
 
@@ -45,11 +44,13 @@ export class AnalizaZwolnienComponent {
     const updatedCompany = event.data;
 
     // In case user deleted all cell content - assign a default value
-    // Currently only the numeric columns can be set to 'null' by clearing the cell content
-    const transactionProperties: string[] = Object.keys(updatedCompany);
-    for (let property of transactionProperties) {
-      if (updatedCompany[property] === null) {
-        updatedCompany[property] = this.defaultValues.noContentAfterEdit;
+    if (event.newValue === null) {
+      if (event.colDef.cellDataType === 'number') {
+        updatedCompany[event.colDef.field!] =
+          this.defaultValues.NO_CONTENT_AFTER_EDIT_NUMERIC;
+      } else if (event.colDef.cellDataType === 'text') {
+        updatedCompany[event.colDef.field!] =
+          this.defaultValues.NO_CONTENT_AFTER_EDIT_TEXT;
       }
     }
 

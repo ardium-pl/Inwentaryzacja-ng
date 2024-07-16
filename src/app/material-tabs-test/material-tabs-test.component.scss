@@ -14,9 +14,7 @@ mat-tab-group {
   flex: 1;
 }
 
-
-.pink-block {
-  flex: 1;
-  border: 2px solid black;
+// Change permanent tabs' label font style to bold
+.permanent-tab {
+  font-weight: bold;
 }
-

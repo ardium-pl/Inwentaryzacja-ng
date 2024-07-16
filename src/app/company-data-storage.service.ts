@@ -1,6 +1,7 @@
-import {Injectable, signal, inject, computed} from '@angular/core';
-import {Company} from './company';
-import {TransactionDataStorageService} from './transaction-data-storage.service';
+import { Injectable, signal, inject, computed } from '@angular/core';
+import { Company } from './company';
+import { TransactionDataStorageService } from './transaction-data-storage.service';
+import { style } from '@angular/animations';
 
 @Injectable({
   providedIn: 'root',
@@ -70,8 +71,7 @@ export class CompanyDataStorageService {
         );
       });
 
-    // Update benchmarkRequirement
-    // TUTAJ BEDZIEMY UDPATE'OWAC POZOSTALE BOOLEAN KOLUMNY W TABELACH TRANSAKCJI
+    // Update values of boolean columns in transaction tables
     this.transactions()
       .filter(
         (txn) =>
@@ -81,8 +81,28 @@ export class CompanyDataStorageService {
       .forEach((txn) => {
         const updatedTransaction = { ...txn };
 
+        // Update benchmarkRequirement column value
         updatedTransaction.benchmarkRequirement =
           styledCompany.benchmarkExemptionSmallMicro__E;
+
+        // Update taxExemption (Zwolnienie art. 11n CIT) column value
+        txn.transactionType === 'Transakcja finansowa'
+          ? (updatedTransaction.taxExemption =
+              styledCompany.dctExemptionCapitalSource_____C)
+          : (updatedTransaction.taxExemption =
+              styledCompany.dctExemptionOtherSources______D);
+
+        // Update documentationRequirement & tpr columns values
+        if (
+          styledCompany.dctExemptionCapitalSource_____C === 'TAK' &&
+          styledCompany.dctExemptionOtherSources______D === 'TAK'
+        ) {
+          updatedTransaction.documentationRequirement = 'TAK';
+          updatedTransaction.tpr = 'TAK';
+        } else {
+          updatedTransaction.documentationRequirement = 'NIE';
+          updatedTransaction.tpr = 'NIE';
+        }
 
         this.transactionDataStorageService.updateTransactions(
           updatedTransaction
@@ -96,8 +116,7 @@ export class CompanyDataStorageService {
     // Set color
     if (
       resultCompany.dctExemptionCapitalSource_____C === 'TAK' &&
-      resultCompany.dctExemptionCapitalSource_____C ===
-        resultCompany.dctExemptionOtherSources______D
+      resultCompany.dctExemptionOtherSources______D === 'TAK'
     ) {
       resultCompany.displayColor = '#4CAF50';
       this.passChangesToTransactions(resultCompany);

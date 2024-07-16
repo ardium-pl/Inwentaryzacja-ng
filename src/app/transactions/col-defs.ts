@@ -1,6 +1,6 @@
-import {Injectable, inject} from '@angular/core';
-import {ColDef} from 'ag-grid-community';
-import {DefaultValuesService} from '../default-values.service';
+import { Injectable, inject } from '@angular/core';
+import { ColDef } from 'ag-grid-community';
+import { DefaultValuesService } from '../default-values.service';
 
 @Injectable({
   providedIn: 'root',
@@ -14,6 +14,7 @@ export class ColumnDefService {
     autoHeaderHeight: true,
     headerClass: 'grid-header',
     width: 250,
+    editable: true,
   };
 
   // Default column definitions for text columns
@@ -21,7 +22,7 @@ export class ColumnDefService {
     cellStyle: (params: any) => {
       const styles: any = {};
 
-      if (params.value === this.defaultValues.noData) {
+      if (params.value === this.defaultValues.NO_DATA) {
         styles.color = 'red';
       }
 
@@ -43,13 +44,13 @@ export class ColumnDefService {
   defaultNumericColDef: ColDef = {
     cellStyle: (params: any) => {
       if (isNaN(params.value)) {
-        return {color: 'red'};
+        return { color: 'red' };
       } else {
         return undefined;
       }
     },
     cellRenderer: (params: any) =>
-      isNaN(params.value) ? this.defaultValues.noData : params.value,
+      isNaN(params.value) ? this.defaultValues.NO_DATA : params.value,
   };
 
   // Column definitions for AG Grid
@@ -64,7 +65,6 @@ export class ColumnDefService {
     {
       headerName: 'Rok którego ma dotyczyć dokumentacja',
       field: 'year',
-      editable: false,
       cellDataType: 'text',
       ...this.defaultTextColDef,
     },
@@ -86,8 +86,8 @@ export class ColumnDefService {
           styles.fontWeight = 'bold';
         }
 
-        if (params.value === this.defaultValues.noData) {
-          return {color: 'red'};
+        if (params.value === this.defaultValues.NO_DATA) {
+          return { color: 'red' };
         }
 
         return styles;
@@ -111,8 +111,8 @@ export class ColumnDefService {
           styles.fontWeight = 'bold';
         }
 
-        if (params.value === this.defaultValues.noData) {
-          return {color: 'red'};
+        if (params.value === this.defaultValues.NO_DATA) {
+          return { color: 'red' };
         }
 
         return styles;
@@ -121,7 +121,6 @@ export class ColumnDefService {
     {
       headerName: 'Rodzaj transakcji',
       field: 'transactionType',
-      editable: true,
       cellDataType: 'text',
       cellEditor: 'agSelectCellEditor',
       cellEditorParams: {
@@ -134,8 +133,8 @@ export class ColumnDefService {
         ],
       },
       cellStyle: (params: any) => {
-        if (params.value === this.defaultValues.noTransactionData) {
-          return {color: 'red', fontWeight: 'bold'};
+        if (params.value === this.defaultValues.NO_TRANSACTION_DATA) {
+          return { color: 'red', fontWeight: 'bold' };
         } else {
           return undefined;
         }
@@ -144,7 +143,6 @@ export class ColumnDefService {
     {
       headerName: 'Nazwa/przedmiot transakcji',
       field: 'transactionSubject',
-      editable: false,
       cellDataType: 'text',
       ...this.defaultTextColDef,
     },
@@ -152,35 +150,30 @@ export class ColumnDefService {
       headerName:
         'Wartość netto świadczeń zrealizowanych w danym roku/Wartość najwyższego udostępnionego w roku podatkowym kapitału',
       field: 'netValue',
-      editable: true,
       cellDataType: 'number',
       ...this.defaultNumericColDef,
     },
     {
       headerName: 'Waluta',
       field: 'currency',
-      editable: false,
       cellDataType: 'text',
       ...this.defaultTextColDef,
     },
     {
       headerName: 'Data udzielenia pożyczki/gwarancji',
       field: 'loanDate',
-      editable: false,
       cellDataType: 'text',
       ...this.defaultTextColDef,
     },
     {
       headerName: 'Oprocentowanie (w przypadku transakcji finansowych)',
       field: 'interestRate',
-      editable: true,
       cellDataType: 'number',
       ...this.defaultNumericColDef,
     },
     {
       headerName: 'Data spłaty (w przypadku transakcji finansowych)',
       field: 'repaymentDate',
-      editable: false,
       cellDataType: 'text',
       ...this.defaultTextColDef,
     },
@@ -192,13 +185,15 @@ export class ColumnDefService {
       // ...this.defaultNumericColDef,
       cellStyle: (params: any) => {
         if (isNaN(params.value)) {
-          return {color: 'red', fontWeight: 'bold'};
+          return { color: 'red', fontWeight: 'bold' };
         } else {
           return undefined;
         }
       },
       cellRenderer: (params: any) =>
-        isNaN(params.value) ? this.defaultValues.noTransactionData : params.value,
+        isNaN(params.value)
+          ? this.defaultValues.NO_TRANSACTION_DATA
+          : params.value,
     },
     {
       headerName:
@@ -238,5 +233,3 @@ export class ColumnDefService {
     },
   ];
 }
-
-
