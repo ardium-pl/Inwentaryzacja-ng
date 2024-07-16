@@ -59,6 +59,6 @@ export class MaterialTabsTestComponent {
     return Array.from(companies);
   });
 
-  permanentTabName1: string = 'Transactions MAIN';
-  permanentTabName2: string = 'Obowiązki CT';
+  PERMANENT_TAB_NAME1: string = 'Transactions MAIN';
+  PERMANENT_TAB_NAME2: string = 'Obowiązki CT';
 }

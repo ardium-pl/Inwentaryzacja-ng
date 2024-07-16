@@ -1,6 +1,5 @@
 import {
   Component,
-  Input,
   input,
   Signal,
   inject,
@@ -101,21 +100,15 @@ export class TransactionsComponent {
 
   // Receive companyName
 
-  @Input() companyName!: string;
-  @Input() permanentTab!: string;
-
-  //   // If companyName is optional or can have a default value, use input with a default value
-  // readonly companyName = input.required<string>();
-  //
-  // // If permanentTab is required to be provided by the parent component, use input.required
-  // readonly permanentTab = input.required<string>();
+  readonly companyName = input<string>('');
+  readonly permanentTab = input<string>('');
 
   // Define row data
 
   companyTransactions = computed(() => {
-    if (this.permanentTab === 'Transactions MAIN') {
+    if (this.permanentTab() === 'Transactions MAIN') {
       return this.transactions();
-    } else if (this.permanentTab === 'Obowiązki CT') {
+    } else if (this.permanentTab() === 'Obowiązki CT') {
       // Compute the minimum significanceLimit for each selection group
       const minSignificanceLimitMap = new Map<string, number>();
 
@@ -148,8 +141,8 @@ export class TransactionsComponent {
     // Filter transactions for the specified company
     return this.transactions().filter(
       (transaction) =>
-        transaction.sellerName === this.companyName ||
-        transaction.buyerName === this.companyName
+        transaction.sellerName === this.companyName() ||
+        transaction.buyerName === this.companyName()
     );
   });
 
