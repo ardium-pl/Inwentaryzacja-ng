@@ -11,9 +11,9 @@ export class TransactionDataStorageService {
 
   readonly transactions = signal<Transaction[]>([]);
 
-  currentSelection: string = 'none';
+  readonly currentSelection = signal<string>('none')
 
-  readonly LIMITS= new Map<string, number>([
+  readonly LIMITS = new Map<string, number>([
     ['Transakcja towarowa', 10000000.0],
     ['Transakcja finansowa', 10000000.0],
     ['Transakcja usługowa', 2000000.0],
@@ -30,7 +30,7 @@ export class TransactionDataStorageService {
       selection: 'none',
     }));
     this.setTransactions(updatedTransactions);
-    this.currentSelection = 'none';
+    this.currentSelection.set('none');
   }
 
   setTransactions(inputTransactions: Transaction[]): void {

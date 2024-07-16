@@ -42,6 +42,7 @@ export class TransactionsComponent {
   readonly columnDefService = inject(ColumnDefService);
 
   // AG GRID SET UP
+  private gridApi!: GridApi;
   // Default column definitions - global
   defaultColDef: ColDef = this.columnDefService.defaultColDef;
 
@@ -180,12 +181,6 @@ export class TransactionsComponent {
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
   // ROWS SELECTION
-  private gridApi!: GridApi;
-  rowSelection: 'single' | 'multiple' = 'single';
-  shouldRun: boolean = true;
-  selectedRowDisplay!: any;
-  suppressRowClickSelection: boolean = true;
-  suppressScrollOnNewData: boolean = true;
 
   onGridReady(event: GridReadyEvent) {
     // GridReadyEvent - The first event fired by the grid - can be used to store a reference to the api
@@ -200,28 +195,22 @@ export class TransactionsComponent {
       // Toggle selection
       if (
         selectedRow.selection ===
-        this.transactionDataStorageService.currentSelection
+        this.transactionDataStorageService.currentSelection()
       ) {
         selectedRow.selection = 'none';
       } else {
         selectedRow.selection =
-          this.transactionDataStorageService.currentSelection;
+          this.transactionDataStorageService.currentSelection();
       }
       this.transactionDataStorageService.updateTransactions(selectedRow);
     }
   }
 
+  // Apply background color for the selected row
   getRowStyle = (params: any): RowStyle | undefined => {
     if (params.data.selection !== 'none') {
       return { backgroundColor: params.data.selection };
     }
     return undefined;
   };
-
-  clearAllColorSelections(): void {
-    this.transactionDataStorageService.clearAllSelections();
-    if (this.gridApi) {
-      this.gridApi.redrawRows();
-    }
-  }
 }

@@ -54,13 +54,10 @@ export class ColorToggleComponent {
   selectColor(colorName: string): void {
     const hexCode = this.colorMap[colorName];
     if (hexCode) {
-      this.transactionDataStorageService.currentSelection = hexCode;
+      this.transactionDataStorageService.currentSelection.set(hexCode);
     }
   }
 
-  /**
-   * Clears all color selections by emitting the `clearColors` event. --> currently not used
-   */
   clearAllColors(): void {
     this.transactionDataStorageService.clearAllSelections();
     this.clearColors.emit();

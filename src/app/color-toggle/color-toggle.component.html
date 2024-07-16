@@ -6,7 +6,7 @@ The selected color is then used to highlight the selected transaction in the tra
 <div class="color-picker">
   <button class="btn btn-light color-button" (click)="toggleColorMenu()">
     <span class="color-swatch"
-          [style.backgroundColor]="transactionDataStorageService.currentSelection || '#ffffff'"></span>
+          [style.backgroundColor]="transactionDataStorageService.currentSelection() || '#ffffff'"></span>
   </button>
 
   <div class="color-menu" [class.show]="isColorMenuVisible">
