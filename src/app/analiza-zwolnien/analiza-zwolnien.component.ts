@@ -31,6 +31,7 @@ export class AnalizaZwolnienComponent {
 
   readonly companies = computed(() => this.companyDataStorageService.companies());
 
+  rowHeight: number = 56; // Define the variable for row height
 
   // AG GRID SET UP
   // Default column definitions - global

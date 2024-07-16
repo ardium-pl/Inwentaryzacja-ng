@@ -2,7 +2,7 @@
 <ag-grid-angular
   class="ag-theme-quartz"
   [rowData]="companies()"
-  [rowHeight]="56"
+  [rowHeight]="rowHeight"
   [columnDefs]="colDefs"
   [defaultColDef]="defaultColDef"
   (cellValueChanged)="onCellValueChanged($event)"

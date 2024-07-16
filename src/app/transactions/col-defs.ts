@@ -1,6 +1,6 @@
-import { Injectable, inject } from '@angular/core';
-import { ColDef } from 'ag-grid-community';
-import { DefaultValuesService } from '../default-values.service';
+import {Injectable, inject} from '@angular/core';
+import {ColDef} from 'ag-grid-community';
+import {DefaultValuesService} from '../default-values.service';
 
 @Injectable({
   providedIn: 'root',
@@ -43,7 +43,7 @@ export class ColumnDefService {
   defaultNumericColDef: ColDef = {
     cellStyle: (params: any) => {
       if (isNaN(params.value)) {
-        return { color: 'red' };
+        return {color: 'red'};
       } else {
         return undefined;
       }
@@ -87,7 +87,7 @@ export class ColumnDefService {
         }
 
         if (params.value === this.defaultValues.noData) {
-          return { color: 'red' };
+          return {color: 'red'};
         }
 
         return styles;
@@ -112,7 +112,7 @@ export class ColumnDefService {
         }
 
         if (params.value === this.defaultValues.noData) {
-          return { color: 'red' };
+          return {color: 'red'};
         }
 
         return styles;
@@ -135,7 +135,7 @@ export class ColumnDefService {
       },
       cellStyle: (params: any) => {
         if (params.value === this.defaultValues.noTransactionData) {
-          return { color: 'red', fontWeight: 'bold' };
+          return {color: 'red', fontWeight: 'bold'};
         } else {
           return undefined;
         }
@@ -192,7 +192,7 @@ export class ColumnDefService {
       // ...this.defaultNumericColDef,
       cellStyle: (params: any) => {
         if (isNaN(params.value)) {
-          return { color: 'red', fontWeight: 'bold' };
+          return {color: 'red', fontWeight: 'bold'};
         } else {
           return undefined;
         }
