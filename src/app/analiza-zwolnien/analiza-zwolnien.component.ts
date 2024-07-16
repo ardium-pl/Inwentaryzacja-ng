@@ -10,6 +10,7 @@ import {DefaultValuesService} from '../default-values.service';
 import {Company} from '../company';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-quartz.css';
+import { ColumnDefService } from './col-defs';
 
 @Component({
   selector: 'app-analiza-zwolnien',
@@ -19,15 +20,15 @@ import 'ag-grid-community/styles/ag-theme-quartz.css';
   styleUrl: './analiza-zwolnien.component.scss',
 })
 export class AnalizaZwolnienComponent {
-  transactionDataStorageService  = inject(
+  readonly transactionDataStorageService = inject(
     TransactionDataStorageService
   );
 
-  companyDataStorageService = inject(
-    CompanyDataStorageService
-  );
+  readonly companyDataStorageService = inject(CompanyDataStorageService);
 
-  defaultValues = inject(DefaultValuesService);
+  readonly defaultValues = inject(DefaultValuesService);
+
+  readonly columnDefService = inject(ColumnDefService);
 
   companies: Signal<Company[]>;
 
@@ -37,30 +38,12 @@ export class AnalizaZwolnienComponent {
 
   rowHeight: number = 56; // 42px is default
 
-  defaultColDef: ColDef = {
-    wrapHeaderText: true,
-    autoHeaderHeight: true,
-    headerClass: 'zwolnienia-grid-header',
-    width: 200,
-    cellStyle: (params) => {
-      const styles: any = {
-        display: 'flex',
-        alignItems: 'center',
-      };
+  // AG GRID SET UP
+  // Default column definitions - global
+  defaultColDef: ColDef = this.columnDefService.defaultColDef;
 
-      if (params.value === 'TAK') {
-        styles.backgroundColor = 'lightgreen';
-        styles.color = 'darkgreen';
-        styles.textAlign = 'center';
-      } else if (params.value === 'NIE') {
-        styles.backgroundColor = 'lightcoral';
-        styles.color = 'darkred';
-        styles.textAlign = 'center';
-      }
-
-      return styles;
-    },
-  };
+  // Column definitions for AG Grid
+  colDefs: ColDef[] = this.columnDefService.colDefs;
 
   onCellValueChanged(event: CellValueChangedEvent) {
     // Get the changed row.
@@ -79,280 +62,4 @@ export class AnalizaZwolnienComponent {
     // console.log(updatedCompany);
     this.companyDataStorageService.updateCompanies(updatedCompany);
   }
-
-  columnDefs: ColDef[] = [
-    {
-      field: 'entityName____________________A',
-      headerName: 'Nazwa podmiotu',
-      editable: false,
-      headerClass: 'zwolnienia-grid-header',
-      cellDataType: 'text',
-      cellStyle: (params) => {
-        const styles: any = {
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-        };
-
-        // Set text color if displayColor is not 'none'
-        if (params.data.displayColor !== 'none') {
-          styles.color = params.data.displayColor;
-        }
-
-        // Set text to bold if displayBold is true
-        if (params.data.displayBold) {
-          styles.fontWeight = 'bold';
-        }
-
-        return styles;
-      },
-    },
-    {
-      headerName: 'Rezultat',
-      editable: true,
-      headerClass: 'zwolnienia-grid-header',
-      width: 400,
-      cellDataType: 'text',
-      valueGetter: (params) => {
-        const company: Company = params.data;
-        let result = '';
-
-        if (
-          company.dctExemptionCapitalSource_____C === 'TAK' &&
-          company.dctExemptionCapitalSource_____C ===
-          company.dctExemptionOtherSources______D
-        ) {
-          result =
-            'Podmiot zwolniony z obowiązku DCT (zwolnienie krajowe) - wszystkie źródła.';
-        } else if (
-          company.dctExemptionCapitalSource_____C === 'TAK' &&
-          company.dctExemptionOtherSources______D === 'NIE'
-        ) {
-          result =
-            'Podmiot zwolniony z obowiązku DCT (zwolnienie krajowe) - źródło kapitałowe.';
-        } else if (
-          company.dctExemptionCapitalSource_____C === 'NIE' &&
-          company.dctExemptionOtherSources______D === 'TAK'
-        ) {
-          result =
-            'Podmiot zwolniony z obowiązku DCT (zwolnienie krajowe) - pozostałe źródła.';
-        } else if (
-          company.dctExemptionCapitalSource_____C === 'NIE' &&
-          company.dctExemptionOtherSources______D === 'NIE'
-        ) {
-          result = 'Podmiotowi nie przysługuje zwolnienie z obowiązku DCT.';
-        }
-
-        if (company.displayBold) {
-          result += '\nPodmiot zwolniony z obowiązku benchmarku.';
-        } else {
-          result +=
-            '\nPodmiotowi nie przysługuje zwolnienie z obowiązku benchmarku.';
-        }
-
-        return result;
-      },
-      // autoHeight: true,
-      cellStyle: (params) => {
-        const styles: any = {
-          whiteSpace: 'pre-wrap',
-          fontSize: '11px',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          textAlign: 'center',
-          lineHeight: 1.6,
-        };
-
-        // Set text color if displayColor is not 'none'
-        if (params.data.displayColor !== 'none') {
-          styles.color = params.data.displayColor;
-        }
-
-        // Set text to bold if displayBold is true
-        if (params.data.displayBold) {
-          styles.fontWeight = 'bold';
-        }
-
-        return styles;
-      },
-    },
-    // The fields that remain commented out are not used in the current implementation for visual reasons. But they are used in the original implementation.
-
-    // {
-    //   field: 'dctExemptionAllSources________B',
-    //   headerName:
-    //     'Zwolnienie z obowiązku DCT (zwolnienie krajowe) - wszystkie źródła',
-    //   editable: false,
-    //   cellEditor: 'agSelectCellEditor',
-    //   cellEditorParams: { values: ['TAK', 'NIE'] },
-    // },
-    // {
-    //   field: 'dctExemptionCapitalSource_____C',
-    //   headerName:
-    //     'Zwolnienie z obowiązku DCT (zwolnienie krajowe) - źródło kapitałowe',
-    //   editable: false,
-    //   cellEditor: 'agSelectCellEditor',
-    //   cellEditorParams: { values: ['TAK', 'NIE'] },
-    // },
-    // {
-    //   field: 'dctExemptionOtherSources______D',
-    //   headerName:
-    //     'Zwolnienie z obowiązku DCT (zwolnienie krajowe) - pozostałe źródła',
-    //   editable: false,
-    //   cellEditor: 'agSelectCellEditor',
-    //   cellEditorParams: { values: ['TAK', 'NIE'] },
-    // },
-    // {
-    //   field: 'benchmarkExemptionSmallMicro__E',
-    //   headerName: 'Zwolnienie z obowiązku benchmarku - mały/mikro',
-    //   editable: false,
-    //   cellEditor: 'agSelectCellEditor',
-    //   cellEditorParams: { values: ['TAK', 'NIE'] },
-    // },
-    // {
-    //   field: 'masterFileObligation___________F',
-    //   headerName: 'Obowiązek master file',
-    //   editable: false,
-    //   cellEditor: 'agSelectCellEditor',
-    //   cellEditorParams: { values: ['TAK', 'NIE'] },
-    // },
-    // {
-    //   field: 'covidExemption_________________G',
-    //   headerName: 'Zwolnienie tzw. covidove',
-    //   editable: false,
-    //   cellEditor: 'agSelectCellEditor',
-    //   cellEditorParams: { values: ['TAK', 'NIE'] },
-    // },
-    {
-      field: 'taxProfitLossCapitalSources2023_H',
-      headerName: 'Zysk/Strata PODATKOWA w 2023 r. ZE ŹRÓDEŁ KAPITAŁOWYCH',
-      editable: true,
-      headerClass: 'zwolnienia-grid-header',
-      cellDataType: 'number',
-    },
-    {
-      field: 'taxProfitLossOtherSources2023__I',
-      headerName: 'Zysk/Strata PODATKOWA w 2023 r. Z INNYCH ŹRÓDEŁ',
-      editable: true,
-      headerClass: 'zwolnienia-grid-header',
-      cellDataType: 'number',
-    },
-    {
-      field: 'pitCITExemption2023____________J',
-      headerName:
-        'Czy podmiot/spółka korzystał/a w 2023 ze zwolnień z PIT/CIT: 1) podmiotowych lub 2) dla SSE/Polskiej Strefy Inwestycji',
-      editable: true,
-      headerClass: 'zwolnienia-grid-header',
-      cellEditor: 'agSelectCellEditor',
-      cellEditorParams: {values: ['TAK', 'NIE']},
-      cellDataType: 'text',
-    },
-    {
-      field: 'consolidationReport____________K',
-      headerName: 'Czy sprawozdanie podlega konsolidacji',
-      editable: true,
-      headerClass: 'zwolnienia-grid-header',
-      cellEditor: 'agSelectCellEditor',
-      cellEditorParams: {values: ['TAK', 'NIE']},
-      cellDataType: 'text',
-    },
-    {
-      field: 'consolidatedRevenue2022________L',
-      headerName: 'Skonsolidowane przychody grupy w 2022',
-      editable: true,
-      headerClass: 'zwolnienia-grid-header',
-      cellDataType: 'number',
-    },
-    {
-      field: 'averageEmployment2022__________M',
-      headerName: 'Średnioroczne zatrudnienie w 2022',
-      editable: true,
-      headerClass: 'zwolnienia-grid-header',
-      cellDataType: 'number',
-    },
-    // {
-    //   field: 'netAnnualTurnover2022__________N',
-    //   headerName:
-    //     'Roczny obrót netto ze sprzedaży towarów, wyrobów i usług oraz z operacji finansowych 2022',
-    //   editable: false,
-    // },
-    {
-      field: 'totalAssets2022________________O',
-      headerName: 'suma aktywów 2022',
-      editable: true,
-      headerClass: 'zwolnienia-grid-header',
-      cellDataType: 'number',
-    },
-    // {
-    //   field: 'employmentBelow10______________P',
-    //   headerName: 'Zatrudnienie poniżej 10 osób',
-    //   editable: false,
-    //   cellEditor: 'agSelectCellEditor',
-    //   cellEditorParams: { values: ['TAK', 'NIE'] },
-    // },
-    // {
-    //   field: 'turnoverBelow2M_EUR____________Q',
-    //   headerName: 'Obroty poniżej 2 mln EUR',
-    //   editable: false,
-    //   cellEditor: 'agSelectCellEditor',
-    //   cellEditorParams: { values: ['TAK', 'NIE'] },
-    // },
-    // {
-    //   field: 'totalAssetsBelow2M_EUR_________R',
-    //   headerName: 'Suma bilansowa poniżej 2 mln EUR',
-    //   editable: false,
-    //   cellEditor: 'agSelectCellEditor',
-    //   cellEditorParams: { values: ['TAK', 'NIE'] },
-    // },
-    // {
-    //   field: 'qualification__________________S',
-    //   headerName: 'Kwalifikacja',
-    //   editable: false,
-    //   cellEditor: 'agSelectCellEditor',
-    //   cellEditorParams: { values: ['TAK', 'NIE'] },
-    // },
-    // {
-    //   field: 'employmentBelow50______________T',
-    //   headerName: 'Zatrudnienie poniżej 50 osób',
-    //   editable: false,
-    //   cellEditor: 'agSelectCellEditor',
-    //   cellEditorParams: { values: ['TAK', 'NIE'] },
-    // },
-    // {
-    //   field: 'turnoverBelow10M_EUR___________U',
-    //   headerName: 'Obroty poniżej 10 mln EUR',
-    //   editable: false,
-    //   cellEditor: 'agSelectCellEditor',
-    //   cellEditorParams: { values: ['TAK', 'NIE'] },
-    // },
-    // {
-    //   field: 'totalAssetsBelow10M_EUR________V',
-    //   headerName: 'Suma bilansowa poniżej 10 mlnEUR',
-    //   editable: false,
-    //   cellEditor: 'agSelectCellEditor',
-    //   cellEditorParams: { values: ['TAK', 'NIE'] },
-    // },
-    // {
-    //   field: 'qualification__________________W',
-    //   headerName: 'Kwalifikacja',
-    //   editable: false,
-    //   cellEditor: 'agSelectCellEditor',
-    //   cellEditorParams: { values: ['TAK', 'NIE'] },
-    // },
-    {
-      field: 'totalRevenue2022_______________X',
-      headerName: 'Przychody razem 2022',
-      editable: true,
-      headerClass: 'zwolnienia-grid-header',
-      cellDataType: 'number',
-    },
-    {
-      field: 'totalRevenue2023_______________Y',
-      headerName: 'Przychody razem 2023',
-      editable: true,
-      headerClass: 'zwolnienia-grid-header',
-      cellDataType: 'number',
-    },
-  ];
 }
