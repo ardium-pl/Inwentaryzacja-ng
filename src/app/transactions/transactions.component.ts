@@ -1,5 +1,5 @@
-import { Component, input, inject, computed } from '@angular/core';
-import { AgGridAngular } from 'ag-grid-angular'; // Angular Data Grid Component
+import {Component, input, inject, computed} from '@angular/core';
+import {AgGridAngular} from 'ag-grid-angular'; // Angular Data Grid Component
 import {
   ColDef,
   CellValueChangedEvent,
@@ -7,14 +7,14 @@ import {
   GridReadyEvent,
   RowStyle,
 } from 'ag-grid-community';
-import { Transaction } from '../transaction';
-import { TransactionDataStorageService } from '../transaction-data-storage.service';
-import { DefaultValuesService } from '../default-values.service';
-import { CompanyDataStorageService } from '../company-data-storage.service';
+import {Transaction} from '../transaction';
+import {TransactionDataStorageService} from '../transaction-data-storage.service';
+import {DefaultValuesService} from '../default-values.service';
+import {CompanyDataStorageService} from '../company-data-storage.service';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-quartz.css';
-import { ColorToggleComponent } from '../color-toggle/color-toggle.component';
-import { ColumnDefService } from './col-defs';
+import {ColorToggleComponent} from '../color-toggle/color-toggle.component';
+import {ColumnDefService} from './col-defs';
 
 @Component({
   selector: 'app-transactions',
@@ -67,7 +67,7 @@ export class TransactionsComponent {
 
     // Update homogeneousTransactionValue based on the selection group sums
     return transactions.map((transaction) => {
-      const updatedTransaction = { ...transaction };
+      const updatedTransaction = {...transaction};
 
       // If transaction.selection !== 'none' (if transaction is marked with color) set transaction.homogeneousTransactionValue to be the sum
       if (transaction.selection !== 'none') {
@@ -122,7 +122,7 @@ export class TransactionsComponent {
         (transaction) =>
           transaction.selection !== 'none' &&
           transaction.homogeneousTransactionValue >
-            minSignificanceLimitMap.get(transaction.selection)!
+          minSignificanceLimitMap.get(transaction.selection)!
       );
     }
 
@@ -195,7 +195,7 @@ export class TransactionsComponent {
         ? limit
         : this.transactionDataStorageService.INNA_LIMIT;
 
-    // Update the transactions data stored in a signal wthin a service.
+    // Update the transactions data stored in a signal within a service.
     this.transactionDataStorageService.updateTransactions(updatedTransaction);
   }
 
@@ -229,7 +229,7 @@ export class TransactionsComponent {
   // Apply background color for the selected row
   getRowStyle = (params: any): RowStyle | undefined => {
     if (params.data.selection !== 'none') {
-      return { backgroundColor: params.data.selection };
+      return {backgroundColor: params.data.selection};
     }
     return undefined;
   };
