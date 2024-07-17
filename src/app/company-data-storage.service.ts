@@ -17,9 +17,6 @@ export class CompanyDataStorageService {
 
   readonly companies = signal<Company[]>([]);
 
-  // Kurs bedzie wykorzystany jak zrobimy prawdilowa funkcje do formul
-  kursEURO = 4.25;
-
   setCompanies(companies: Company[]) {
     this.companies.set(companies);
   }
@@ -176,6 +173,9 @@ export class CompanyDataStorageService {
 
   applyCellFormulas(inputCompany: Company): Company {
     const resultCompany = { ...inputCompany };
+
+    // Zakładamy, że default values w kolumnach numerycznych to 0, a w kolumanach text/boolean - "NIE".
+    // Z tego względu przeczenie isEmpty zawsze będzie prawdziwe
     const PUSTA = 'NIE';
     const KURS_EURO = 4.25;
 
@@ -190,9 +190,11 @@ export class CompanyDataStorageService {
     cell_T(resultCompany);
     cell_U(resultCompany);
     cell_V(resultCompany);
+    cell_W(resultCompany);
     cell_P(resultCompany);
     cell_Q(resultCompany);
     cell_R(resultCompany);
+    cell_S(resultCompany);
     cell_E(resultCompany);
 
     // Cell functions
@@ -416,6 +418,3 @@ export class CompanyDataStorageService {
     return resultCompany;
   }
 }
-
-// Zakładamy, że defaul values w kolumnach numerycznych to 0, a w kolumanach text/boolean - "NIE".
-// Z tego względu przeczenie isEmpty zawsze będzie prawdziwe

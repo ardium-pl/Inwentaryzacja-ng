@@ -363,12 +363,16 @@ export class InputPageComponent {
         })
       );
 
-      companies = companies.map((company) =>
-        this.companyDataStorageService.applyCellFormulas(company)
-      );
-      this.companyDataStorageService.setCompanies(companies);
+      // Set up transactions signal
       this.transactionDataStorageService.setTransactions(this.transactions);
       this.transactionDataStorageService.setAllTransactionLimits();
+      // Set up companies signal
+      this.companyDataStorageService.setCompanies(companies);
+      // Conduct Analiza zwolnień and apply font styling to companies & transactions
+      companies.forEach((inputCompany) =>
+        this.companyDataStorageService.updateCompanies(inputCompany)
+      );
+
       this.router.navigate(['/material-tabs-test']);
     } else {
       // console.log('No data to analyze');
