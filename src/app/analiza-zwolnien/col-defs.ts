@@ -227,12 +227,14 @@ export class ColumnDefService {
       headerClass: 'zwolnienia-grid-header',
       cellDataType: 'number',
     },
-    // {
-    //   field: 'netAnnualTurnover2022__________N',
-    //   headerName:
-    //     'Roczny obrót netto ze sprzedaży towarów, wyrobów i usług oraz z operacji finansowych 2022',
-    //   editable: false,
-    // },
+    {
+      field: 'netAnnualTurnover2022__________N',
+      headerName:
+        'Roczny obrót netto ze sprzedaży towarów, wyrobów i usług oraz z operacji finansowych 2022',
+      editable: true,
+      headerClass: 'zwolnienia-grid-header',
+      cellDataType: 'number',
+    },
     {
       field: 'totalAssets2022________________O',
       headerName: 'suma aktywów 2022',
