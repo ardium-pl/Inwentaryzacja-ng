@@ -4,6 +4,11 @@ The selected color is then used to highlight the selected transaction in the tra
 
 
 <div class="color-picker">
+
+   <button class="btn btn-light btn-sm trash-btn" (click)="clearAllColors()">
+    🗑️
+  </button> 
+
   <button class="btn btn-light color-button" (click)="toggleColorMenu()">
     <span class="color-swatch"
           [style.backgroundColor]="transactionDataStorageService.currentSelection() || '#ffffff'"></span>
@@ -17,7 +22,4 @@ The selected color is then used to highlight the selected transaction in the tra
     </div>
   </div>
 
-  <button class="btn btn-light btn-sm trash-btn" (click)="clearAllColors()">
-    🗑️
-  </button>
 </div>

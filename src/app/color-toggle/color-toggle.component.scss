@@ -1,8 +1,3 @@
-/**
- * Styles for the color picker component, including the color options and the clear button.
- */
-
-
 .color-picker {
   position: relative;
   display: flex;
@@ -22,8 +17,7 @@
 
 .color-menu {
   position: absolute;
-  bottom: 100%; /* Zmienione z top na bottom dla efektu drop-up */
-  left: 0;
+  left: 105%;
   z-index: 1000;
   display: none;
   background-color: #fff;
