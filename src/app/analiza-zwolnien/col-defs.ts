@@ -33,6 +33,18 @@ export class ColumnDefService {
 
       return styles;
     },
+    cellRenderer: (params: any) => {
+      if (params.colDef.cellDataType === 'number' && params.value === null) {
+        return this.defaultValues.COMPANY_DATA_PLACEHOLDER_NUMERIC;
+      } else if (
+        params.colDef.cellDataType === 'text' &&
+        params.value === null
+      ) {
+        return this.defaultValues.COMPANY_DATA_PLACEHOLDER_BOOLEAN;
+      } else {
+        return params.value;
+      }
+    },
   };
 
   // Column definitions for AG Grid

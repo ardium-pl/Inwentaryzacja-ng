@@ -42,17 +42,20 @@ export class AnalizaZwolnienComponent {
   onCellValueChanged(event: CellValueChangedEvent) {
     // Get the changed row.
     const updatedCompany = event.data;
+    // console.log(`New value: ${event.newValue}.`);
+    // console.log(`Old value: ${event.oldValue}.`);
+    // console.log(updatedCompany);
 
     // In case user deleted all cell content - assign a default value
-    if (event.newValue === null) {
-      if (event.colDef.cellDataType === 'number') {
-        updatedCompany[event.colDef.field!] =
-          this.defaultValues.NO_CONTENT_AFTER_EDIT_NUMERIC;
-      } else if (event.colDef.cellDataType === 'text') {
-        updatedCompany[event.colDef.field!] =
-          this.defaultValues.NO_CONTENT_AFTER_EDIT_TEXT;
-      }
-    }
+    // if (event.newValue === null) {
+    //   if (event.colDef.cellDataType === 'number') {
+    //     updatedCompany[event.colDef.field!] =
+    //       this.defaultValues.NO_CONTENT_AFTER_EDIT_NUMERIC;
+    //   } else if (event.colDef.cellDataType === 'text') {
+    //     updatedCompany[event.colDef.field!] =
+    //       this.defaultValues.NO_CONTENT_AFTER_EDIT_TEXT;
+    //   }
+    // }
 
     // Update the comapnies data stored in a signal wthin a service.
     this.companyDataStorageService.updateCompanies(updatedCompany);

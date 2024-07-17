@@ -1,24 +1,21 @@
-import {Component, inject} from '@angular/core';
-import {Router} from '@angular/router';
-import {TransactionDataStorageService} from '../transaction-data-storage.service';
-import {CompanyDataStorageService} from '../company-data-storage.service';
-import {DefaultValuesService} from '../default-values.service';
-import {Transaction} from '../transaction';
-import {Company} from '../company';
-import {parse} from 'csv-parse/browser/esm';
-import {ColorToggleComponent} from "../color-toggle/color-toggle.component";
-import {NgIf} from "@angular/common"; // Import parsera CSV
-import {FooterService} from "../footer.service";
+import { Component, inject } from '@angular/core';
+import { Router } from '@angular/router';
+import { TransactionDataStorageService } from '../transaction-data-storage.service';
+import { CompanyDataStorageService } from '../company-data-storage.service';
+import { DefaultValuesService } from '../default-values.service';
+import { Transaction } from '../transaction';
+import { Company } from '../company';
+import { parse } from 'csv-parse/browser/esm';
+import { ColorToggleComponent } from '../color-toggle/color-toggle.component';
+import { NgIf } from '@angular/common'; // Import parsera CSV
+import { FooterService } from '../footer.service';
 
 @Component({
   selector: 'app-input-page',
   standalone: true,
   templateUrl: './input-page.component.html',
   styleUrls: ['./input-page.component.scss'],
-  imports: [
-    ColorToggleComponent,
-    NgIf
-  ]
+  imports: [ColorToggleComponent, NgIf],
 })
 export class InputPageComponent {
   readonly transactionDataStorageService = inject(
@@ -37,7 +34,7 @@ export class InputPageComponent {
   manualAnalysisRequired: boolean = false;
 
   onPaste(event: ClipboardEvent): void {
-    const {clipboardData} = event;
+    const { clipboardData } = event;
     const pastedText = clipboardData?.getData('text') || '';
     this.processDataPasted(pastedText);
     this.manualAnalysisRequired = true;
@@ -152,7 +149,7 @@ export class InputPageComponent {
             parseFloat(
               record[
                 'Wartość netto świadczeń zrealizowanych w danym roku/Wartość najwyższego udostępnionego w roku podatkowym kapitału'
-                ]
+              ]
             ) || this.defaultValues.NO_DATA_NUMERIC,
           currency: record['Waluta'] || this.defaultValues.NO_DATA,
           loanDate:
@@ -167,11 +164,11 @@ export class InputPageComponent {
             this.defaultValues.NO_DATA,
           significanceLimit: 0,
           homogeneousTransactionValue:
-          // Defaultowo to samo co w kolumnie "netValue"
+            // Defaultowo to samo co w kolumnie "netValue"
             parseFloat(
               record[
                 'Wartość netto świadczeń zrealizowanych w danym roku/Wartość najwyższego udostępnionego w roku podatkowym kapitału'
-                ]
+              ]
             ) || this.defaultValues.NO_DATA_NUMERIC,
           taxExemption: record['Zwolnienie art. 11n CIT'] || 'NIE',
           documentationRequirement: record['Obowiązek dokumentacji'] || 'NIE',
@@ -244,13 +241,15 @@ export class InputPageComponent {
         buyerName: columns[3] || this.defaultValues.NO_DATA,
         transactionType: columns[4] || this.defaultValues.NO_TRANSACTION_DATA,
         transactionSubject: columns[5] || this.defaultValues.NO_DATA,
-        netValue: this.parseValue(columns[6]) || this.defaultValues.NO_DATA_NUMERIC,
+        netValue:
+          this.parseValue(columns[6]) || this.defaultValues.NO_DATA_NUMERIC,
         currency: columns[7] || this.defaultValues.NO_DATA,
         loanDate: columns[8] || this.defaultValues.NO_DATA,
         interestRate: Number(columns[9]) || this.defaultValues.NO_DATA_NUMERIC,
         repaymentDate: columns[10] || this.defaultValues.NO_DATA,
         significanceLimit: this.parseValue(columns[11]),
-        homogeneousTransactionValue: this.parseValue(columns[12]) || this.defaultValues.NO_DATA_NUMERIC,
+        homogeneousTransactionValue:
+          this.parseValue(columns[12]) || this.defaultValues.NO_DATA_NUMERIC,
         taxExemption: columns[13] || 'NIE',
         documentationRequirement: columns[14] || 'NIE',
         benchmarkRequirement: columns[15] || 'NIE',
@@ -285,13 +284,15 @@ export class InputPageComponent {
         buyerName: columns[3] || this.defaultValues.NO_DATA,
         transactionType: columns[4] || this.defaultValues.NO_TRANSACTION_DATA,
         transactionSubject: columns[5] || this.defaultValues.NO_DATA,
-        netValue: this.parseValue(columns[6]) || this.defaultValues.NO_DATA_NUMERIC,
+        netValue:
+          this.parseValue(columns[6]) || this.defaultValues.NO_DATA_NUMERIC,
         currency: columns[7] || this.defaultValues.NO_DATA,
         loanDate: columns[8] || this.defaultValues.NO_DATA,
         interestRate: Number(columns[9]) || this.defaultValues.NO_DATA_NUMERIC,
         repaymentDate: columns[10] || this.defaultValues.NO_DATA,
         significanceLimit: this.parseValue(columns[11]),
-        homogeneousTransactionValue: this.parseValue(columns[12]) || this.defaultValues.NO_DATA_NUMERIC,
+        homogeneousTransactionValue:
+          this.parseValue(columns[12]) || this.defaultValues.NO_DATA_NUMERIC,
         taxExemption: columns[13] || 'NIE',
         documentationRequirement: columns[14] || 'NIE',
         benchmarkRequirement: columns[15] || 'NIE',
@@ -312,7 +313,6 @@ export class InputPageComponent {
     return value ? parseFloat(value.replace(/\s/g, '').replace(',', '.')) : 0;
   }
 
-
   analyzeData(): void {
     if (this.transactions.length > 0) {
       // console.log('Analyzing data...');
@@ -330,6 +330,7 @@ export class InputPageComponent {
 
       // Create Company objects for each unique company name
       let companyId = 1;
+      // Editable properties set to NO_COMPANY_DATA (currently null)
       let companies: Company[] = Array.from(uniqueCompanyNames).map(
         (companyName) => ({
           companyId: companyId++,
@@ -338,16 +339,16 @@ export class InputPageComponent {
           dctExemptionCapitalSource_____C: 'NIE',
           dctExemptionOtherSources______D: 'NIE',
           benchmarkExemptionSmallMicro__E: 'NIE',
-          masterFileObligation___________F: 'NIE',
+          masterFileObligation___________F: this.defaultValues.NO_COMPANY_DATA,
           covidExemption_________________G: 'NIE',
-          taxProfitLossCapitalSources2023_H: 0,
-          taxProfitLossOtherSources2023__I: 0,
-          pitCITExemption2023____________J: 'NIE',
-          consolidationReport____________K: 'NIE',
-          consolidatedRevenue2022________L: 0,
-          averageEmployment2022__________M: 0,
-          netAnnualTurnover2022__________N: 0,
-          totalAssets2022________________O: 0,
+          taxProfitLossCapitalSources2023_H: this.defaultValues.NO_COMPANY_DATA,
+          taxProfitLossOtherSources2023__I: this.defaultValues.NO_COMPANY_DATA,
+          pitCITExemption2023____________J: this.defaultValues.NO_COMPANY_DATA,
+          consolidationReport____________K: this.defaultValues.NO_COMPANY_DATA,
+          consolidatedRevenue2022________L: this.defaultValues.NO_COMPANY_DATA,
+          averageEmployment2022__________M: this.defaultValues.NO_COMPANY_DATA,
+          netAnnualTurnover2022__________N: this.defaultValues.NO_COMPANY_DATA,
+          totalAssets2022________________O: this.defaultValues.NO_COMPANY_DATA,
           employmentBelow10______________P: 'NIE',
           turnoverBelow2M_EUR____________Q: 'NIE',
           totalAssetsBelow2M_EUR_________R: 'NIE',
@@ -356,8 +357,8 @@ export class InputPageComponent {
           turnoverBelow10M_EUR___________U: 'NIE',
           totalAssetsBelow10M_EUR________V: 'NIE',
           qualification__________________W: 'NIE',
-          totalRevenue2022_______________X: 0,
-          totalRevenue2023_______________Y: 0,
+          totalRevenue2022_______________X: this.defaultValues.NO_COMPANY_DATA,
+          totalRevenue2023_______________Y: this.defaultValues.NO_COMPANY_DATA,
           displayColor: 'none',
           displayBold: false,
         })
@@ -383,6 +384,5 @@ export class InputPageComponent {
     return this.transactions.length > 0;
   }
 
-  constructor() {
-  }
+  constructor() {}
 }

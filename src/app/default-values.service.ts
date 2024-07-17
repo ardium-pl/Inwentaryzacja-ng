@@ -15,6 +15,9 @@ export class DefaultValuesService {
   NO_DATA: string = 'Brak wartości wejściowej';
   NO_TRANSACTION_DATA: string = 'Brak nazwy transakcji';
   NO_DATA_NUMERIC: number = NaN;
+  NO_COMPANY_DATA: null = null;
+  COMPANY_DATA_PLACEHOLDER_NUMERIC: string = '-';
+  COMPANY_DATA_PLACEHOLDER_BOOLEAN: string = 'Wybierz wartość';
   NO_CONTENT_AFTER_EDIT_NUMERIC: number = 0; // Replaces null
   NO_CONTENT_AFTER_EDIT_TEXT: string = 'Brak wartości wejściowej'; // Replaces null
   //

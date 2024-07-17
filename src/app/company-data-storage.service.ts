@@ -147,29 +147,29 @@ export class CompanyDataStorageService {
   }
 
   // For testing purposes
-  applyCellFormulas2(inputCompany: Company): Company {
-    const resultCompany = { ...inputCompany };
+  // applyCellFormulas2(inputCompany: Company): Company {
+  //   const resultCompany = { ...inputCompany };
 
-    if (resultCompany.consolidationReport____________K === 'TAK') {
-      resultCompany.dctExemptionCapitalSource_____C = 'TAK';
-    } else {
-      resultCompany.dctExemptionCapitalSource_____C = 'NIE';
-    }
+  //   if (resultCompany.consolidationReport____________K === 'TAK') {
+  //     resultCompany.dctExemptionCapitalSource_____C = 'TAK';
+  //   } else {
+  //     resultCompany.dctExemptionCapitalSource_____C = 'NIE';
+  //   }
 
-    if (resultCompany.taxProfitLossOtherSources2023__I > 0) {
-      resultCompany.dctExemptionOtherSources______D = 'TAK';
-    } else {
-      resultCompany.dctExemptionOtherSources______D = 'NIE';
-    }
+  //   if (resultCompany.taxProfitLossOtherSources2023__I > 0) {
+  //     resultCompany.dctExemptionOtherSources______D = 'TAK';
+  //   } else {
+  //     resultCompany.dctExemptionOtherSources______D = 'NIE';
+  //   }
 
-    if (resultCompany.taxProfitLossCapitalSources2023_H > 0) {
-      resultCompany.benchmarkExemptionSmallMicro__E = 'TAK';
-    } else {
-      resultCompany.benchmarkExemptionSmallMicro__E = 'NIE';
-    }
+  //   if (resultCompany.taxProfitLossCapitalSources2023_H > 0) {
+  //     resultCompany.benchmarkExemptionSmallMicro__E = 'TAK';
+  //   } else {
+  //     resultCompany.benchmarkExemptionSmallMicro__E = 'NIE';
+  //   }
 
-    return resultCompany;
-  }
+  //   return resultCompany;
+  // }
 
   applyCellFormulas(inputCompany: Company): Company {
     const resultCompany = { ...inputCompany };
@@ -204,14 +204,14 @@ export class CompanyDataStorageService {
       } else if (
         (!isEmpty(inputCompany.taxProfitLossCapitalSources2023_H) &&
           inputCompany.pitCITExemption2023____________J === 'NIE' &&
-          inputCompany.taxProfitLossCapitalSources2023_H > 0) ||
+          inputCompany.taxProfitLossCapitalSources2023_H! > 0) ||
         (inputCompany.pitCITExemption2023____________J === 'NIE' &&
           inputCompany.covidExemption_________________G === 'TAK')
       ) {
         inputCompany.dctExemptionCapitalSource_____C = 'TAK';
       } else if (
         !isEmpty(inputCompany.taxProfitLossCapitalSources2023_H) &&
-        inputCompany.taxProfitLossCapitalSources2023_H < 0
+        inputCompany.taxProfitLossCapitalSources2023_H! < 0
       ) {
         inputCompany.dctExemptionCapitalSource_____C = 'NIE';
       } else {
@@ -225,14 +225,14 @@ export class CompanyDataStorageService {
       } else if (
         (!isEmpty(inputCompany.taxProfitLossOtherSources2023__I) &&
           inputCompany.pitCITExemption2023____________J === 'NIE' &&
-          inputCompany.taxProfitLossOtherSources2023__I > 0) ||
+          inputCompany.taxProfitLossOtherSources2023__I! > 0) ||
         (inputCompany.pitCITExemption2023____________J === 'NIE' &&
           inputCompany.covidExemption_________________G === 'TAK')
       ) {
         inputCompany.dctExemptionOtherSources______D = 'TAK';
       } else if (
         !isEmpty(inputCompany.taxProfitLossOtherSources2023__I) &&
-        inputCompany.taxProfitLossOtherSources2023__I < 0
+        inputCompany.taxProfitLossOtherSources2023__I! < 0
       ) {
         inputCompany.dctExemptionOtherSources______D = 'NIE';
       } else {
@@ -259,12 +259,12 @@ export class CompanyDataStorageService {
     function cell_F(inputCompany: Company): void {
       if (
         inputCompany.consolidationReport____________K === 'TAK' &&
-        inputCompany.consolidatedRevenue2022________L > 200000000
+        inputCompany.consolidatedRevenue2022________L! > 200000000
       ) {
         inputCompany.masterFileObligation___________F = 'TAK';
       } else if (
         inputCompany.consolidationReport____________K === 'NIE' ||
-        inputCompany.consolidatedRevenue2022________L <= 200000000
+        inputCompany.consolidatedRevenue2022________L! <= 200000000
       ) {
         inputCompany.masterFileObligation___________F = 'NIE';
       } else {
@@ -276,9 +276,9 @@ export class CompanyDataStorageService {
       if (
         !isEmpty(inputCompany.totalRevenue2022_______________X) &&
         !isEmpty(inputCompany.totalRevenue2023_______________Y) &&
-        inputCompany.totalRevenue2022_______________X -
-          inputCompany.totalRevenue2023_______________Y >=
-          inputCompany.totalRevenue2022_______________X * 0.5
+        inputCompany.totalRevenue2022_______________X! -
+          inputCompany.totalRevenue2023_______________Y! >=
+          inputCompany.totalRevenue2022_______________X! * 0.5
       ) {
         inputCompany.covidExemption_________________G = 'TAK';
       } else if (
@@ -293,7 +293,7 @@ export class CompanyDataStorageService {
 
     function cell_P(inputCompany: Company): void {
       if (!isEmpty(inputCompany.averageEmployment2022__________M)) {
-        if (inputCompany.averageEmployment2022__________M < 10) {
+        if (inputCompany.averageEmployment2022__________M! < 10) {
           inputCompany.employmentBelow10______________P = 'TAK';
         } else {
           inputCompany.employmentBelow10______________P = 'NIE';
@@ -306,7 +306,7 @@ export class CompanyDataStorageService {
     function cell_Q(inputCompany: Company): void {
       if (!isEmpty(inputCompany.netAnnualTurnover2022__________N)) {
         if (
-          inputCompany.netAnnualTurnover2022__________N / KURS_EURO <
+          inputCompany.netAnnualTurnover2022__________N! / KURS_EURO <
           2000000
         ) {
           inputCompany.turnoverBelow2M_EUR____________Q = 'TAK';
@@ -321,7 +321,7 @@ export class CompanyDataStorageService {
     function cell_R(inputCompany: Company): void {
       if (!isEmpty(inputCompany.totalAssets2022________________O)) {
         if (
-          inputCompany.totalAssets2022________________O / KURS_EURO <
+          inputCompany.totalAssets2022________________O! / KURS_EURO <
           2000000
         ) {
           inputCompany.totalAssetsBelow2M_EUR_________R = 'TAK';
@@ -353,7 +353,7 @@ export class CompanyDataStorageService {
 
     function cell_T(inputCompany: Company): void {
       if (!isEmpty(inputCompany.averageEmployment2022__________M)) {
-        if (inputCompany.averageEmployment2022__________M < 50) {
+        if (inputCompany.averageEmployment2022__________M! < 50) {
           inputCompany.employmentBelow50______________T = 'TAK';
         } else {
           inputCompany.employmentBelow50______________T = 'NIE';
@@ -366,7 +366,7 @@ export class CompanyDataStorageService {
     function cell_U(inputCompany: Company): void {
       if (!isEmpty(inputCompany.netAnnualTurnover2022__________N)) {
         if (
-          inputCompany.netAnnualTurnover2022__________N / KURS_EURO <
+          inputCompany.netAnnualTurnover2022__________N! / KURS_EURO <
           10000000
         ) {
           inputCompany.turnoverBelow10M_EUR___________U = 'TAK';
@@ -381,7 +381,7 @@ export class CompanyDataStorageService {
     function cell_V(inputCompany: Company): void {
       if (!isEmpty(inputCompany.totalAssets2022________________O)) {
         if (
-          inputCompany.totalAssets2022________________O / KURS_EURO <
+          inputCompany.totalAssets2022________________O! / KURS_EURO <
           10000000
         ) {
           inputCompany.totalAssetsBelow10M_EUR________V = 'TAK';
