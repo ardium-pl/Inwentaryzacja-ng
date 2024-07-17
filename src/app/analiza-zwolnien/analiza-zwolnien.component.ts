@@ -7,7 +7,6 @@ import { DefaultValuesService } from '../default-values.service';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-quartz.css';
 import { ColumnDefService } from './col-defs';
-import { FooterService } from '../footer.service';
 
 @Component({
   selector: 'app-analiza-zwolnien',
@@ -27,8 +26,6 @@ export class AnalizaZwolnienComponent {
 
   readonly columnDefService = inject(ColumnDefService);
 
-  readonly footerService = inject(FooterService);
-
   readonly companies = computed(() =>
     this.companyDataStorageService.companies()
   );
@@ -41,10 +38,6 @@ export class AnalizaZwolnienComponent {
 
   // Column definitions for AG Grid
   colDefs: ColDef[] = this.columnDefService.colDefs;
-
-  ngOnDestroy() {
-    this.footerService.displayFooter.set(true);
-  }
 
   onCellValueChanged(event: CellValueChangedEvent) {
     // Get the changed row.
