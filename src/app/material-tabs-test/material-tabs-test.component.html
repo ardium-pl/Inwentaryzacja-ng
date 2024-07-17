@@ -1,6 +1,6 @@
 <!-- TRANSACTION TABLES -->
-<mat-tab-group>
-  <mat-tab>
+<mat-tab-group (selectedTabChange)="onTabChange($event)">
+  <mat-tab label="Transactions MAIN">
     <ng-template mat-tab-label>
       <div class="permanent-tab">Transactions MAIN</div>
     </ng-template>
@@ -8,7 +8,7 @@
     <app-transactions [permanentTab]="PERMANENT_TAB_NAME1"></app-transactions>
   </mat-tab>
 
-  <mat-tab>
+  <mat-tab label="Obowiązki CT">
     <ng-template mat-tab-label>
       <div class="permanent-tab">Obowiązki CT</div>
     </ng-template>
@@ -16,7 +16,7 @@
     <app-transactions [permanentTab]="PERMANENT_TAB_NAME2"></app-transactions>
   </mat-tab>
 
-  <mat-tab>
+  <mat-tab label="Analiza zwolnień">
     <ng-template mat-tab-label>
       <div class="permanent-tab">Analiza zwolnień</div>
     </ng-template>

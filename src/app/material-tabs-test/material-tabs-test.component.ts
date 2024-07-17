@@ -1,9 +1,10 @@
 import { Component, inject, computed } from '@angular/core';
-import { MatTabsModule } from '@angular/material/tabs';
+import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
 import { TransactionsComponent } from '../transactions/transactions.component';
 import { TransactionDataStorageService } from '../transaction-data-storage.service';
 import { DefaultValuesService } from '../default-values.service';
 import { AnalizaZwolnienComponent } from '../analiza-zwolnien/analiza-zwolnien.component';
+import { FooterService } from '../footer.service';
 
 @Component({
   selector: 'app-material-tabs-test',
@@ -24,6 +25,8 @@ export class MaterialTabsTestComponent {
 
   readonly defaultValues = inject(DefaultValuesService);
 
+  readonly footerService = inject(FooterService);
+
   readonly transactions = computed(() =>
     this.transactionDataStorageService.transactions()
   );
@@ -43,6 +46,15 @@ export class MaterialTabsTestComponent {
 
     return Array.from(companies);
   });
+
+  // Trigger footer
+  onTabChange(event: MatTabChangeEvent): void {
+    if (event.tab.textLabel === 'Analiza zwolnień') {
+      this.footerService.displayFooter.set(false)
+    } else {
+      this.footerService.displayFooter.set(true);
+    }
+  }
 
   readonly PERMANENT_TAB_NAME1: string = 'Transactions MAIN';
   readonly PERMANENT_TAB_NAME2: string = 'Obowiązki CT';

@@ -7,6 +7,6 @@
   <app-home></app-home>
 </div>
 
-<div class="footer">
+<div class="footer" *ngIf="this.footerService.displayFooter()">
   <app-color-toggle></app-color-toggle>
 </div>
