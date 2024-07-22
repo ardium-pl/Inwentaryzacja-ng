@@ -20,7 +20,12 @@ export class ColumnDefService {
   // Default column definitions for text columns
   defaultTextColDef: ColDef = {
     cellStyle: (params: any) => {
-      const styles: any = {};
+      const styles: any = {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        textAlign: 'center',
+      };
 
       if (params.value === this.defaultValues.NO_DATA) {
         styles.color = 'red';
@@ -29,11 +34,9 @@ export class ColumnDefService {
       if (params.value === 'TAK') {
         styles.backgroundColor = 'lightgreen';
         styles.color = 'darkgreen';
-        styles.textAlign = 'center';
       } else if (params.value === 'NIE') {
         styles.backgroundColor = 'lightcoral';
         styles.color = 'darkred';
-        styles.textAlign = 'center';
       }
 
       return styles;
@@ -43,11 +46,18 @@ export class ColumnDefService {
   // Default column definitions for numeric columns
   defaultNumericColDef: ColDef = {
     cellStyle: (params: any) => {
+      const styles: any = {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        textAlign: 'center',
+      };
+
       if (isNaN(params.value)) {
-        return { color: 'red' };
-      } else {
-        return undefined;
+        styles.color = 'red';
       }
+
+      return styles;
     },
     cellRenderer: (params: any) =>
       isNaN(params.value) ? this.defaultValues.NO_DATA : params.value,
@@ -74,7 +84,12 @@ export class ColumnDefService {
       editable: false,
       cellDataType: 'text',
       cellStyle: (params) => {
-        const styles: any = {};
+        const styles: any = {
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          textAlign: 'center',
+        };
 
         // Set text color if displayColor_seller is not 'none'
         if (params.data.displayColor_seller !== 'none') {
@@ -87,7 +102,7 @@ export class ColumnDefService {
         }
 
         if (params.value === this.defaultValues.NO_DATA) {
-          return { color: 'red' };
+          styles.color = 'red';
         }
 
         return styles;
@@ -99,7 +114,12 @@ export class ColumnDefService {
       editable: false,
       cellDataType: 'text',
       cellStyle: (params) => {
-        const styles: any = {};
+        const styles: any = {
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          textAlign: 'center',
+        };
 
         // Set text color if displayColor_buyer is not 'none'
         if (params.data.displayColor_buyer !== 'none') {
@@ -112,7 +132,7 @@ export class ColumnDefService {
         }
 
         if (params.value === this.defaultValues.NO_DATA) {
-          return { color: 'red' };
+          styles.color = 'red';
         }
 
         return styles;
@@ -133,11 +153,19 @@ export class ColumnDefService {
         ],
       },
       cellStyle: (params: any) => {
+        const styles: any = {
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          textAlign: 'center',
+        };
+
         if (params.value === this.defaultValues.NO_TRANSACTION_DATA) {
-          return { color: 'red', fontWeight: 'bold' };
-        } else {
-          return undefined;
+          styles.color = 'red';
+          styles.fontWeight = 'bold';
         }
+
+        return styles;
       },
     },
     {
@@ -184,11 +212,19 @@ export class ColumnDefService {
       cellDataType: 'number',
       // ...this.defaultNumericColDef,
       cellStyle: (params: any) => {
+        const styles: any = {
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          textAlign: 'center',
+        };
+    
         if (isNaN(params.value)) {
-          return { color: 'red', fontWeight: 'bold' };
-        } else {
-          return undefined;
+          styles.color = 'red';
+          styles.fontWeight = 'bold';
         }
+
+        return styles
       },
       cellRenderer: (params: any) =>
         isNaN(params.value)

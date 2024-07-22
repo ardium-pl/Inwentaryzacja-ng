@@ -18,17 +18,17 @@ export class ColumnDefService {
     cellStyle: (params) => {
       const styles: any = {
         display: 'flex',
+        justifyContent: 'center',
         alignItems: 'center',
+        textAlign: 'center',
       };
 
       if (params.value === 'TAK') {
         styles.backgroundColor = 'lightgreen';
         styles.color = 'darkgreen';
-        styles.textAlign = 'center';
       } else if (params.value === 'NIE') {
         styles.backgroundColor = 'lightcoral';
         styles.color = 'darkred';
-        styles.textAlign = 'center';
       }
 
       return styles;
@@ -48,6 +48,7 @@ export class ColumnDefService {
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
+          textAlign: 'center',
         };
 
         // Set text color if displayColor is not 'none'
@@ -119,16 +120,6 @@ export class ColumnDefService {
           textAlign: 'center',
           lineHeight: 1.6,
         };
-
-        // Set text color if displayColor is not 'none'
-        if (params.data.displayColor !== 'none') {
-          styles.color = params.data.displayColor;
-        }
-
-        // Set text to bold if displayBold is true
-        if (params.data.displayBold) {
-          styles.fontWeight = 'bold';
-        }
 
         return styles;
       },
