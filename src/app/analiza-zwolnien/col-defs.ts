@@ -66,7 +66,7 @@ export class ColumnDefService {
     },
     {
       headerName: 'Rezultat',
-      editable: true,
+      editable: false,
       headerClass: 'zwolnienia-grid-header',
       width: 400,
       cellDataType: 'text',

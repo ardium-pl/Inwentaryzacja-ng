@@ -14,7 +14,6 @@ export class ColorToggleComponent {
     TransactionDataStorageService
   );
 
-  //@Output() clearColors = new EventEmitter<void>();#
   readonly clearColors = output<void>();
 
   readonly isColorMenuVisible = signal<boolean>(false);

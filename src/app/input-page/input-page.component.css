@@ -36,7 +36,7 @@ textarea {
   resize: none;
   transition: border-color 0.3s ease;
 }
-// changing the two componenets below to scss format disables its features
+
 textarea:focus {
   outline: none;
   border-color: #0056b3;
@@ -58,13 +58,13 @@ button {
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-
-  &:hover {
-    background-color: #003d82;
-  }
-
-  &:disabled {
-    background-color: #cccccc;
-    cursor: not-allowed;
-  }
 }
+button:hover {
+  background-color: #003d82;
+}
+button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+/*# sourceMappingURL=input-page.component.css.map */

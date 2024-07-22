@@ -141,6 +141,7 @@ export class ColumnDefService {
     {
       headerName: 'Rodzaj transakcji',
       field: 'transactionType',
+      width: 400,
       cellDataType: 'text',
       cellEditor: 'agSelectCellEditor',
       cellEditorParams: {
@@ -218,7 +219,7 @@ export class ColumnDefService {
           alignItems: 'center',
           textAlign: 'center',
         };
-    
+
         if (isNaN(params.value)) {
           styles.color = 'red';
           styles.fontWeight = 'bold';

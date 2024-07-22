@@ -3,66 +3,66 @@
   display: flex;
   gap: 10px;
   align-items: center;
-}
 
-.color-button {
-  display: flex;
-  align-items: center;
-  padding: 6px 12px;
-  border: 1px solid #ced4da;
-  border-radius: 4px;
-  background-color: #f8f9fa;
-  cursor: pointer;
-}
+  .color-button {
+    display: flex;
+    align-items: center;
+    padding: 6px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    background-color: #f8f9fa;
+    cursor: pointer;
+  }
 
-.color-menu {
-  position: absolute;
-  left: 105%;
-  z-index: 1000;
-  display: none;
-  background-color: #fff;
-  border: 1px solid #ced4da;
-  border-radius: 4px;
-  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* Cień zmieniony dla efektu drop-up */
-}
+  .color-menu {
+    position: absolute;
+    left: 105%;
+    z-index: 1000;
+    display: none;
+    background-color: #fff;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* Cień zmieniony dla efektu drop-up */
 
-.color-menu.show {
-  display: block;
-}
+    &.show {
+      display: block;
+    }
+  }
 
-.color-options-container {
-  display: flex;
-  flex-wrap: nowrap;
-  padding: 10px;
-  overflow-x: auto;
-}
+  .color-options-container {
+    display: flex;
+    flex-wrap: nowrap;
+    padding: 10px;
+    overflow-x: auto;
+  }
 
-.color-option {
-  background: none;
-  border: none;
-  padding: 0;
-  margin: 0 5px;
-  cursor: pointer;
-}
+  .color-option {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0 5px;
+    cursor: pointer;
+  }
 
-.color-swatch {
-  display: block;
-  width: 25px;
-  height: 25px;
-  border-radius: 50%;
-  border: 1px solid #ddd;
-}
+  .color-swatch {
+    display: block;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    border: 1px solid #ddd;
+  }
 
-.trash-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  font-size: 16px;
-  line-height: 1;
-  background-color: #f8f9fa;
-  border: 1px solid #ced4da;
-  cursor: pointer;
+  .trash-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 16px;
+    line-height: 1;
+    background-color: #f8f9fa;
+    border: 1px solid #ced4da;
+    cursor: pointer;
+  }
 }

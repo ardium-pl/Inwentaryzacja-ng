@@ -138,12 +138,6 @@ export class TransactionsComponent {
     // Get the changed row.
     const updatedTransaction: Transaction = event.data;
 
-    // console.log(`New value: ${event.newValue}.`);
-    // console.log(`Old value: ${event.oldValue}.`);
-    // console.log(`New value type: ${typeof event.newValue}.`);
-    // console.log(`Column type: ${event.colDef.cellDataType}.`);
-    // console.log(`Changed field: ${event.colDef.field}.`);
-    // console.log(updatedTransaction);
 
     // In case user deleted all cell content - assign a default value
     if (event.newValue === null) {
