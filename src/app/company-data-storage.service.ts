@@ -37,10 +37,7 @@ export class CompanyDataStorageService {
   passChangesToTransactions(styledCompany: Company) {
     // Update sellerName column styling
     this.transactions()
-      .filter(
-        (txn) =>
-          txn.sellerName === styledCompany.entityName____________________A
-      )
+      .filter((txn) => txn.sellerName === styledCompany.A_entityName)
       .forEach((txn) => {
         const updatedTransaction = { ...txn };
 
@@ -54,9 +51,7 @@ export class CompanyDataStorageService {
 
     // Update buyerName column styling
     this.transactions()
-      .filter(
-        (txn) => txn.buyerName === styledCompany.entityName____________________A
-      )
+      .filter((txn) => txn.buyerName === styledCompany.A_entityName)
       .forEach((txn) => {
         const updatedTransaction = { ...txn };
 
@@ -72,27 +67,27 @@ export class CompanyDataStorageService {
     this.transactions()
       .filter(
         (txn) =>
-          txn.buyerName === styledCompany.entityName____________________A ||
-          txn.sellerName === styledCompany.entityName____________________A
+          txn.buyerName === styledCompany.A_entityName ||
+          txn.sellerName === styledCompany.A_entityName
       )
       .forEach((txn) => {
         const updatedTransaction = { ...txn };
 
         // Update benchmarkRequirement column value
         updatedTransaction.benchmarkRequirement =
-          styledCompany.benchmarkExemptionSmallMicro__E;
+          styledCompany.E_benchmarkExemptionSmallMicro;
 
         // Update taxExemption (Zwolnienie art. 11n CIT) column value
         txn.transactionType === 'Transakcja finansowa'
           ? (updatedTransaction.taxExemption =
-              styledCompany.dctExemptionCapitalSource_____C)
+              styledCompany.C_dctExemptionCapitalSource)
           : (updatedTransaction.taxExemption =
-              styledCompany.dctExemptionOtherSources______D);
+              styledCompany.D_dctExemptionOtherSources);
 
         // Update documentationRequirement & tpr columns values
         if (
-          styledCompany.dctExemptionCapitalSource_____C === 'TAK' &&
-          styledCompany.dctExemptionOtherSources______D === 'TAK'
+          styledCompany.C_dctExemptionCapitalSource === 'TAK' &&
+          styledCompany.D_dctExemptionOtherSources === 'TAK'
         ) {
           updatedTransaction.documentationRequirement = 'TAK';
           updatedTransaction.tpr = 'TAK';
@@ -112,20 +107,20 @@ export class CompanyDataStorageService {
 
     // Set color
     if (
-      resultCompany.dctExemptionCapitalSource_____C === 'TAK' &&
-      resultCompany.dctExemptionOtherSources______D === 'TAK'
+      resultCompany.C_dctExemptionCapitalSource === 'TAK' &&
+      resultCompany.D_dctExemptionOtherSources === 'TAK'
     ) {
       resultCompany.displayColor = '#4CAF50';
       this.passChangesToTransactions(resultCompany);
     } else if (
-      resultCompany.dctExemptionCapitalSource_____C === 'TAK' &&
-      resultCompany.dctExemptionOtherSources______D === 'NIE'
+      resultCompany.C_dctExemptionCapitalSource === 'TAK' &&
+      resultCompany.D_dctExemptionOtherSources === 'NIE'
     ) {
       resultCompany.displayColor = '#4682B4';
       this.passChangesToTransactions(resultCompany);
     } else if (
-      resultCompany.dctExemptionCapitalSource_____C === 'NIE' &&
-      resultCompany.dctExemptionOtherSources______D === 'TAK'
+      resultCompany.C_dctExemptionCapitalSource === 'NIE' &&
+      resultCompany.D_dctExemptionOtherSources === 'TAK'
     ) {
       resultCompany.displayColor = '#FF6d01';
       this.passChangesToTransactions(resultCompany);
@@ -135,7 +130,7 @@ export class CompanyDataStorageService {
     }
 
     // Set boldness
-    if (resultCompany.benchmarkExemptionSmallMicro__E === 'TAK') {
+    if (resultCompany.E_benchmarkExemptionSmallMicro === 'TAK') {
       resultCompany.displayBold = true;
       this.passChangesToTransactions(resultCompany);
     } else {
@@ -150,22 +145,22 @@ export class CompanyDataStorageService {
   applyCellFormulas2(inputCompany: Company): Company {
     const resultCompany = { ...inputCompany };
 
-    if (resultCompany.consolidationReport____________K === 'TAK') {
-      resultCompany.dctExemptionCapitalSource_____C = 'TAK';
+    if (resultCompany.K_consolidationReport === 'TAK') {
+      resultCompany.C_dctExemptionCapitalSource = 'TAK';
     } else {
-      resultCompany.dctExemptionCapitalSource_____C = 'NIE';
+      resultCompany.C_dctExemptionCapitalSource = 'NIE';
     }
 
-    if (resultCompany.taxProfitLossOtherSources2023__I > 0) {
-      resultCompany.dctExemptionOtherSources______D = 'TAK';
+    if (resultCompany.I_taxProfitLossOtherSources2023 > 0) {
+      resultCompany.D_dctExemptionOtherSources = 'TAK';
     } else {
-      resultCompany.dctExemptionOtherSources______D = 'NIE';
+      resultCompany.D_dctExemptionOtherSources = 'NIE';
     }
 
-    if (resultCompany.taxProfitLossCapitalSources2023_H > 0) {
-      resultCompany.benchmarkExemptionSmallMicro__E = 'TAK';
+    if (resultCompany.H_taxProfitLossCapitalSources2023 > 0) {
+      resultCompany.E_benchmarkExemptionSmallMicro = 'TAK';
     } else {
-      resultCompany.benchmarkExemptionSmallMicro__E = 'NIE';
+      resultCompany.E_benchmarkExemptionSmallMicro = 'NIE';
     }
 
     return resultCompany;
@@ -181,12 +176,12 @@ export class CompanyDataStorageService {
 
     // Setting appropiate property values of the Company object
 
-    //  Setting dctExemptionCapitalSource_____C
+    //  Setting C_dctExemptionCapitalSource
     cell_G(resultCompany);
     cell_C(resultCompany);
-    //  Setting dctExemptionOtherSources______D
+    //  Setting D_dctExemptionOtherSources
     cell_D(resultCompany);
-    //  Setting benchmarkExemptionSmallMicro__E
+    //  Setting E_benchmarkExemptionSmallMicro
     cell_T(resultCompany);
     cell_U(resultCompany);
     cell_V(resultCompany);
@@ -199,215 +194,202 @@ export class CompanyDataStorageService {
 
     // Cell functions
     function cell_C(inputCompany: Company): void {
-      if (inputCompany.pitCITExemption2023____________J === 'TAK') {
-        inputCompany.dctExemptionCapitalSource_____C = 'NIE';
+      if (inputCompany.J_pitCITExemption2023 === 'TAK') {
+        inputCompany.C_dctExemptionCapitalSource = 'NIE';
       } else if (
-        (!isEmpty(inputCompany.taxProfitLossCapitalSources2023_H) &&
-          inputCompany.pitCITExemption2023____________J === 'NIE' &&
-          inputCompany.taxProfitLossCapitalSources2023_H > 0) ||
-        (inputCompany.pitCITExemption2023____________J === 'NIE' &&
-          inputCompany.covidExemption_________________G === 'TAK')
+        (!isEmpty(inputCompany.H_taxProfitLossCapitalSources2023) &&
+          inputCompany.J_pitCITExemption2023 === 'NIE' &&
+          inputCompany.H_taxProfitLossCapitalSources2023 > 0) ||
+        (inputCompany.J_pitCITExemption2023 === 'NIE' &&
+          inputCompany.G_covidExemption === 'TAK')
       ) {
-        inputCompany.dctExemptionCapitalSource_____C = 'TAK';
+        inputCompany.C_dctExemptionCapitalSource = 'TAK';
       } else if (
-        !isEmpty(inputCompany.taxProfitLossCapitalSources2023_H) &&
-        inputCompany.taxProfitLossCapitalSources2023_H < 0
+        !isEmpty(inputCompany.H_taxProfitLossCapitalSources2023) &&
+        inputCompany.H_taxProfitLossCapitalSources2023 < 0
       ) {
-        inputCompany.dctExemptionCapitalSource_____C = 'NIE';
+        inputCompany.C_dctExemptionCapitalSource = 'NIE';
       } else {
-        inputCompany.dctExemptionCapitalSource_____C = PUSTA;
+        inputCompany.C_dctExemptionCapitalSource = PUSTA;
       }
     }
 
     function cell_D(inputCompany: Company): void {
-      if (inputCompany.pitCITExemption2023____________J === 'TAK') {
-        inputCompany.dctExemptionOtherSources______D = 'NIE';
+      if (inputCompany.J_pitCITExemption2023 === 'TAK') {
+        inputCompany.D_dctExemptionOtherSources = 'NIE';
       } else if (
-        (!isEmpty(inputCompany.taxProfitLossOtherSources2023__I) &&
-          inputCompany.pitCITExemption2023____________J === 'NIE' &&
-          inputCompany.taxProfitLossOtherSources2023__I > 0) ||
-        (inputCompany.pitCITExemption2023____________J === 'NIE' &&
-          inputCompany.covidExemption_________________G === 'TAK')
+        (!isEmpty(inputCompany.I_taxProfitLossOtherSources2023) &&
+          inputCompany.J_pitCITExemption2023 === 'NIE' &&
+          inputCompany.I_taxProfitLossOtherSources2023 > 0) ||
+        (inputCompany.J_pitCITExemption2023 === 'NIE' &&
+          inputCompany.G_covidExemption === 'TAK')
       ) {
-        inputCompany.dctExemptionOtherSources______D = 'TAK';
+        inputCompany.D_dctExemptionOtherSources = 'TAK';
       } else if (
-        !isEmpty(inputCompany.taxProfitLossOtherSources2023__I) &&
-        inputCompany.taxProfitLossOtherSources2023__I < 0
+        !isEmpty(inputCompany.I_taxProfitLossOtherSources2023) &&
+        inputCompany.I_taxProfitLossOtherSources2023 < 0
       ) {
-        inputCompany.dctExemptionOtherSources______D = 'NIE';
+        inputCompany.D_dctExemptionOtherSources = 'NIE';
       } else {
-        inputCompany.dctExemptionOtherSources______D = PUSTA;
+        inputCompany.D_dctExemptionOtherSources = PUSTA;
       }
     }
 
     function cell_E(inputCompany: Company): void {
       if (
-        inputCompany.qualification__________________S === 'TAK' ||
-        inputCompany.qualification__________________W === 'TAK'
+        inputCompany.S_qualification === 'TAK' ||
+        inputCompany.W_qualification === 'TAK'
       ) {
-        inputCompany.benchmarkExemptionSmallMicro__E = 'TAK';
+        inputCompany.E_benchmarkExemptionSmallMicro = 'TAK';
       } else if (
-        inputCompany.qualification__________________S === 'NIE' &&
-        inputCompany.qualification__________________W === 'NIE'
+        inputCompany.S_qualification === 'NIE' &&
+        inputCompany.W_qualification === 'NIE'
       ) {
-        inputCompany.benchmarkExemptionSmallMicro__E = 'NIE';
+        inputCompany.E_benchmarkExemptionSmallMicro = 'NIE';
       } else {
-        inputCompany.benchmarkExemptionSmallMicro__E = PUSTA;
+        inputCompany.E_benchmarkExemptionSmallMicro = PUSTA;
       }
     }
 
     function cell_F(inputCompany: Company): void {
       if (
-        inputCompany.consolidationReport____________K === 'TAK' &&
-        inputCompany.consolidatedRevenue2022________L > 200000000
+        inputCompany.K_consolidationReport === 'TAK' &&
+        inputCompany.L_consolidatedRevenue2022 > 200000000
       ) {
-        inputCompany.masterFileObligation___________F = 'TAK';
+        inputCompany.F_masterFileObligation = 'TAK';
       } else if (
-        inputCompany.consolidationReport____________K === 'NIE' ||
-        inputCompany.consolidatedRevenue2022________L <= 200000000
+        inputCompany.K_consolidationReport === 'NIE' ||
+        inputCompany.L_consolidatedRevenue2022 <= 200000000
       ) {
-        inputCompany.masterFileObligation___________F = 'NIE';
+        inputCompany.F_masterFileObligation = 'NIE';
       } else {
-        inputCompany.masterFileObligation___________F = PUSTA;
+        inputCompany.F_masterFileObligation = PUSTA;
       }
     }
 
     function cell_G(inputCompany: Company): void {
       if (
-        !isEmpty(inputCompany.totalRevenue2022_______________X) &&
-        !isEmpty(inputCompany.totalRevenue2023_______________Y) &&
-        inputCompany.totalRevenue2022_______________X -
-          inputCompany.totalRevenue2023_______________Y >=
-          inputCompany.totalRevenue2022_______________X * 0.5
+        !isEmpty(inputCompany.X_totalRevenue2022) &&
+        !isEmpty(inputCompany.Y_totalRevenue2023) &&
+        inputCompany.X_totalRevenue2022 - inputCompany.Y_totalRevenue2023 >=
+          inputCompany.X_totalRevenue2022 * 0.5
       ) {
-        inputCompany.covidExemption_________________G = 'TAK';
+        inputCompany.G_covidExemption = 'TAK';
       } else if (
-        !isEmpty(inputCompany.totalRevenue2022_______________X) &&
-        !isEmpty(inputCompany.totalRevenue2023_______________Y)
+        !isEmpty(inputCompany.X_totalRevenue2022) &&
+        !isEmpty(inputCompany.Y_totalRevenue2023)
       ) {
-        inputCompany.covidExemption_________________G = 'NIE';
+        inputCompany.G_covidExemption = 'NIE';
       } else {
-        inputCompany.covidExemption_________________G = PUSTA;
+        inputCompany.G_covidExemption = PUSTA;
       }
     }
 
     function cell_P(inputCompany: Company): void {
-      if (!isEmpty(inputCompany.averageEmployment2022__________M)) {
-        if (inputCompany.averageEmployment2022__________M < 10) {
-          inputCompany.employmentBelow10______________P = 'TAK';
+      if (!isEmpty(inputCompany.M_averageEmployment2022)) {
+        if (inputCompany.M_averageEmployment2022 < 10) {
+          inputCompany.P_employmentBelow10 = 'TAK';
         } else {
-          inputCompany.employmentBelow10______________P = 'NIE';
+          inputCompany.P_employmentBelow10 = 'NIE';
         }
       } else {
-        inputCompany.employmentBelow10______________P = PUSTA;
+        inputCompany.P_employmentBelow10 = PUSTA;
       }
     }
 
     function cell_Q(inputCompany: Company): void {
-      if (!isEmpty(inputCompany.netAnnualTurnover2022__________N)) {
-        if (
-          inputCompany.netAnnualTurnover2022__________N / KURS_EURO <
-          2000000
-        ) {
-          inputCompany.turnoverBelow2M_EUR____________Q = 'TAK';
+      if (!isEmpty(inputCompany.N_netAnnualTurnover2022)) {
+        if (inputCompany.N_netAnnualTurnover2022 / KURS_EURO < 2000000) {
+          inputCompany.Q_turnoverBelow2M_EUR = 'TAK';
         } else {
-          inputCompany.turnoverBelow2M_EUR____________Q = 'NIE';
+          inputCompany.Q_turnoverBelow2M_EUR = 'NIE';
         }
       } else {
-        inputCompany.turnoverBelow2M_EUR____________Q = PUSTA;
+        inputCompany.Q_turnoverBelow2M_EUR = PUSTA;
       }
     }
 
     function cell_R(inputCompany: Company): void {
-      if (!isEmpty(inputCompany.totalAssets2022________________O)) {
-        if (
-          inputCompany.totalAssets2022________________O / KURS_EURO <
-          2000000
-        ) {
-          inputCompany.totalAssetsBelow2M_EUR_________R = 'TAK';
+      if (!isEmpty(inputCompany.O_totalAssets2022)) {
+        if (inputCompany.O_totalAssets2022 / KURS_EURO < 2000000) {
+          inputCompany.R_totalAssetsBelow2M_EUR = 'TAK';
         } else {
-          inputCompany.totalAssetsBelow2M_EUR_________R = 'NIE';
+          inputCompany.R_totalAssetsBelow2M_EUR = 'NIE';
         }
       } else {
-        inputCompany.totalAssetsBelow2M_EUR_________R = PUSTA;
+        inputCompany.R_totalAssetsBelow2M_EUR = PUSTA;
       }
     }
 
     function cell_S(inputCompany: Company): void {
       if (
-        inputCompany.employmentBelow10______________P === 'TAK' &&
-        (inputCompany.turnoverBelow2M_EUR____________Q === 'TAK' ||
-          inputCompany.totalAssetsBelow2M_EUR_________R === 'TAK')
+        inputCompany.P_employmentBelow10 === 'TAK' &&
+        (inputCompany.Q_turnoverBelow2M_EUR === 'TAK' ||
+          inputCompany.R_totalAssetsBelow2M_EUR === 'TAK')
       ) {
-        inputCompany.qualification__________________S = 'TAK';
+        inputCompany.S_qualification = 'TAK';
       } else if (
-        inputCompany.employmentBelow10______________P === 'NIE' ||
-        (inputCompany.turnoverBelow2M_EUR____________Q === 'NIE' &&
-          inputCompany.totalAssetsBelow2M_EUR_________R === 'NIE')
+        inputCompany.P_employmentBelow10 === 'NIE' ||
+        (inputCompany.Q_turnoverBelow2M_EUR === 'NIE' &&
+          inputCompany.R_totalAssetsBelow2M_EUR === 'NIE')
       ) {
-        inputCompany.qualification__________________S = 'NIE';
+        inputCompany.S_qualification = 'NIE';
       } else {
-        inputCompany.qualification__________________S = PUSTA;
+        inputCompany.S_qualification = PUSTA;
       }
     }
 
     function cell_T(inputCompany: Company): void {
-      if (!isEmpty(inputCompany.averageEmployment2022__________M)) {
-        if (inputCompany.averageEmployment2022__________M < 50) {
-          inputCompany.employmentBelow50______________T = 'TAK';
+      if (!isEmpty(inputCompany.M_averageEmployment2022)) {
+        if (inputCompany.M_averageEmployment2022 < 50) {
+          inputCompany.T_employmentBelow50 = 'TAK';
         } else {
-          inputCompany.employmentBelow50______________T = 'NIE';
+          inputCompany.T_employmentBelow50 = 'NIE';
         }
       } else {
-        inputCompany.employmentBelow50______________T = PUSTA;
+        inputCompany.T_employmentBelow50 = PUSTA;
       }
     }
 
     function cell_U(inputCompany: Company): void {
-      if (!isEmpty(inputCompany.netAnnualTurnover2022__________N)) {
-        if (
-          inputCompany.netAnnualTurnover2022__________N / KURS_EURO <
-          10000000
-        ) {
-          inputCompany.turnoverBelow10M_EUR___________U = 'TAK';
+      if (!isEmpty(inputCompany.N_netAnnualTurnover2022)) {
+        if (inputCompany.N_netAnnualTurnover2022 / KURS_EURO < 10000000) {
+          inputCompany.U_turnoverBelow10M_EUR = 'TAK';
         } else {
-          inputCompany.turnoverBelow10M_EUR___________U = 'NIE';
+          inputCompany.U_turnoverBelow10M_EUR = 'NIE';
         }
       } else {
-        inputCompany.turnoverBelow10M_EUR___________U = PUSTA;
+        inputCompany.U_turnoverBelow10M_EUR = PUSTA;
       }
     }
 
     function cell_V(inputCompany: Company): void {
-      if (!isEmpty(inputCompany.totalAssets2022________________O)) {
-        if (
-          inputCompany.totalAssets2022________________O / KURS_EURO <
-          10000000
-        ) {
-          inputCompany.totalAssetsBelow10M_EUR________V = 'TAK';
+      if (!isEmpty(inputCompany.O_totalAssets2022)) {
+        if (inputCompany.O_totalAssets2022 / KURS_EURO < 10000000) {
+          inputCompany.V_totalAssetsBelow10M_EUR = 'TAK';
         } else {
-          inputCompany.totalAssetsBelow10M_EUR________V = 'NIE';
+          inputCompany.V_totalAssetsBelow10M_EUR = 'NIE';
         }
       } else {
-        inputCompany.totalAssetsBelow10M_EUR________V = PUSTA;
+        inputCompany.V_totalAssetsBelow10M_EUR = PUSTA;
       }
     }
 
     function cell_W(inputCompany: Company): void {
       if (
-        inputCompany.employmentBelow50______________T === 'TAK' &&
-        (inputCompany.turnoverBelow10M_EUR___________U === 'TAK' ||
-          inputCompany.totalAssetsBelow10M_EUR________V === 'TAK')
+        inputCompany.T_employmentBelow50 === 'TAK' &&
+        (inputCompany.U_turnoverBelow10M_EUR === 'TAK' ||
+          inputCompany.V_totalAssetsBelow10M_EUR === 'TAK')
       ) {
-        inputCompany.qualification__________________W = 'TAK';
+        inputCompany.W_qualification = 'TAK';
       } else if (
-        inputCompany.employmentBelow50______________T === 'NIE' ||
-        (inputCompany.turnoverBelow10M_EUR___________U === 'NIE' &&
-          inputCompany.totalAssetsBelow10M_EUR________V === 'NIE')
+        inputCompany.T_employmentBelow50 === 'NIE' ||
+        (inputCompany.U_turnoverBelow10M_EUR === 'NIE' &&
+          inputCompany.V_totalAssetsBelow10M_EUR === 'NIE')
       ) {
-        inputCompany.qualification__________________W = 'NIE';
+        inputCompany.W_qualification = 'NIE';
       } else {
-        inputCompany.qualification__________________W = PUSTA;
+        inputCompany.W_qualification = PUSTA;
       }
     }
 

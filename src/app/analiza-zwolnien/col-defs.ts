@@ -31,7 +31,7 @@ export class companyColumnDefinitions {
   // Column definitions for AG Grid
   colDefs: ColDef[] = [
     {
-      field: 'entityName____________________A',
+      field: 'A_entityName',
       headerName: 'Nazwa podmiotu',
       editable: false,
       headerClass: 'zwolnienia-grid-header',
@@ -68,27 +68,27 @@ export class companyColumnDefinitions {
         let result = '';
 
         if (
-          company.dctExemptionCapitalSource_____C === 'TAK' &&
-          company.dctExemptionCapitalSource_____C ===
-            company.dctExemptionOtherSources______D
+          company.C_dctExemptionCapitalSource === 'TAK' &&
+          company.C_dctExemptionCapitalSource ===
+            company.D_dctExemptionOtherSources
         ) {
           result =
             'Podmiot zwolniony z obowiązku DCT (zwolnienie krajowe) - wszystkie źródła.';
         } else if (
-          company.dctExemptionCapitalSource_____C === 'TAK' &&
-          company.dctExemptionOtherSources______D === 'NIE'
+          company.C_dctExemptionCapitalSource === 'TAK' &&
+          company.D_dctExemptionOtherSources === 'NIE'
         ) {
           result =
             'Podmiot zwolniony z obowiązku DCT (zwolnienie krajowe) - źródło kapitałowe.';
         } else if (
-          company.dctExemptionCapitalSource_____C === 'NIE' &&
-          company.dctExemptionOtherSources______D === 'TAK'
+          company.C_dctExemptionCapitalSource === 'NIE' &&
+          company.D_dctExemptionOtherSources === 'TAK'
         ) {
           result =
             'Podmiot zwolniony z obowiązku DCT (zwolnienie krajowe) - pozostałe źródła.';
         } else if (
-          company.dctExemptionCapitalSource_____C === 'NIE' &&
-          company.dctExemptionOtherSources______D === 'NIE'
+          company.C_dctExemptionCapitalSource === 'NIE' &&
+          company.D_dctExemptionOtherSources === 'NIE'
         ) {
           result = 'Podmiotowi nie przysługuje zwolnienie z obowiązku DCT.';
         }
@@ -120,7 +120,7 @@ export class companyColumnDefinitions {
     // The fields that remain commented out are not used in the current implementation for visual reasons. But they are used in the original implementation.
 
     // {
-    //   field: 'dctExemptionAllSources________B',
+    //   field: 'B_dctExemptionAllSources',
     //   headerName:
     //     'Zwolnienie z obowiązku DCT (zwolnienie krajowe) - wszystkie źródła',
     //   editable: false,
@@ -128,7 +128,7 @@ export class companyColumnDefinitions {
     //   cellEditorParams: { values: ['TAK', 'NIE'] },
     // },
     {
-      field: 'dctExemptionCapitalSource_____C',
+      field: 'C_dctExemptionCapitalSource',
       headerName:
         'Zwolnienie z obowiązku DCT (zwolnienie krajowe) - źródło kapitałowe',
       editable: false,
@@ -137,7 +137,7 @@ export class companyColumnDefinitions {
       headerClass: 'testing-hidden-columns-values',
     },
     {
-      field: 'dctExemptionOtherSources______D',
+      field: 'D_dctExemptionOtherSources',
       headerName:
         'Zwolnienie z obowiązku DCT (zwolnienie krajowe) - pozostałe źródła',
       editable: false,
@@ -146,7 +146,7 @@ export class companyColumnDefinitions {
       headerClass: 'testing-hidden-columns-values',
     },
     {
-      field: 'benchmarkExemptionSmallMicro__E',
+      field: 'E_benchmarkExemptionSmallMicro',
       headerName: 'Zwolnienie z obowiązku benchmarku - mały/mikro',
       editable: false,
       cellEditor: 'agSelectCellEditor',
@@ -154,14 +154,14 @@ export class companyColumnDefinitions {
       headerClass: 'testing-hidden-columns-values',
     },
     // {
-    //   field: 'masterFileObligation___________F',
+    //   field: 'F_masterFileObligation',
     //   headerName: 'Obowiązek master file',
     //   editable: false,
     //   cellEditor: 'agSelectCellEditor',
     //   cellEditorParams: { values: ['TAK', 'NIE'] },
     // },
     {
-      field: 'covidExemption_________________G',
+      field: 'G_covidExemption',
       headerName: 'Zwolnienie tzw. covidove',
       editable: false,
       cellEditor: 'agSelectCellEditor',
@@ -169,21 +169,21 @@ export class companyColumnDefinitions {
       headerClass: 'testing-hidden-columns-values',
     },
     {
-      field: 'taxProfitLossCapitalSources2023_H',
+      field: 'H_taxProfitLossCapitalSources2023',
       headerName: 'Zysk/Strata PODATKOWA w 2023 r. ZE ŹRÓDEŁ KAPITAŁOWYCH',
       editable: true,
       headerClass: 'zwolnienia-grid-header',
       cellDataType: 'number',
     },
     {
-      field: 'taxProfitLossOtherSources2023__I',
+      field: 'I_taxProfitLossOtherSources2023',
       headerName: 'Zysk/Strata PODATKOWA w 2023 r. Z INNYCH ŹRÓDEŁ',
       editable: true,
       headerClass: 'zwolnienia-grid-header',
       cellDataType: 'number',
     },
     {
-      field: 'pitCITExemption2023____________J',
+      field: 'J_pitCITExemption2023',
       headerName:
         'Czy podmiot/spółka korzystał/a w 2023 ze zwolnień z PIT/CIT: 1) podmiotowych lub 2) dla SSE/Polskiej Strefy Inwestycji',
       editable: true,
@@ -193,7 +193,7 @@ export class companyColumnDefinitions {
       cellDataType: 'text',
     },
     {
-      field: 'consolidationReport____________K',
+      field: 'K_consolidationReport',
       headerName: 'Czy sprawozdanie podlega konsolidacji',
       editable: true,
       headerClass: 'zwolnienia-grid-header',
@@ -202,21 +202,21 @@ export class companyColumnDefinitions {
       cellDataType: 'text',
     },
     {
-      field: 'consolidatedRevenue2022________L',
+      field: 'L_consolidatedRevenue2022',
       headerName: 'Skonsolidowane przychody grupy w 2022',
       editable: true,
       headerClass: 'zwolnienia-grid-header',
       cellDataType: 'number',
     },
     {
-      field: 'averageEmployment2022__________M',
+      field: 'M_averageEmployment2022',
       headerName: 'Średnioroczne zatrudnienie w 2022',
       editable: true,
       headerClass: 'zwolnienia-grid-header',
       cellDataType: 'number',
     },
     {
-      field: 'netAnnualTurnover2022__________N',
+      field: 'N_netAnnualTurnover2022',
       headerName:
         'Roczny obrót netto ze sprzedaży towarów, wyrobów i usług oraz z operacji finansowych 2022',
       editable: true,
@@ -224,14 +224,14 @@ export class companyColumnDefinitions {
       cellDataType: 'number',
     },
     {
-      field: 'totalAssets2022________________O',
+      field: 'O_totalAssets2022',
       headerName: 'suma aktywów 2022',
       editable: true,
       headerClass: 'zwolnienia-grid-header',
       cellDataType: 'number',
     },
     {
-      field: 'employmentBelow10______________P',
+      field: 'P_employmentBelow10',
       headerName: 'Zatrudnienie poniżej 10 osób',
       editable: false,
       cellEditor: 'agSelectCellEditor',
@@ -239,7 +239,7 @@ export class companyColumnDefinitions {
       headerClass: 'testing-hidden-columns-values',
     },
     {
-      field: 'turnoverBelow2M_EUR____________Q',
+      field: 'Q_turnoverBelow2M_EUR',
       headerName: 'Obroty poniżej 2 mln EUR',
       editable: false,
       cellEditor: 'agSelectCellEditor',
@@ -247,7 +247,7 @@ export class companyColumnDefinitions {
       headerClass: 'testing-hidden-columns-values',
     },
     {
-      field: 'totalAssetsBelow2M_EUR_________R',
+      field: 'R_totalAssetsBelow2M_EUR',
       headerName: 'Suma bilansowa poniżej 2 mln EUR',
       editable: false,
       cellEditor: 'agSelectCellEditor',
@@ -255,7 +255,7 @@ export class companyColumnDefinitions {
       headerClass: 'testing-hidden-columns-values',
     },
     {
-      field: 'qualification__________________S',
+      field: 'S_qualification',
       headerName: 'Kwalifikacja',
       editable: false,
       cellEditor: 'agSelectCellEditor',
@@ -263,7 +263,7 @@ export class companyColumnDefinitions {
       headerClass: 'testing-hidden-columns-values',
     },
     {
-      field: 'employmentBelow50______________T',
+      field: 'T_employmentBelow50',
       headerName: 'Zatrudnienie poniżej 50 osób',
       editable: false,
       cellEditor: 'agSelectCellEditor',
@@ -271,7 +271,7 @@ export class companyColumnDefinitions {
       headerClass: 'testing-hidden-columns-values',
     },
     {
-      field: 'turnoverBelow10M_EUR___________U',
+      field: 'U_turnoverBelow10M_EUR',
       headerName: 'Obroty poniżej 10 mln EUR',
       editable: false,
       cellEditor: 'agSelectCellEditor',
@@ -279,7 +279,7 @@ export class companyColumnDefinitions {
       headerClass: 'testing-hidden-columns-values',
     },
     {
-      field: 'totalAssetsBelow10M_EUR________V',
+      field: 'V_totalAssetsBelow10M_EUR',
       headerName: 'Suma bilansowa poniżej 10 mlnEUR',
       editable: false,
       cellEditor: 'agSelectCellEditor',
@@ -287,7 +287,7 @@ export class companyColumnDefinitions {
       headerClass: 'testing-hidden-columns-values',
     },
     {
-      field: 'qualification__________________W',
+      field: 'W_qualification',
       headerName: 'Kwalifikacja',
       editable: false,
       cellEditor: 'agSelectCellEditor',
@@ -295,14 +295,14 @@ export class companyColumnDefinitions {
       headerClass: 'testing-hidden-columns-values',
     },
     {
-      field: 'totalRevenue2022_______________X',
+      field: 'X_totalRevenue2022',
       headerName: 'Przychody razem 2022',
       editable: true,
       headerClass: 'zwolnienia-grid-header',
       cellDataType: 'number',
     },
     {
-      field: 'totalRevenue2023_______________Y',
+      field: 'Y_totalRevenue2023',
       headerName: 'Przychody razem 2023',
       editable: true,
       headerClass: 'zwolnienia-grid-header',
