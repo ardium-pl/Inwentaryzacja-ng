@@ -1,0 +1,26 @@
+<!-- Input Container Component -->
+<div class="input-container">
+
+  <h2>Input CSV Data</h2>
+
+  <div class="input-area"
+       (dragover)="onDragOver($event)"
+       (dragleave)="onDragLeave($event)"
+       (drop)="onDrop($event)">
+    <textarea
+      #pasteArea
+      rows="10"
+      (paste)="onPaste($event)"
+      placeholder="Paste CSV data here or drop a CSV file"></textarea>
+
+    <input type="file"
+           #fileInput
+           (change)="onFileSelected($event)"
+           accept=".csv"
+           style="display: none;">
+  </div>
+
+  <button (click)="fileInput.click()">Select CSV File</button>
+
+  <button (click)="analyzeData()" [disabled]="!manualAnalysisRequired">Analyze Data</button>
+</div>

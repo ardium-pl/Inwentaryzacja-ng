@@ -1,0 +1,16 @@
+<ag-grid-angular
+  class="ag-theme-quartz"
+  [rowData]="companyTransactions()"
+  [columnDefs]="colDefs"
+  [defaultColDef]="defaultColDef"
+  rowSelection="single"
+  [suppressRowClickSelection]="true"
+  [suppressScrollOnNewData]="true"
+  [getRowStyle]="getRowStyle"
+  (cellValueChanged)="onCellValueChanged($event)"
+  (gridReady)="onGridReady($event)"
+  (cellClicked)="onCellClicked($event)"
+>
+</ag-grid-angular>
+
+

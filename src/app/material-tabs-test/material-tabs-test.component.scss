@@ -1,0 +1,20 @@
+:host {
+  height: 100%;
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+mat-tab-group {
+  width: 80%;
+  margin-top: var(--grid-ofset);
+  flex: 1;
+}
+
+// Change permanent tabs' label font style to bold
+.permanent-tab {
+  font-weight: bold;
+}

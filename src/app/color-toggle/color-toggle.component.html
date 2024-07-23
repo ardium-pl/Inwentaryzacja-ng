@@ -1,0 +1,23 @@
+
+
+
+<div class="color-picker">
+
+   <button class="btn btn-light btn-sm trash-btn" (click)="clearAllColors()">
+    🗑️
+  </button>
+
+  <button class="btn btn-light color-button" (click)="toggleColorMenu()">
+    <span class="color-swatch"
+          [style.backgroundColor]="transactionDataStorageService.currentSelection() || '#ffffff'"></span>
+  </button>
+
+  <div class="color-menu" [class.show]="this.isColorMenuVisible()">
+    <div class="color-options-container">
+      <button *ngFor="let colorName of colorNames" (click)="selectColor(colorName); toggleColorMenu()" class="color-option">
+        <span class="color-swatch" [style.backgroundColor]="COLOR_MAP[colorName]"></span>
+      </button>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,10 @@
+
+<ag-grid-angular
+  class="ag-theme-quartz"
+  [rowData]="companies()"
+  [rowHeight]="ROW_HEIGHT"
+  [columnDefs]="colDefs"
+  [defaultColDef]="defaultColDef"
+  (cellValueChanged)="onCellValueChanged($event)"
+>
+</ag-grid-angular>
