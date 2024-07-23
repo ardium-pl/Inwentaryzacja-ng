@@ -2,7 +2,7 @@ import { Component, inject, computed } from '@angular/core';
 import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
 import { TransactionsComponent } from '../transactions/transactions.component';
 import { TransactionDataStorageService } from '../transaction-data-storage.service';
-import { DefaultValuesService } from '../default-values.service';
+import { DEFAULT_VALUES } from '../default-values';
 import { AnalizaZwolnienComponent } from '../analiza-zwolnien/analiza-zwolnien.component';
 import { FooterService } from '../footer.service';
 
@@ -23,8 +23,6 @@ export class MaterialTabsTestComponent {
     TransactionDataStorageService
   );
 
-  readonly defaultValues = inject(DefaultValuesService);
-
   readonly footerService = inject(FooterService);
 
   readonly transactions = computed(() =>
@@ -36,10 +34,10 @@ export class MaterialTabsTestComponent {
     const companies = new Set<string>();
 
     this.transactions().forEach((transaction) => {
-      if (transaction.sellerName !== this.defaultValues.NO_DATA) {
+      if (transaction.sellerName !== DEFAULT_VALUES.NO_DATA) {
         companies.add(transaction.sellerName);
       }
-      if (transaction.buyerName !== this.defaultValues.NO_DATA) {
+      if (transaction.buyerName !== DEFAULT_VALUES.NO_DATA) {
         companies.add(transaction.buyerName);
       }
     });
@@ -50,7 +48,7 @@ export class MaterialTabsTestComponent {
   // Trigger footer
   onTabChange(event: MatTabChangeEvent): void {
     if (event.tab.textLabel === 'Analiza zwolnień') {
-      this.footerService.displayFooter.set(false)
+      this.footerService.displayFooter.set(false);
     } else {
       this.footerService.displayFooter.set(true);
     }

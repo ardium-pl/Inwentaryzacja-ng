@@ -1,5 +1,5 @@
-import {Component, input, inject, computed} from '@angular/core';
-import {AgGridAngular} from 'ag-grid-angular'; // Angular Data Grid Component
+import { Component, input, inject, computed } from '@angular/core';
+import { AgGridAngular } from 'ag-grid-angular'; // Angular Data Grid Component
 import {
   ColDef,
   CellValueChangedEvent,
@@ -7,14 +7,14 @@ import {
   GridReadyEvent,
   RowStyle,
 } from 'ag-grid-community';
-import {Transaction} from '../transaction';
-import {TransactionDataStorageService} from '../transaction-data-storage.service';
-import {DefaultValuesService} from '../default-values.service';
-import {CompanyDataStorageService} from '../company-data-storage.service';
+import { Transaction } from '../transaction';
+import { TransactionDataStorageService } from '../transaction-data-storage.service';
+import { DEFAULT_VALUES } from '../default-values';
+import { CompanyDataStorageService } from '../company-data-storage.service';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-quartz.css';
-import {ColorToggleComponent} from '../color-toggle/color-toggle.component';
-import {ColumnDefService} from './col-defs';
+import { ColorToggleComponent } from '../color-toggle/color-toggle.component';
+import { transactionColumnDefinitions } from './col-defs';
 
 @Component({
   selector: 'app-transactions',
@@ -30,23 +30,23 @@ export class TransactionsComponent {
 
   readonly companyDataStorageService = inject(CompanyDataStorageService);
 
-  readonly defaultValues = inject(DefaultValuesService);
-
-  readonly columnDefService = inject(ColumnDefService);
+  readonly transactionColumnDefinitions = new transactionColumnDefinitions();
 
   // AG GRID SET UP
   protected gridApi!: GridApi;
   // Default column definitions - global
-  defaultColDef: ColDef = this.columnDefService.defaultColDef;
+  defaultColDef: ColDef = this.transactionColumnDefinitions.defaultColDef;
 
   // Default column definitions for text columns
-  defaultTextColDef: ColDef = this.columnDefService.defaultTextColDef;
+  defaultTextColDef: ColDef =
+    this.transactionColumnDefinitions.defaultTextColDef;
 
   // Default column definitions for numeric columns
-  defaultNumericColDef: ColDef = this.columnDefService.defaultNumericColDef;
+  defaultNumericColDef: ColDef =
+    this.transactionColumnDefinitions.defaultNumericColDef;
 
   // Column definitions for AG Grid
-  colDefs: ColDef[] = this.columnDefService.colDefs;
+  colDefs: ColDef[] = this.transactionColumnDefinitions.colDefs;
 
   readonly transactions = computed(() => {
     const transactions = this.transactionDataStorageService.transactions();
@@ -67,7 +67,7 @@ export class TransactionsComponent {
 
     // Update homogeneousTransactionValue based on the selection group sums
     return transactions.map((transaction) => {
-      const updatedTransaction = {...transaction};
+      const updatedTransaction = { ...transaction };
 
       // If transaction.selection !== 'none' (if transaction is marked with color) set transaction.homogeneousTransactionValue to be the sum
       if (transaction.selection !== 'none') {
@@ -122,7 +122,7 @@ export class TransactionsComponent {
         (transaction) =>
           transaction.selection !== 'none' &&
           transaction.homogeneousTransactionValue >
-          minSignificanceLimitMap.get(transaction.selection)!
+            minSignificanceLimitMap.get(transaction.selection)!
       );
     }
 
@@ -138,15 +138,14 @@ export class TransactionsComponent {
     // Get the changed row.
     const updatedTransaction: Transaction = event.data;
 
-
     // In case user deleted all cell content - assign a default value
     if (event.newValue === null) {
       if (event.colDef.cellDataType === 'number') {
         updatedTransaction[event.colDef.field!] =
-          this.defaultValues.NO_CONTENT_AFTER_EDIT_NUMERIC;
+          DEFAULT_VALUES.NO_CONTENT_AFTER_EDIT_NUMERIC;
       } else if (event.colDef.cellDataType === 'text') {
         updatedTransaction[event.colDef.field!] =
-          this.defaultValues.NO_CONTENT_AFTER_EDIT_TEXT;
+          DEFAULT_VALUES.NO_CONTENT_AFTER_EDIT_TEXT;
       }
     }
 
@@ -223,7 +222,7 @@ export class TransactionsComponent {
   // Apply background color for the selected row
   getRowStyle = (params: any): RowStyle | undefined => {
     if (params.data.selection !== 'none') {
-      return {backgroundColor: params.data.selection};
+      return { backgroundColor: params.data.selection };
     }
     return undefined;
   };

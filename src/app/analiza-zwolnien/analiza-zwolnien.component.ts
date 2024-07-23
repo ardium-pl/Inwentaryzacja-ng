@@ -3,10 +3,10 @@ import { AgGridAngular } from 'ag-grid-angular'; // Angular Data Grid Component
 import { ColDef, CellValueChangedEvent } from 'ag-grid-community'; // Column Definition Type Interface
 import { CompanyDataStorageService } from '../company-data-storage.service';
 import { TransactionDataStorageService } from '../transaction-data-storage.service';
-import { DefaultValuesService } from '../default-values.service';
+import { DEFAULT_VALUES } from '../default-values';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-quartz.css';
-import { ColumnDefService } from './col-defs';
+import { companyColumnDefinitions } from './col-defs';
 
 @Component({
   selector: 'app-analiza-zwolnien',
@@ -22,9 +22,7 @@ export class AnalizaZwolnienComponent {
 
   readonly companyDataStorageService = inject(CompanyDataStorageService);
 
-  readonly defaultValues = inject(DefaultValuesService);
-
-  readonly columnDefService = inject(ColumnDefService);
+  readonly companyColumnDefinitions = new companyColumnDefinitions();
 
   readonly companies = computed(() =>
     this.companyDataStorageService.companies()
@@ -34,10 +32,10 @@ export class AnalizaZwolnienComponent {
 
   // AG GRID SET UP
   // Default column definitions - global
-  defaultColDef: ColDef = this.columnDefService.defaultColDef;
+  defaultColDef: ColDef = this.companyColumnDefinitions.defaultColDef;
 
   // Column definitions for AG Grid
-  colDefs: ColDef[] = this.columnDefService.colDefs;
+  colDefs: ColDef[] = this.companyColumnDefinitions.colDefs;
 
   onCellValueChanged(event: CellValueChangedEvent) {
     // Get the changed row.
@@ -47,10 +45,10 @@ export class AnalizaZwolnienComponent {
     if (event.newValue === null) {
       if (event.colDef.cellDataType === 'number') {
         updatedCompany[event.colDef.field!] =
-          this.defaultValues.NO_CONTENT_AFTER_EDIT_NUMERIC;
+          DEFAULT_VALUES.NO_CONTENT_AFTER_EDIT_NUMERIC;
       } else if (event.colDef.cellDataType === 'text') {
         updatedCompany[event.colDef.field!] =
-          this.defaultValues.NO_CONTENT_AFTER_EDIT_TEXT;
+          DEFAULT_VALUES.NO_CONTENT_AFTER_EDIT_TEXT;
       }
     }
 

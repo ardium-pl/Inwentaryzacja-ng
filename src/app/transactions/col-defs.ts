@@ -1,13 +1,7 @@
-import { Injectable, inject } from '@angular/core';
 import { ColDef } from 'ag-grid-community';
-import { DefaultValuesService } from '../default-values.service';
+import { DEFAULT_VALUES } from '../default-values';
 
-@Injectable({
-  providedIn: 'root',
-})
-export class ColumnDefService {
-  readonly defaultValues = inject(DefaultValuesService);
-
+export class transactionColumnDefinitions {
   // Default column definitions - global
   defaultColDef: ColDef = {
     wrapHeaderText: true,
@@ -27,7 +21,7 @@ export class ColumnDefService {
         textAlign: 'center',
       };
 
-      if (params.value === this.defaultValues.NO_DATA) {
+      if (params.value === DEFAULT_VALUES.NO_DATA) {
         styles.color = 'red';
       }
 
@@ -60,7 +54,7 @@ export class ColumnDefService {
       return styles;
     },
     cellRenderer: (params: any) =>
-      isNaN(params.value) ? this.defaultValues.NO_DATA : params.value,
+      isNaN(params.value) ? DEFAULT_VALUES.NO_DATA : params.value,
   };
 
   // Column definitions for AG Grid
@@ -101,7 +95,7 @@ export class ColumnDefService {
           styles.fontWeight = 'bold';
         }
 
-        if (params.value === this.defaultValues.NO_DATA) {
+        if (params.value === DEFAULT_VALUES.NO_DATA) {
           styles.color = 'red';
         }
 
@@ -131,7 +125,7 @@ export class ColumnDefService {
           styles.fontWeight = 'bold';
         }
 
-        if (params.value === this.defaultValues.NO_DATA) {
+        if (params.value === DEFAULT_VALUES.NO_DATA) {
           styles.color = 'red';
         }
 
@@ -161,7 +155,7 @@ export class ColumnDefService {
           textAlign: 'center',
         };
 
-        if (params.value === this.defaultValues.NO_TRANSACTION_DATA) {
+        if (params.value === DEFAULT_VALUES.NO_TRANSACTION_DATA) {
           styles.color = 'red';
           styles.fontWeight = 'bold';
         }
@@ -225,12 +219,10 @@ export class ColumnDefService {
           styles.fontWeight = 'bold';
         }
 
-        return styles
+        return styles;
       },
       cellRenderer: (params: any) =>
-        isNaN(params.value)
-          ? this.defaultValues.NO_TRANSACTION_DATA
-          : params.value,
+        isNaN(params.value) ? DEFAULT_VALUES.NO_TRANSACTION_DATA : params.value,
     },
     {
       headerName:

@@ -1,24 +1,21 @@
-import {Component, inject} from '@angular/core';
-import {Router} from '@angular/router';
-import {TransactionDataStorageService} from '../transaction-data-storage.service';
-import {CompanyDataStorageService} from '../company-data-storage.service';
-import {DefaultValuesService} from '../default-values.service';
-import {Transaction} from '../transaction';
-import {Company} from '../company';
-import {parse} from 'csv-parse/browser/esm';
-import {ColorToggleComponent} from "../color-toggle/color-toggle.component";
-import {NgIf} from "@angular/common"; // Import parsera CSV
-import {FooterService} from "../footer.service";
+import { Component, inject } from '@angular/core';
+import { Router } from '@angular/router';
+import { TransactionDataStorageService } from '../transaction-data-storage.service';
+import { CompanyDataStorageService } from '../company-data-storage.service';
+import { DEFAULT_VALUES } from '../default-values';
+import { Transaction } from '../transaction';
+import { Company } from '../company';
+import { parse } from 'csv-parse/browser/esm';
+import { ColorToggleComponent } from '../color-toggle/color-toggle.component';
+import { NgIf } from '@angular/common'; // Import parsera CSV
+import { FooterService } from '../footer.service';
 
 @Component({
   selector: 'app-input-page',
   standalone: true,
   templateUrl: './input-page.component.html',
   styleUrls: ['./input-page.component.scss'],
-  imports: [
-    ColorToggleComponent,
-    NgIf
-  ]
+  imports: [ColorToggleComponent, NgIf],
 })
 export class InputPageComponent {
   readonly transactionDataStorageService = inject(
@@ -29,15 +26,15 @@ export class InputPageComponent {
 
   readonly companyDataStorageService = inject(CompanyDataStorageService);
 
-  readonly defaultValues = inject(DefaultValuesService);
-
   readonly router = inject(Router);
+
+  readonly DEFAULT_VALUES = DEFAULT_VALUES;
 
   transactions: Transaction[] = [];
   manualAnalysisRequired: boolean = false;
 
   onPaste(event: ClipboardEvent): void {
-    const {clipboardData} = event;
+    const { clipboardData } = event;
     const pastedText = clipboardData?.getData('text') || '';
     this.processDataPasted(pastedText);
     this.manualAnalysisRequired = true;
@@ -136,43 +133,41 @@ export class InputPageComponent {
           transactionId: `${index + 1}`, // Adjust index to start from 1 after filtering
           year:
             record['Rok którego ma dotyczyć dokumentacja'] ||
-            this.defaultValues.NO_DATA,
+            DEFAULT_VALUES.NO_DATA,
           sellerName:
             record['Nazwa sprzedawcy/pożyczkodawcy/emitenta'] ||
-            this.defaultValues.NO_DATA,
+            DEFAULT_VALUES.NO_DATA,
           buyerName:
-            record['Nazwa odbiorcy/pożyczkobiorcy'] ||
-            this.defaultValues.NO_DATA,
+            record['Nazwa odbiorcy/pożyczkobiorcy'] || DEFAULT_VALUES.NO_DATA,
           transactionType:
-            record['Rodzaj transakcji'] ||
-            this.defaultValues.NO_TRANSACTION_DATA,
+            record['Rodzaj transakcji'] || DEFAULT_VALUES.NO_TRANSACTION_DATA,
           transactionSubject:
-            record['Nazwa/przedmiot transakcji'] || this.defaultValues.NO_DATA,
+            record['Nazwa/przedmiot transakcji'] || DEFAULT_VALUES.NO_DATA,
           netValue:
             parseFloat(
               record[
                 'Wartość netto świadczeń zrealizowanych w danym roku/Wartość najwyższego udostępnionego w roku podatkowym kapitału'
-                ]
-            ) || this.defaultValues.NO_DATA_NUMERIC,
-          currency: record['Waluta'] || this.defaultValues.NO_DATA,
+              ]
+            ) || DEFAULT_VALUES.NO_DATA_NUMERIC,
+          currency: record['Waluta'] || DEFAULT_VALUES.NO_DATA,
           loanDate:
             record['Data udzielenia pożyczki/gwarancji'] ||
-            this.defaultValues.NO_DATA,
+            DEFAULT_VALUES.NO_DATA,
           interestRate:
             Number(
               record['Oprocentowanie (w przypadku transakcji finansowych)']
-            ) || this.defaultValues.NO_DATA_NUMERIC,
+            ) || DEFAULT_VALUES.NO_DATA_NUMERIC,
           repaymentDate:
             record['Data spłaty (w przypadku transakcji finansowych)'] ||
-            this.defaultValues.NO_DATA,
+            DEFAULT_VALUES.NO_DATA,
           significanceLimit: 0,
           homogeneousTransactionValue:
-          // Defaultowo to samo co w kolumnie "netValue"
+            // Defaultowo to samo co w kolumnie "netValue"
             parseFloat(
               record[
                 'Wartość netto świadczeń zrealizowanych w danym roku/Wartość najwyższego udostępnionego w roku podatkowym kapitału'
-                ]
-            ) || this.defaultValues.NO_DATA_NUMERIC,
+              ]
+            ) || DEFAULT_VALUES.NO_DATA_NUMERIC,
           taxExemption: record['Zwolnienie art. 11n CIT'] || 'NIE',
           documentationRequirement: record['Obowiązek dokumentacji'] || 'NIE',
           benchmarkRequirement: record['Obowiązek benchmarku'] || 'NIE',
@@ -239,18 +234,19 @@ export class InputPageComponent {
       const columns = row.split('\t').map((col) => col.trim());
       return {
         transactionId: `${index + 1}`,
-        year: columns[1] || this.defaultValues.NO_DATA,
-        sellerName: columns[2] || this.defaultValues.NO_DATA,
-        buyerName: columns[3] || this.defaultValues.NO_DATA,
-        transactionType: columns[4] || this.defaultValues.NO_TRANSACTION_DATA,
-        transactionSubject: columns[5] || this.defaultValues.NO_DATA,
-        netValue: this.parseValue(columns[6]) || this.defaultValues.NO_DATA_NUMERIC,
-        currency: columns[7] || this.defaultValues.NO_DATA,
-        loanDate: columns[8] || this.defaultValues.NO_DATA,
-        interestRate: Number(columns[9]) || this.defaultValues.NO_DATA_NUMERIC,
-        repaymentDate: columns[10] || this.defaultValues.NO_DATA,
+        year: columns[1] || DEFAULT_VALUES.NO_DATA,
+        sellerName: columns[2] || DEFAULT_VALUES.NO_DATA,
+        buyerName: columns[3] || DEFAULT_VALUES.NO_DATA,
+        transactionType: columns[4] || DEFAULT_VALUES.NO_TRANSACTION_DATA,
+        transactionSubject: columns[5] || DEFAULT_VALUES.NO_DATA,
+        netValue: this.parseValue(columns[6]) || DEFAULT_VALUES.NO_DATA_NUMERIC,
+        currency: columns[7] || DEFAULT_VALUES.NO_DATA,
+        loanDate: columns[8] || DEFAULT_VALUES.NO_DATA,
+        interestRate: Number(columns[9]) || DEFAULT_VALUES.NO_DATA_NUMERIC,
+        repaymentDate: columns[10] || DEFAULT_VALUES.NO_DATA,
         significanceLimit: this.parseValue(columns[11]),
-        homogeneousTransactionValue: this.parseValue(columns[12]) || this.defaultValues.NO_DATA_NUMERIC,
+        homogeneousTransactionValue:
+          this.parseValue(columns[12]) || DEFAULT_VALUES.NO_DATA_NUMERIC,
         taxExemption: columns[13] || 'NIE',
         documentationRequirement: columns[14] || 'NIE',
         benchmarkRequirement: columns[15] || 'NIE',
@@ -280,18 +276,19 @@ export class InputPageComponent {
       const columns = row.split('\t').map((col) => col.trim());
       return {
         transactionId: `${index + 1}`,
-        year: columns[1] || this.defaultValues.NO_DATA,
-        sellerName: columns[2] || this.defaultValues.NO_DATA,
-        buyerName: columns[3] || this.defaultValues.NO_DATA,
-        transactionType: columns[4] || this.defaultValues.NO_TRANSACTION_DATA,
-        transactionSubject: columns[5] || this.defaultValues.NO_DATA,
-        netValue: this.parseValue(columns[6]) || this.defaultValues.NO_DATA_NUMERIC,
-        currency: columns[7] || this.defaultValues.NO_DATA,
-        loanDate: columns[8] || this.defaultValues.NO_DATA,
-        interestRate: Number(columns[9]) || this.defaultValues.NO_DATA_NUMERIC,
-        repaymentDate: columns[10] || this.defaultValues.NO_DATA,
+        year: columns[1] || DEFAULT_VALUES.NO_DATA,
+        sellerName: columns[2] || DEFAULT_VALUES.NO_DATA,
+        buyerName: columns[3] || DEFAULT_VALUES.NO_DATA,
+        transactionType: columns[4] || DEFAULT_VALUES.NO_TRANSACTION_DATA,
+        transactionSubject: columns[5] || DEFAULT_VALUES.NO_DATA,
+        netValue: this.parseValue(columns[6]) || DEFAULT_VALUES.NO_DATA_NUMERIC,
+        currency: columns[7] || DEFAULT_VALUES.NO_DATA,
+        loanDate: columns[8] || DEFAULT_VALUES.NO_DATA,
+        interestRate: Number(columns[9]) || DEFAULT_VALUES.NO_DATA_NUMERIC,
+        repaymentDate: columns[10] || DEFAULT_VALUES.NO_DATA,
         significanceLimit: this.parseValue(columns[11]),
-        homogeneousTransactionValue: this.parseValue(columns[12]) || this.defaultValues.NO_DATA_NUMERIC,
+        homogeneousTransactionValue:
+          this.parseValue(columns[12]) || DEFAULT_VALUES.NO_DATA_NUMERIC,
         taxExemption: columns[13] || 'NIE',
         documentationRequirement: columns[14] || 'NIE',
         benchmarkRequirement: columns[15] || 'NIE',
@@ -312,7 +309,6 @@ export class InputPageComponent {
     return value ? parseFloat(value.replace(/\s/g, '').replace(',', '.')) : 0;
   }
 
-
   analyzeData(): void {
     if (this.transactions.length > 0) {
       // console.log('Analyzing data...');
@@ -320,10 +316,10 @@ export class InputPageComponent {
       // Extract unique company names (if provided)
       const uniqueCompanyNames = new Set<string>();
       this.transactions.forEach((transaction) => {
-        if (transaction.sellerName !== this.defaultValues.NO_DATA) {
+        if (transaction.sellerName !== DEFAULT_VALUES.NO_DATA) {
           uniqueCompanyNames.add(transaction.sellerName);
         }
-        if (transaction.buyerName !== this.defaultValues.NO_DATA) {
+        if (transaction.buyerName !== DEFAULT_VALUES.NO_DATA) {
           uniqueCompanyNames.add(transaction.buyerName);
         }
       });
@@ -383,6 +379,5 @@ export class InputPageComponent {
     return this.transactions.length > 0;
   }
 
-  constructor() {
-  }
+  constructor() {}
 }

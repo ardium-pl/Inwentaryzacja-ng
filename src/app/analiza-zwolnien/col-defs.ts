@@ -1,14 +1,7 @@
-import { Injectable, inject } from '@angular/core';
 import { ColDef } from 'ag-grid-community';
 import { Company } from '../company';
-import { DefaultValuesService } from '../default-values.service';
 
-@Injectable({
-  providedIn: 'root',
-})
-export class ColumnDefService {
-  readonly defaultValues = inject(DefaultValuesService);
-
+export class companyColumnDefinitions {
   // Default column definitions - global
   defaultColDef: ColDef = {
     wrapHeaderText: true,
